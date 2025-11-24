@@ -5,13 +5,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { subject, body } = req.body;
+  // Vi tar emot 'replyTo' och 'senderName' också
+  const { subject, body, replyTo, senderName } = req.body;
 
   if (!subject || !body) {
-    return res.status(400).json({ message: 'Missing subject or body' });
+    return res.status(400).json({ message: 'Missing data' });
   }
 
-  // Konfigurera kopplingen till Gmail
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -21,13 +21,18 @@ export default async function handler(req, res) {
   });
 
   try {
-    // Skicka mailet (från dig, TILL dig själv)
     await transporter.sendMail({
-      from: process.env.GMAIL_USER,
-      to: process.env.GMAIL_USER, // Du skickar till dig själv
-      subject: `PORTFOLIO: ${subject}`,
-      text: body, // Ren textversion
-      html: body.replace(/\n/g, '<br>') // Enkel HTML-version (byter radbrytningar mot <br>)
+      // TRICK: Visa kundens namn som avsändare, men använd din adress
+      from: `"${senderName} (Portfolio)" <${process.env.GMAIL_USER}>`,
+      
+      to: process.env.GMAIL_USER,
+      
+      // HÄR ÄR MAGIN: När du trycker "Svara" går det till kunden!
+      replyTo: replyTo, 
+      
+      subject: subject,
+      text: body,
+      html: body.replace(/\n/g, '<br>')
     });
 
     return res.status(200).json({ success: true });

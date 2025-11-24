@@ -3,6 +3,7 @@ import { Loader2, CheckCircle, XCircle, Briefcase, Send, RefreshCw, User, Mail, 
 import axios from 'axios';
 import { toast } from 'sonner';
 
+// Språkdatabas
 const TRANSLATIONS = {
   sv: {
     title: "Anlita mig",
@@ -144,11 +145,13 @@ const HireMe = ({ lang = 'sv' }) => {
     }
   };
 
+  // --- HÄR ÄR FUNKTIONEN SOM SKICKAR MAILET ---
   const sendRealEmail = async () => {
     setIsSending(true);
 
     const subject = `Ny förfrågan från ${formData.name}: ${formData.projectType}`;
     
+    // Mailet som kommer till DIG
     const emailBody = `
 NY FÖRFRÅGAN VIA PORTFOLION (${lang.toUpperCase()})
 
@@ -173,7 +176,9 @@ Feedback: "${analysis.feedback}"
     try {
       await axios.post('/api/email', {
         subject: subject,
-        body: emailBody
+        body: emailBody,
+        replyTo: formData.email, // Så att du kan svara direkt till kunden
+        senderName: formData.name
       });
 
       toast.success(lang === 'sv' ? 'Tack! Din förfrågan har skickats.' : 'Thank you! Your request has been sent.');
@@ -187,11 +192,10 @@ Feedback: "${analysis.feedback}"
     }
   };
 
-  // Snygg Input-styling (Gör dropdowns mörka och snygga)
   const inputClass = "w-full bg-[#1a1b2e] border border-white/10 rounded-lg p-3 text-white focus:border-neon-purple outline-none transition-colors placeholder-gray-600 appearance-none text-sm";
   const labelClass = "block text-[10px] text-gray-400 uppercase mb-1 font-bold tracking-wider";
 
-  // --- SUCCESS SCREEN ---
+  // SUCCESS-VY
   if (status === 'sent') {
     return (
       <div className="h-full flex flex-col items-center justify-center text-center p-6 animate-fade-in">
@@ -202,12 +206,14 @@ Feedback: "${analysis.feedback}"
         <p className="text-gray-400 max-w-md mb-8 leading-relaxed">
           {t.status.successMsg} <strong>{formData.email}</strong> {t.status.soon}
         </p>
+        
+        {/* KNAPP: Gör ny förfrågan (Grön ram & hover) */}
         <button 
           onClick={() => {
             setStatus('idle'); 
             setFormData({ ...formData, name: '', email: '', description: '', captcha: '' });
           }} 
-          className="px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full font-medium transition-all"
+          className="px-8 py-3 bg-transparent border border-green-500/30 text-green-400 hover:bg-green-500/10 hover:border-green-500 hover:text-green-300 rounded-full font-medium transition-all"
         >
           {t.buttons.new}
         </button>
@@ -219,7 +225,6 @@ Feedback: "${analysis.feedback}"
     <div className="w-full flex flex-col p-1 pb-10"> 
       <h2 className="text-2xl font-bold text-neon-purple mb-2">{t.title}</h2>
       
-      {/* Disclaimer */}
       <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-lg mb-6 text-xs text-amber-100/90 leading-relaxed flex gap-3 items-start shadow-sm">
          <Briefcase className="text-amber-400 shrink-0 mt-0.5" size={18} />
          <p>{t.disclaimer}</p>
@@ -271,7 +276,6 @@ Feedback: "${analysis.feedback}"
             <select className={inputClass} value={formData.projectType} onChange={e => setFormData({...formData, projectType: e.target.value})}>
               {t.options.types.map(opt => <option key={opt} value={opt}>{opt}</option>)}
             </select>
-            {/* Pilen för dropdown */}
             <div className="absolute right-3 top-[32px] pointer-events-none text-gray-500 text-xs">▼</div>
           </div>
 
@@ -324,8 +328,7 @@ Feedback: "${analysis.feedback}"
         </form>
       )}
 
-      {/* --- STATUS-VYER --- */}
-
+      {/* ANALYSERAR */}
       {status === 'analyzing' && (
         <div className="flex flex-col items-center justify-center h-64 text-center space-y-4">
           <Loader2 size={48} className="text-neon-cyan animate-spin" />
@@ -333,6 +336,7 @@ Feedback: "${analysis.feedback}"
         </div>
       )}
 
+      {/* GODKÄNT */}
       {status === 'approved' && (
         <div className="bg-green-500/10 border border-green-500/30 p-6 rounded-2xl text-center space-y-4 animate-fade-in">
           <div className="flex justify-center"><CheckCircle size={48} className="text-green-400" /></div>
@@ -340,6 +344,7 @@ Feedback: "${analysis.feedback}"
           <p className="text-gray-300 text-sm leading-relaxed bg-[#0a0b1e] p-4 rounded-lg border border-white/5">"{analysis?.feedback}"</p>
           <div className="text-xs text-gray-500 uppercase tracking-wider">{t.status.time}: <span className="text-green-400 font-bold">{analysis?.estimatedHours}{t.status.hours}</span></div>
           
+          {/* SKICKA-KNAPP */}
           <button onClick={sendRealEmail} disabled={isSending} className="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-500 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-green-500/20">
             {isSending ? <Loader2 className="animate-spin" /> : <Send size={18} />} 
             {isSending ? t.buttons.sending : t.buttons.send}
@@ -348,6 +353,7 @@ Feedback: "${analysis.feedback}"
         </div>
       )}
 
+      {/* NEKAT */}
       {status === 'rejected' && (
         <div className="bg-red-500/10 border border-red-500/30 p-6 rounded-2xl text-center space-y-4 animate-fade-in">
           <div className="flex justify-center"><XCircle size={48} className="text-red-400" /></div>
