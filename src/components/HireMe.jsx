@@ -12,7 +12,7 @@ const HireMe = () => {
     paymentType: 'Betalt',
     amount: '',
     description: '',
-    captcha: '' // Enkel mattefråga
+    captcha: ''
   });
   
   const [status, setStatus] = useState('idle'); // idle, analyzing, approved, rejected, sent
@@ -119,11 +119,12 @@ Feedback: "${analysis.feedback}"
     <div className="h-full flex flex-col overflow-y-auto custom-scrollbar p-1">
       <h2 className="text-2xl font-bold text-neon-purple mb-2">Anlita mig</h2>
       
-      {/* DISCLAIMER */}
-      <div className="bg-neon-purple/10 border border-neon-purple/20 p-3 rounded-lg mb-6 text-xs text-gray-300 leading-relaxed flex gap-3 items-start">
-         <Briefcase className="text-neon-purple shrink-0 mt-0.5" size={16} />
+      {/* DISCLAIMER - Nu i orange/amber för tydlighet */}
+      <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-lg mb-6 text-xs text-amber-100/90 leading-relaxed flex gap-3 items-start shadow-sm">
+         <Briefcase className="text-amber-400 shrink-0 mt-0.5" size={18} />
          <p>
-           <strong>OBS:</strong> Jag tar mig an projekt vid sidan av mina heltidsstudier och familjeliv. 
+           <strong className="text-amber-400 block mb-1 tracking-wide">OBSERVERA:</strong> 
+           Jag tar mig an projekt vid sidan av mina heltidsstudier och familjeliv. 
            Detta formulär ger en första AI-bedömning, men jag garanterar inte att jag kan ta uppdraget.
          </p>
       </div>
@@ -152,7 +153,7 @@ Feedback: "${analysis.feedback}"
 
           <div>
              <label className={labelClass}>Vem är du?</label>
-             <div className="flex gap-4">
+             <div className="flex gap-4 flex-wrap">
                {['Privatperson', 'Företag', 'Rekryterare'].map(type => (
                  <label key={type} className="flex items-center gap-2 cursor-pointer text-sm text-gray-300">
                     <input 
@@ -233,7 +234,7 @@ Feedback: "${analysis.feedback}"
         </form>
       )}
 
-      {/* STATUSVYN (Laddar, Godkänd, Nekad) - SAMMA SOM FÖRUT */}
+      {/* STATUSVYN (Laddar, Godkänd, Nekad) */}
       {status === 'analyzing' && (
         <div className="flex flex-col items-center justify-center h-64 text-center space-y-4">
           <Loader2 size={48} className="text-neon-cyan animate-spin" />
