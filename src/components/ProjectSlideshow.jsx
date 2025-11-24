@@ -39,7 +39,8 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
         initial={{ opacity: 0, scale: 0.95 }} 
         animate={{ opacity: 1, scale: 1 }} 
         exit={{ opacity: 0, scale: 0.95 }}
-        className="relative w-full max-w-6xl bg-[#0a0b1e] border border-white/10 rounded-xl md:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[95vh] md:h-[90vh]"
+        // ÄNDRING: Ökat max-bredd på riktigt stora skärmar (xl:max-w-7xl)
+        className="relative w-full max-w-6xl xl:max-w-7xl bg-[#0a0b1e] border border-white/10 rounded-xl md:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[95vh] md:h-[90vh]"
         onClick={e => e.stopPropagation()}
       >
         
@@ -65,11 +66,13 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className={`h-full flex flex-col gap-6 md:gap-8 ${currentSlide.image ? 'lg:flex-row lg:items-start' : ''}`}
+              // ÄNDRING: lg:items-stretch gör att text och bild-containern blir lika höga
+              className={`h-full flex flex-col gap-6 md:gap-8 ${currentSlide.image ? 'lg:flex-row lg:items-stretch' : ''}`}
             >
               
               {/* Text & Kod */}
-              <div className={`flex flex-col gap-4 md:gap-6 ${currentSlide.image ? 'lg:w-1/2' : 'w-full'}`}>
+              {/* ÄNDRING: Ändrat bredden till lg:w-2/5 (40%) för att ge mer plats åt bilden */}
+              <div className={`flex flex-col gap-4 md:gap-6 ${currentSlide.image ? 'lg:w-2/5' : 'w-full'}`}>
                 <div className="flex items-center gap-3 border-b border-white/10 pb-3 md:pb-4">
                   {getIcon(currentSlide.type)}
                   <h3 className={`text-xl md:text-3xl font-bold ${currentSlide.type === 'problem' ? 'text-red-400' : currentSlide.type === 'solution' ? 'text-yellow-400' : 'text-neon-cyan'}`}>
@@ -90,11 +93,13 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
 
               {/* Bild */}
               {currentSlide.image && (
-                <div className="lg:w-1/2 flex items-center justify-center bg-black/20 rounded-xl border border-white/5 p-2 md:p-4 min-h-[250px] md:h-full">
+                // ÄNDRING: Ändrat bredden till lg:w-3/5 (60%). Tar bort hårdkodad min-h.
+                <div className="lg:w-3/5 flex items-center justify-center bg-black/20 rounded-xl border border-white/5 p-2 md:p-4 h-auto md:h-full">
                   <img 
                     src={currentSlide.image} 
                     alt="Project Screenshot" 
-                    className="w-full h-full object-contain rounded-lg shadow-lg" 
+                    // ÄNDRING: max-h-full ser till att bilden inte blir högre än containern
+                    className="w-full h-auto max-h-full object-contain rounded-lg shadow-lg" 
                   />
                 </div>
               )}
@@ -103,25 +108,19 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
           </AnimatePresence>
         </div>
 
-        {/* --- FOOTER CONTROLS (HÄR ÄR ÄNDRINGARNA) --- */}
+        {/* Footer Controls */}
         <div className="p-4 md:p-6 border-t border-white/10 bg-black/30 flex justify-between items-center gap-4">
           
-          {/* KNAPP: FÖREGÅENDE */}
           <button 
             onClick={prevSlide} 
             disabled={currentIndex === 0}
             aria-label="Föregående slide"
-            // ÄNDRING: På mobil (default): Stor, rund knapp med bakgrund (p-4, rounded-full, bg-white/10). 
-            // På desktop (md:): Avlång knapp utan bakgrund (md:px-5, md:py-2.5, md:rounded-lg, md:bg-transparent).
             className="flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg bg-white/10 md:bg-transparent hover:bg-white/20 md:hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-gray-300 transition-all"
           >
-            {/* ÄNDRING: Stor ikon på mobil (w-8 h-8), mindre på desktop (md:w-5 md:h-5) */}
             <ChevronLeft className="w-8 h-8 md:w-5 md:h-5" />
-            {/* ÄNDRING: Texten visas bara på desktop (hidden md:inline) */}
             <span className="hidden md:inline font-medium">Föregående</span>
           </button>
 
-          {/* Dots Indicator */}
           <div className="flex gap-1.5 md:gap-2 shrink-0">
             {slides.map((_, idx) => (
               <div 
@@ -131,17 +130,13 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
             ))}
           </div>
 
-          {/* KNAPP: NÄSTA */}
           <button 
             onClick={nextSlide} 
             disabled={currentIndex === slides.length - 1}
             aria-label="Nästa slide"
-            // ÄNDRING: Samma princip här. Stor rund knapp på mobil.
             className="flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg bg-neon-purple text-white shadow-lg shadow-neon-purple/30 hover:bg-neon-cyan hover:text-black hover:shadow-neon-cyan/30 disabled:opacity-30 disabled:cursor-not-allowed disabled:bg-transparent disabled:border-transparent disabled:text-gray-500 transition-all"
           >
-            {/* ÄNDRING: Texten visas bara på desktop */}
             <span className="hidden md:inline font-bold">Nästa</span>
-            {/* ÄNDRING: Stor ikon på mobil */}
             <ChevronRight className="w-8 h-8 md:w-5 md:h-5" />
           </button>
         </div>

@@ -12,13 +12,13 @@ import ProjectSlideshow from './ProjectSlideshow';
 import detectiveVideo from '../assets/video.mp4';
 
 // BILDER
-import detectiveImg1 from '../assets/detective-2.png';
-import detectiveImg2 from '../assets/detective-3.png';
-import detectiveImg3 from '../assets/detective-1.png';
+import detectiveImg1 from '../assets/detective-1.png';
+import detectiveImg2 from '../assets/detective-2.png';
+import detectiveImg3 from '../assets/detective-3.png';
 
 import fitnessImg1 from '../assets/fitness-1.png';
-import fitnessImg2 from '../assets/fitness-3.png';
-import fitnessImg3 from '../assets/fitness-2.png';
+import fitnessImg2 from '../assets/fitness-2.png';
+import fitnessImg3 from '../assets/fitness-3.png';
 import fitnessImg4 from '../assets/fitness-4.png';
 
 // --- PROJEKTDATA (SLIDES) ---
@@ -34,18 +34,18 @@ const PROJECT_SLIDES = {
       title: "Utmaning: Att blanda logik och UI",
       type: "problem",
       content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
-      image: detectiveImg3
-    },
-    {
-      title: "Lärdom: Arkitektur är allt",
-      type: "learning",
-      content: <p>Resultatet blev att UI-kod och logik blandades mer än jag hade velat. Om jag gjorde om det idag hade jag separerat det tydligare från start (t.ex. med MVC-mönster) för att hålla koden renare (Clean Code).</p>
+      image: detectiveImg2
     },
     {
       title: "Spelmekanik & AI",
       type: "solution",
       content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
-      image: detectiveImg2
+      image: detectiveImg3
+    },
+    {
+      title: "Lärdom: Arkitektur är allt",
+      type: "learning",
+      content: <p>Resultatet blev att UI-kod och logik blandades mer än jag hade velat. Om jag gjorde om det idag hade jag separerat det tydligare från start (t.ex. med MVC-mönster) för att hålla <code>Spectre</code>-koden helt isolerad.</p>
     },
     {
       title: "Teknik: LINQ & C#",
@@ -75,13 +75,15 @@ const PROJECT_SLIDES = {
       title: "Funktion: Kostscheman",
       type: "code",
       content: <p>Vi byggde funktioner för att generera detaljerade kostscheman. Här använde vi objektorientering för att strukturera data kring kalorier och makronutrienter.</p>,
-      image: fitnessImg3
+      // ÄNDRING: Bytt till fitnessImg2 här (Kostschema-bilden)
+      image: fitnessImg2
     },
     {
       title: "PT-Vyn (Admin)",
       type: "intro",
       content: <p>PT:n har en egen vy för att hantera sina klienter. Här lärde jag mig mycket om hur man hanterar olika användarroller och behörigheter i en applikation.</p>,
-      image: fitnessImg2
+      // ÄNDRING: Bytt till fitnessImg3 här (PT-vy-bilden)
+      image: fitnessImg3
     }
   ],
   portfolio: [
@@ -111,7 +113,7 @@ const PROJECT_SLIDES = {
 const TRANSLATIONS = {
   sv: {
     role: "Systemutvecklare .NET (Student)",
-    nav: { about: "Snabbfakta", chat: "AI-Chat", projects: "Projekt", cv: "CV" }, // Kortare namn för mobil
+    nav: { about: "Snabbfakta", chat: "AI-Chat", projects: "Projekt", cv: "CV" },
     titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt" },
     about: {
       intro1: "Driven Systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på kod och arkitektur.",
@@ -121,11 +123,11 @@ const TRANSLATIONS = {
       facts: { age: "Ålder", city: "Bor i", lang: "Språk", family: "Familj" },
       factValues: { city: "Göteborg", lang: "Svenska / Engelska", family: "Gift familjefar" }
     },
-    projects: { more: "Fler projekt finns på min GitHub!", watch: "Trailer", details: "Info" } // Kortare knappar
+    projects: { more: "Fler projekt finns på min GitHub!", watch: "Trailer", details: "Info" }
   },
   en: {
     role: ".NET System Developer (Student)",
-    nav: { about: "Facts", chat: "AI Chat", projects: "Projects", cv: "CV" }, // Kortare namn för mobil
+    nav: { about: "Facts", chat: "AI Chat", projects: "Projects", cv: "CV" },
     titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects" },
     about: {
       intro1: "Driven System Developer focusing on .NET. Currently on leave of absence to fully commit to code and architecture.",
@@ -135,7 +137,7 @@ const TRANSLATIONS = {
       facts: { age: "Age", city: "Location", lang: "Languages", family: "Family" },
       factValues: { city: "Gothenburg", lang: "Swedish / English", family: "Married, father" }
     },
-    projects: { more: "More projects on my GitHub!", watch: "Trailer", details: "Info" } // Kortare knappar
+    projects: { more: "More projects on my GitHub!", watch: "Trailer", details: "Info" }
   }
 };
 
@@ -158,7 +160,6 @@ const HeroStage = () => {
   const toggleLang = () => setLang(l => l === 'sv' ? 'en' : 'sv');
 
   return (
-    // ÄNDRING: Mindre padding på mobilen (p-3 istället för p-4)
     <div className="min-h-screen flex items-center justify-center p-3 md:p-8 relative z-10">
       
       <AnimatePresence>
@@ -189,12 +190,10 @@ const HeroStage = () => {
 
       <motion.div 
         layout
-        // ÄNDRING: max-h på mobilen till 95vh för att utnyttja skärmen bättre
         className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:max-h-[90vh]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
-        {/* ÄNDRING: Mindre padding på mobilen (p-4) */}
         <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
@@ -211,18 +210,14 @@ const HeroStage = () => {
           <ProfilePhoto disableMotion={reduceMotion} />
           
           <motion.div layout className="mt-4 text-center md:text-left z-10">
-            {/* ÄNDRING: Mindre textstorlek på namnet på mobil (text-xl) för att slippa radbrytning */}
             <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight animate-text-gradient bg-clip-text text-transparent pb-1 whitespace-nowrap">
               Klas Olsson
             </h1>
-            {/* ÄNDRING: Större textstorlek på rollen på mobil (text-sm) för läsbarhet */}
             <p className="text-neon-cyan font-mono text-sm mt-1 uppercase tracking-wider">{t.role}</p>
           </motion.div>
 
-          {/* ÄNDRING: Kontakt-raden är mer kompakt på mobil */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 my-4 z-10 w-full">
             <div className="flex gap-3">
-              {/* ÄNDRING: Större ikoner på mobil (size={22}) */}
               <button 
                 onClick={() => {
                   navigator.clipboard.writeText('klasolsson81@gmail.com');
@@ -237,7 +232,6 @@ const HeroStage = () => {
               <a href="https://www.linkedin.com/in/klasolsson81/" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-[#0077b5] transition-colors p-1" title="LinkedIn"><Linkedin size={22} /></a>
             </div>
 
-            {/* ÄNDRING: Dolt vertikalt streck på mobil */}
             <div className="hidden md:block w-px h-5 bg-white/20"></div>
 
             <a 
@@ -252,7 +246,6 @@ const HeroStage = () => {
                 });
                 toast.success('Tack för visat intresse! CV laddas ner.');
               }}
-              // ÄNDRING: Större text och padding på CV-knappen på mobil
               className="flex items-center gap-2 bg-neon-purple/20 hover:bg-neon-purple/40 text-neon-cyan border border-neon-purple/50 px-4 py-1.5 md:px-3 md:py-1 rounded-lg transition-all font-bold text-xs md:text-[10px] uppercase tracking-wider group cursor-pointer"
             >
               <Download size={14} className="group-hover:-translate-y-0.5 transition-transform md:w-3 md:h-3"/>
@@ -260,7 +253,6 @@ const HeroStage = () => {
             </a>
           </div>
 
-          {/* ÄNDRING: Navigeringen är nu en horisontell rad (flex-row) på mobil, och vertikal (flex-col) på desktop */}
           <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-2 md:space-y-2 md:gap-0">
             <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} />
             <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} />
@@ -269,7 +261,6 @@ const HeroStage = () => {
         </motion.div>
 
         {/* HÖGER: Innehåll */}
-        {/* ÄNDRING: flex-1 ser till att denna del tar upp resten av höjden. Mindre padding (p-4) på mobil. */}
         <motion.div 
           layout 
           className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden"
@@ -388,7 +379,6 @@ const HeroStage = () => {
   );
 };
 
-// ÄNDRING: NavButton är nu en flexibel "tab" på mobil (flex-1, py-2) och en fullbreddsknapp på desktop (md:w-full, md:py-3). Ikonstorleken anpassas.
 const NavButton = ({ label, icon, active, onClick }) => (
   <button 
     onClick={onClick}
