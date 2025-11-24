@@ -386,16 +386,16 @@ const HeroStage = () => {
               </motion.div>
             )}
 
-            {section === 'hire' && (
+{section === 'hire' && (
               <motion.div 
                 key="hire" 
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
-                className="h-full flex flex-col"
+                // ÄNDRING: Lade till 'overflow-y-auto custom-scrollbar' här så att hela vyn kan scrollas
+                className="h-full flex flex-col overflow-y-auto custom-scrollbar pr-2"
               >
                 <HireMe lang={lang} />
               </motion.div>
             )}
-
           </AnimatePresence>
         </motion.div>
       </motion.div>

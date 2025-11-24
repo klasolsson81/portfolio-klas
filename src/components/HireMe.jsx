@@ -215,7 +215,7 @@ Feedback: "${analysis.feedback}"
   }
 
   return (
-    <div className="h-full flex flex-col overflow-y-auto custom-scrollbar p-1">
+    <div className="w-full flex flex-col p-1">
       <h2 className="text-2xl font-bold text-neon-purple mb-2">{t.title}</h2>
       
       <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-lg mb-6 text-xs text-amber-100/90 leading-relaxed flex gap-3 items-start shadow-sm">
