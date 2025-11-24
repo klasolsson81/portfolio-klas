@@ -37,21 +37,21 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      // STORLEK: w-32 (128px) på laptop. w-56 (224px) på stor skärm.
-      className="relative w-32 h-32 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-full shadow-2xl transition-all duration-500 group cursor-pointer z-10"
+      // ÄNDRING 1: Tillbaka till rounded-[2rem] (mjuk rektangel).
+      // STORLEK: w-28 (112px) på laptop för att spara plats. w-56 på stor skärm.
+      className="relative w-28 h-28 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-[2rem] shadow-2xl transition-all duration-500 group cursor-pointer z-10"
     >
-      {/* GLOW BAKOM (Lila/Cyan) */}
+      {/* GLOW BAKOM */}
       {!disableMotion && (
-        <div className="absolute -inset-6 bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-full z-0"></div>
+        <div className="absolute -inset-5 bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-[2.5rem] z-0"></div>
       )}
       {disableMotion && (
-        <div className="absolute -inset-2 bg-neon-purple/20 blur-xl rounded-full z-0"></div>
+        <div className="absolute -inset-1 bg-neon-purple/20 blur-md rounded-[2rem] z-0"></div>
       )}
 
       {/* BILDCONTAINER */}
-      <div className="relative w-full h-full rounded-full overflow-hidden bg-[#0a0b1e] z-10">
+      <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-[#0a0b1e] z-10">
         
-        {/* Bilden */}
         <motion.img
           src={profileImg}
           alt="Klas Olsson"
@@ -60,12 +60,12 @@ const ProfilePhoto = ({ disableMotion }) => {
           className="w-full h-full object-cover"
         />
         
-        {/* --- DENNA LÖSER "LÅDAN" --- */}
-        {/* En overlay som är genomskinlig i mitten men blir din bakgrundsfärg (#0a0b1e) utåt kanterna */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#0a0b1e_95%)] pointer-events-none"></div>
+        {/* ÄNDRING 2: Aggressiv toning/vinjett som smälter in i bakgrunden */}
+        {/* En mörkblå 'ring' som täcker kanterna och tonar ut mot mitten */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,#0a0b1e_95%)] pointer-events-none"></div>
         
-        {/* Extra färgtoning för att smälta in */}
-        <div className="absolute inset-0 bg-neon-purple/10 mix-blend-overlay pointer-events-none rounded-full"></div>
+        {/* Extra lila tint för att matcha temat */}
+        <div className="absolute inset-0 bg-neon-purple/10 mix-blend-overlay pointer-events-none rounded-[2rem]"></div>
       </div>
     </motion.div>
   );
