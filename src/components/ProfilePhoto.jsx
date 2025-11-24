@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-// VIKTIGT: Vi använder din ORIGINALBILD här
-import profileImg from '../assets/klas-olsson-profil.jpg'; 
+
+// HÄR ÄR ÄNDRINGEN: Vi importerar den nya bilden
+import profileImg from '../assets/klas-olsson-profil2.jpg'; 
 
 const ProfilePhoto = ({ disableMotion }) => {
   const x = useMotionValue(0);
@@ -28,40 +29,40 @@ const ProfilePhoto = ({ disableMotion }) => {
   };
 
   return (
-    <motion.div
-      style={{
-        perspective: 1000,
-        rotateX: disableMotion ? 0 : rotateX,
-        rotateY: disableMotion ? 0 : rotateY,
-        scale: isHovered && !disableMotion ? 1.02 : 1,
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
-      // STORLEK: w-32 (128px) på laptop, w-64 på stor skärm
-      className="relative w-32 h-32 xl:w-64 xl:h-64 mx-auto md:mx-0 rounded-[2rem] transition-all duration-500 group cursor-pointer z-10"
-    >
-      {/* BAKGRUNDSEFFEKT (Glow) */}
-      {!disableMotion && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-full z-0"></div>
-      )}
+    <div className="relative z-10" onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovered(true)} onMouseLeave={handleMouseLeave}>
       
-      {/* BILDCONTAINER */}
-      <div className="relative w-full h-full rounded-[2rem] overflow-hidden z-10">
+      {/* --- DEN LEVANDE BAKGRUNDEN (Aura) --- */}
+      {!disableMotion && (
+        <>
+            {/* En stor, mjuk, pulserande glöd bakom allt */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] bg-gradient-to-tr from-neon-purple/60 via-neon-cyan/40 to-neon-purple/60 blur-3xl rounded-full animate-pulse-slow -z-20"></div>
+            
+            {/* En skarpare, roterande ring närmare bilden för mer liv */}
+            <div className="absolute inset-0 bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-purple rounded-full blur-md opacity-70 animate-spin-slow -z-10"></div>
+        </>
+      )}
+
+      {/* --- BILDCONTAINER MED 3D-EFFEKT --- */}
+      <motion.div
+        style={{
+          perspective: 1000,
+          rotateX: disableMotion ? 0 : rotateX,
+          rotateY: disableMotion ? 0 : rotateY,
+          scale: isHovered && !disableMotion ? 1.02 : 1,
+        }}
+        // STORLEK: w-32 (128px) på laptop. w-64 (256px) på stor skärm.
+        className="relative w-32 h-32 xl:w-64 xl:h-64 mx-auto md:mx-0 rounded-full shadow-[0_0_30px_rgba(189,0,255,0.3)] transition-all duration-500 group cursor-pointer z-0"
+      >
+        {/* Själva bilden - Rent och snyggt utan filter */}
         <motion.img
           src={profileImg}
           alt="Klas Olsson"
-          animate={{ scale: isHovered && !disableMotion ? 1.1 : 1 }}
+          animate={{ scale: isHovered && !disableMotion ? 1.05 : 1 }}
           transition={{ duration: 0.5 }}
-          // HÄR ÄR MAGIN: 'mask-image'
-          // Detta CSS-kommando gör kanterna genomskinliga så bilden smälter in
-          className="w-full h-full object-cover [mask-image:radial-gradient(circle_at_center,black_40%,transparent_85%)]"
+          className="w-full h-full object-cover rounded-full border-2 border-white/5"
         />
-        
-        {/* Extra mörk toning i kanterna för att matcha bakgrunden perfekt */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#0a0b1e_90%)] pointer-events-none"></div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 
