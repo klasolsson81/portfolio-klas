@@ -11,15 +11,15 @@ import ProjectSlideshow from './ProjectSlideshow';
 // VIDEO
 import detectiveVideo from '../assets/video.mp4';
 
-// BILDER (Se till att namnen matchar exakt i din assets-mapp!)
-import detectiveImg1 from '../assets/detective-1.png';
-import detectiveImg2 from '../assets/detective-2.png';
-import detectiveImg3 from '../assets/detective-3.png';
+// BILDER (Kontrollera att filnamnen matchar exakt i din assets-mapp!)
+import detectiveImg1 from '../assets/detective-1.png'; // ASCII Logga
+import detectiveImg2 from '../assets/detective-2.png'; // Huvudmeny
+import detectiveImg3 from '../assets/detective-3.png'; // In-game scen
 
-import fitnessImg1 from '../assets/fitness-1.png';
-import fitnessImg2 from '../assets/fitness-2.png';
-import fitnessImg3 from '../assets/fitness-3.png';
-import fitnessImg4 from '../assets/fitness-4.png';
+import fitnessImg1 from '../assets/fitness-1.png';     // Huvudmeny
+import fitnessImg2 from '../assets/fitness-2.png';     // Hantera Klas (PT vy)
+import fitnessImg3 from '../assets/fitness-3.png';     // Kostschema
+import fitnessImg4 from '../assets/fitness-4.png';     // GitHub Board
 
 // --- PROJEKTDATA (SLIDES) ---
 const PROJECT_SLIDES = {
@@ -28,21 +28,19 @@ const PROJECT_SLIDES = {
       title: "Projektöversikt",
       type: "intro",
       content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>,
-      // ÄNDRAT: Nu visas startbilden (Loggan) här
-      image: detectiveImg1 
+      image: detectiveImg2 // Huvudmeny
     },
     {
       title: "Utmaning: Att blanda logik och UI",
       type: "problem",
       content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
-      // ÄNDRAT: Nu visas den inloggade menyn här
-      image: detectiveImg2 
+      image: detectiveImg1 // Logga
     },
     {
       title: "Spelmekanik & AI",
       type: "solution",
       content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
-      image: detectiveImg3
+      image: detectiveImg3 // In-game scen
     },
     {
       title: "Lärdom: Arkitektur är allt",
@@ -193,6 +191,7 @@ const HeroStage = () => {
         className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:max-h-[90vh]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
+        {/* VÄNSTER: Profil & Kontakt */}
         <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
