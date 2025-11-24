@@ -105,7 +105,7 @@ const PROJECT_SLIDES = {
       title: "Prestanda & Optimering",
       type: "problem",
       content: <p>Att köra 3D i webbläsaren är tungt. Jag fick lära mig att optimera renderingen och hantera responsivitet så att sidan fungerar lika bra på en mobil som på en stor 4K-skärm.</p>
-    }
+    },
     {
       title: "Feature: AI-Projektledare",
       type: "code",
