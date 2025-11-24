@@ -39,12 +39,10 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
         initial={{ opacity: 0, scale: 0.95 }} 
         animate={{ opacity: 1, scale: 1 }} 
         exit={{ opacity: 0, scale: 0.95 }}
-        // ÄNDRING: Ökat max-bredd på riktigt stora skärmar (xl:max-w-7xl)
-        className="relative w-full max-w-6xl xl:max-w-7xl bg-[#0a0b1e] border border-white/10 rounded-xl md:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[95vh] md:h-[90vh]"
+        className="relative w-full max-w-5xl bg-[#0a0b1e] border border-white/10 rounded-xl md:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[95vh] md:h-[90vh]"
         onClick={e => e.stopPropagation()}
       >
         
-        {/* Header */}
         <div className="p-4 md:p-6 border-b border-white/10 flex justify-between items-center bg-black/30">
           <div>
             <h2 className="text-lg md:text-2xl font-bold text-white tracking-tight truncate max-w-[250px] md:max-w-none">{title}</h2>
@@ -57,7 +55,6 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
           </button>
         </div>
 
-        {/* Content Area */}
         <div className="flex-1 overflow-y-auto p-4 md:p-8 relative custom-scrollbar">
           <AnimatePresence mode="wait">
             <motion.div 
@@ -66,13 +63,12 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              // ÄNDRING: lg:items-stretch gör att text och bild-containern blir lika höga
-              className={`h-full flex flex-col gap-6 md:gap-8 ${currentSlide.image ? 'lg:flex-row lg:items-stretch' : ''}`}
+              // ÄNDRING: Tog bort 'lg:flex-row' -> Nu ligger allt alltid i en kolumn (uppifrån och ner)
+              className="h-full flex flex-col gap-6"
             >
               
               {/* Text & Kod */}
-              {/* ÄNDRING: Ändrat bredden till lg:w-2/5 (40%) för att ge mer plats åt bilden */}
-              <div className={`flex flex-col gap-4 md:gap-6 ${currentSlide.image ? 'lg:w-2/5' : 'w-full'}`}>
+              <div className="flex flex-col gap-4 w-full">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-3 md:pb-4">
                   {getIcon(currentSlide.type)}
                   <h3 className={`text-xl md:text-3xl font-bold ${currentSlide.type === 'problem' ? 'text-red-400' : currentSlide.type === 'solution' ? 'text-yellow-400' : 'text-neon-cyan'}`}>
@@ -91,15 +87,14 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
                 )}
               </div>
 
-              {/* Bild */}
+              {/* Bild - Nu under texten och STOR */}
               {currentSlide.image && (
-                // ÄNDRING: Ändrat bredden till lg:w-3/5 (60%). Tar bort hårdkodad min-h.
-                <div className="lg:w-3/5 flex items-center justify-center bg-black/20 rounded-xl border border-white/5 p-2 md:p-4 h-auto md:h-full">
+                // ÄNDRING: w-full och max-w-3xl för att göra bilden stor men inte gigantisk
+                <div className="w-full flex justify-center bg-black/20 rounded-xl border border-white/5 p-2 md:p-4 mt-2">
                   <img 
                     src={currentSlide.image} 
                     alt="Project Screenshot" 
-                    // ÄNDRING: max-h-full ser till att bilden inte blir högre än containern
-                    className="w-full h-auto max-h-full object-contain rounded-lg shadow-lg" 
+                    className="w-full max-w-4xl h-auto object-contain rounded-lg shadow-lg" 
                   />
                 </div>
               )}
@@ -108,13 +103,10 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
           </AnimatePresence>
         </div>
 
-        {/* Footer Controls */}
         <div className="p-4 md:p-6 border-t border-white/10 bg-black/30 flex justify-between items-center gap-4">
-          
           <button 
             onClick={prevSlide} 
             disabled={currentIndex === 0}
-            aria-label="Föregående slide"
             className="flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg bg-white/10 md:bg-transparent hover:bg-white/20 md:hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-gray-300 transition-all"
           >
             <ChevronLeft className="w-8 h-8 md:w-5 md:h-5" />
@@ -133,7 +125,6 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
           <button 
             onClick={nextSlide} 
             disabled={currentIndex === slides.length - 1}
-            aria-label="Nästa slide"
             className="flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg bg-neon-purple text-white shadow-lg shadow-neon-purple/30 hover:bg-neon-cyan hover:text-black hover:shadow-neon-cyan/30 disabled:opacity-30 disabled:cursor-not-allowed disabled:bg-transparent disabled:border-transparent disabled:text-gray-500 transition-all"
           >
             <span className="hidden md:inline font-bold">Nästa</span>
