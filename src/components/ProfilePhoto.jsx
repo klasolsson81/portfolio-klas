@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-
-// Importera din bild
-import myPhoto from '../assets/klas-olsson-profil.jpg';
+import profileImg from '../assets/klas-olsson-profil.jpg'; 
 
 const ProfilePhoto = ({ disableMotion }) => {
-  // ... (All logik för 3D-effekten är kvar)
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const [isHovered, setIsHovered] = useState(false);
 
   const springConfig = { damping: 25, stiffness: 150 };
-  const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), springConfig);
-  const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), springConfig);
+  const rotateX = useSpring(useTransform(y, [-100, 100], [5, -5]), springConfig); // Mildare rotation
+  const rotateY = useSpring(useTransform(x, [-100, 100], [-5, 5]), springConfig);
 
   const handleMouseMove = (e) => {
     if (disableMotion) return;
@@ -40,34 +37,27 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      // ÄNDRING 1: Tog bort den hårda ramen (border-2 border-white/10)
-      // ÄNDRING 2: Gjorde hörnen mycket mjukare (rounded-[3rem] istället för rounded-3xl)
-      className="relative w-full aspect-square rounded-[3rem] overflow-hidden shadow-2xl transition-all duration-500 group cursor-pointer z-10"
+      // HÄR: Tillbaka till fasta proportioner så den inte blir en bred banner
+      className="relative w-48 h-48 md:w-64 md:h-64 mx-auto md:mx-0 rounded-[2.5rem] shadow-2xl transition-all duration-500 group cursor-pointer z-10"
     >
-      {/* Den glödande bakgrundseffekten (gjord lite mjukare med blur-xl) */}
-      <motion.div
-        animate={{
-          opacity: isHovered ? 0.8 : 0.5,
-          scale: isHovered ? 1.1 : 1,
-        }}
-        className="absolute inset-0 bg-gradient-to-br from-neon-purple/40 via-transparent to-neon-cyan/30 animate-pulse-slow blur-xl z-0"
-      />
+      {/* Bakgrundsglow (Energin) */}
+      <div className="absolute -inset-1 bg-gradient-to-br from-neon-purple/50 via-transparent to-neon-cyan/40 blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500 rounded-[3rem]"></div>
 
-      {/* Själva bilden */}
-      <motion.img
-        src={myPhoto}
-        alt="Klas Olsson"
-        animate={{
-          scale: isHovered && !disableMotion ? 1.05 : 1,
-        }}
-        transition={{ duration: 0.5 }}
-        // ÄNDRING 3: Mjukare hörn även här
-        // ÄNDRING 4 (MAGIN): Lade till en 'mask-image' som tonar ut kanterna
-        className="relative z-10 w-full h-full object-cover rounded-[3rem] transition-transform duration-500 [mask-image:radial-gradient(circle_at_center,black_30%,transparent_95%)]"
-      />
-
-      {/* "Scanline" effekt ovanpå */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.2)_50%)] bg-[length:100%_4px] pointer-events-none z-20 opacity-30 mix-blend-overlay"></div>
+      {/* Bildcontainer med mjuk maskning */}
+      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-[#0a0b1e]">
+        <motion.img
+          src={profileImg}
+          alt="Klas Olsson"
+          animate={{ scale: isHovered && !disableMotion ? 1.05 : 1 }}
+          transition={{ duration: 0.5 }}
+          // HÄR: En mjukare mask som inte klipper för mycket av ansiktet
+          // 'mask-image' gör att kanterna tonas ut mot transparent
+          className="w-full h-full object-cover [mask-image:radial-gradient(circle_at_center,black_50%,transparent_100%)]"
+        />
+        
+        {/* Scanline-effekt (valfritt, ger lite tech-känsla) */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.2)_50%)] bg-[length:100%_4px] pointer-events-none opacity-20 mix-blend-overlay"></div>
+      </div>
     </motion.div>
   );
 };
