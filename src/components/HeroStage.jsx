@@ -2,12 +2,119 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
 import ChatUI from './ChatUI';
-import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download } from 'lucide-react';
+import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download, Layers } from 'lucide-react';
 import GithubStats from './GithubStats';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
+import ProjectSlideshow from './ProjectSlideshow';
 
+// Importera videon
 import detectiveVideo from '../assets/video.mp4';
+
+// --- PROJEKTDATA (SLIDES) ---
+const PROJECT_SLIDES = {
+  detective: [
+    {
+      title: "Projektöversikt",
+      type: "intro",
+      content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>
+    },
+    {
+      title: "Utmaningen: AI-konsistens",
+      type: "problem",
+      content: <p>Det svåraste var att få AI:n att vara konsekvent. I början kunde AI:n säga att mordvapnet var en kniv i ett rum, men en pistol i nästa. Spelaren måste kunna lita på ledtrådarna för att lösa fallet.</p>
+    },
+    {
+      title: "Lösningen: System Prompts",
+      type: "solution",
+      content: <p>Jag löste det genom att skapa en robust <code>CaseContext</code>-klass som håller tillståndet (Vem, Vad, Var, Varför). Denna "sanning" skickas med som en dold System Prompt i varje anrop till OpenAI, så att den aldrig glömmer detaljerna.</p>,
+      code: `// Exempel på System Prompt struktur
+var prompt = $"Du är en spelledare för ett Noir-deckarspel.
+FALLET:
+Offer: {victim.Name}
+Mördare: {killer.Name}
+Vapen: {weapon}
+Motiv: {motive}
+
+Din uppgift: Beskriv rummet baserat på ovanstående fakta, men avslöja inte mördaren direkt.";`
+    },
+    {
+      title: "Funktion: E-postsystemet",
+      type: "code",
+      content: <p>För att verifiera användare byggde jag en tjänst som skickar riktiga mail med koder. Jag använde <code>SmtpClient</code> och App Passwords för att säkert hantera utskicket.</p>
+    },
+    {
+      title: "Lärdomar & Reflektion",
+      type: "learning",
+      content: <p>Jag lärde mig enormt mycket om <strong>Prompt Engineering</strong> och hur man hanterar tillstånd (State) i en applikation som är beroende av externa, "oberäkneliga" API:er. Jag fick också öva på att bygga snygga UI i konsolen med <code>Spectre.Console</code>.</p>
+    }
+  ],
+  fitness: [
+    {
+      title: "Projektöversikt",
+      type: "intro",
+      content: <p><strong>Fitness Progress Tracker</strong> var ett omfattande grupparbete där vi byggde ett system för PTs och klienter. Jag axlade rollen som <strong>Team Lead & Scrum Master</strong>.</p>
+    },
+    {
+      title: "Min Roll: Team Lead",
+      type: "learning",
+      content: <p>Utöver att koda arkitekturen ansvarade jag för att sätta upp <strong>GitHub Projects</strong> för vår Kanban-board, skapa Webhooks till Discord för notiser om Pull Requests, och hålla i Dailys. Det lärde mig vikten av tydlig kommunikation.</p>
+    },
+    {
+      title: "Arkitektur: Generics & JSON",
+      type: "code",
+      content: <p>För att spara data (Användare, Scheman, Loggar) skapade jag en generisk <code>DataStore&lt;T&gt;</code>. Detta gjorde att vi slapp skriva om spara/ladda-kod för varje ny datatyp. DRY (Don't Repeat Yourself) i praktiken!</p>,
+      code: `public class JsonDataStore<T> : IDataStore<T> 
+{
+    public void Save(List<T> items) 
+    {
+        string json = JsonSerializer.Serialize(items);
+        File.WriteAllText(_filePath, json);
+    }
+    // ... Load method
+}`
+    },
+    {
+      title: "Utmaning: Merge Conflicts",
+      type: "problem",
+      content: <p>När fem personer jobbar i samma kodbas uppstår konflikter. Vi lärde oss den hårda vägen att arbeta i små, tydliga branches och göra Pull Requests ofta istället för stora "Big Bang"-merges i slutet av veckan.</p>
+    },
+    {
+      title: "Resultat",
+      type: "solution",
+      content: <p>Vi levererade en fungerande applikation där PTs kan skapa scheman (med AI-stöd!) och klienter kan logga sin vikt och se sina framsteg. Koden är modulär, testbar och följer SOLID-principerna.</p>
+    }
+  ],
+  portfolio: [
+    {
+      title: "Projektöversikt",
+      type: "intro",
+      content: <p>Denna hemsida är mitt gesällprov i modern frontend. Målet var att gå utanför min "Comfort Zone" (.NET) och bygga något visuellt och interaktivt med <strong>React</strong> och <strong>Three.js</strong>.</p>
+    },
+    {
+      title: "AI-Integrationen (RAG)",
+      type: "code",
+      content: <p>Chattboten du pratar med har en "System Prompt" som innehåller mitt CV och min profil. När du ställer en fråga, skickas den tillsammans med min profil till OpenAI, vilket gör att den kan svara korrekt om mig.</p>,
+      code: `const KLAS_CONTEXT = \`
+Du är Klas Olsson. Svara i jag-form.
+PROFIL:
+- Namn: Klas Olsson
+- Stack: C#, .NET, React
+- Bakgrund: 22 år i fordonsindustrin
+\`;`
+    },
+    {
+      title: "Utmaning: Prestanda",
+      type: "problem",
+      content: <p>3D-grafik i webbläsaren kan vara tungt. Jag fick optimera <code>NodeNetwork</code>-bakgrunden genom att begränsa antalet partiklar och använda <code>useFrame</code> effektivt för att inte sänka FPS:en på laptops.</p>
+    },
+    {
+      title: "Lärdomar",
+      type: "learning",
+      content: <p>Jag har lärt mig massor om <strong>Tailwind CSS</strong> för styling, <strong>Framer Motion</strong> för animationer och hur man deployar serverless-funktioner på Vercel. Det har gjort mig till en mer komplett Fullstack-utvecklare.</p>
+    }
+  ]
+};
 
 const TRANSLATIONS = {
   sv: {
@@ -22,7 +129,7 @@ const TRANSLATIONS = {
       facts: { age: "Ålder", city: "Bor i", lang: "Språk", family: "Familj" },
       factValues: { city: "Göteborg", lang: "Svenska / Engelska", family: "Gift familjefar" }
     },
-    projects: { more: "Fler projekt finns på min GitHub!", watch: "Se Trailer" }
+    projects: { more: "Fler projekt finns på min GitHub!", watch: "Se Trailer", details: "Djupdykning" }
   },
   en: {
     role: ".NET System Developer (Student)",
@@ -36,7 +143,7 @@ const TRANSLATIONS = {
       facts: { age: "Age", city: "Location", lang: "Languages", family: "Family" },
       factValues: { city: "Gothenburg", lang: "Swedish / English", family: "Married, father" }
     },
-    projects: { more: "More projects on my GitHub!", watch: "Watch Trailer" }
+    projects: { more: "More projects on my GitHub!", watch: "Watch Trailer", details: "Deep Dive" }
   }
 };
 
@@ -51,6 +158,7 @@ const HeroStage = () => {
   const [reduceMotion, setReduceMotion] = useState(false);
   const [lang, setLang] = useState('sv');
   const [activeVideo, setActiveVideo] = useState(null);
+  const [activeSlideshow, setActiveSlideshow] = useState(null); // State för slideshow
 
   const t = TRANSLATIONS[lang]; 
   const myAge = calculateAge('1981-02-04');
@@ -60,6 +168,7 @@ const HeroStage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 md:p-8 relative z-10">
       
+      {/* --- VIDEO MODAL --- */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div 
@@ -79,13 +188,20 @@ const HeroStage = () => {
         )}
       </AnimatePresence>
 
+      {/* --- SLIDESHOW MODAL --- */}
+      <ProjectSlideshow 
+        isOpen={!!activeSlideshow}
+        onClose={() => setActiveSlideshow(null)}
+        slides={activeSlideshow?.slides}
+        title={activeSlideshow?.title}
+      />
+
       <motion.div 
         layout
         className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
-        {/* ÄNDRING: Mindre padding (p-5) */}
         <motion.div layout className="p-5 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
@@ -101,7 +217,6 @@ const HeroStage = () => {
           
           <ProfilePhoto disableMotion={reduceMotion} />
           
-          {/* ÄNDRING: Mindre margin (mt-4) och dynamisk textstorlek (text-2xl -> xl:text-4xl) */}
           <motion.div layout className="mt-4 text-center md:text-left z-10">
             <h1 className="text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight animate-text-gradient bg-clip-text text-transparent pb-1">
               Klas Olsson
@@ -109,7 +224,6 @@ const HeroStage = () => {
             <p className="text-neon-cyan font-mono text-xs md:text-sm mt-1 uppercase tracking-wider">{t.role}</p>
           </motion.div>
 
-          {/* ÄNDRING: Mindre margin (my-4) */}
           <div className="flex flex-wrap items-center gap-4 my-4 z-10">
             <div className="flex gap-3">
               <button 
@@ -147,7 +261,6 @@ const HeroStage = () => {
             </a>
           </div>
 
-          {/* ÄNDRING: Mindre padding i knapparna (py-3) */}
           <nav className="w-full space-y-2 z-10 pb-2">
             <NavButton label={t.nav.about} icon={<User size={16}/>} active={section === 'about'} onClick={() => setSection('about')} />
             <NavButton label={t.nav.chat} icon={<Terminal size={16}/>} active={section === 'chat'} onClick={() => setSection('chat')} />
@@ -235,6 +348,8 @@ const HeroStage = () => {
                   videoSrc={detectiveVideo} 
                   onPlay={() => setActiveVideo(detectiveVideo)}
                   watchText={t.projects.watch}
+                  onDetails={() => setActiveSlideshow({ title: "Console Detective AI", slides: PROJECT_SLIDES.detective })}
+                  detailsText={t.projects.details}
                 />
 
                 <ProjectCard 
@@ -244,6 +359,8 @@ const HeroStage = () => {
                     : "I was Team Lead & Scrum Master for this group project. A terminal app for PTs and clients focusing heavily on OOP, JSON, and structure."}
                   tags={['Team Lead', 'Scrum', 'C#', 'OOP']}
                   link="https://github.com/klasolsson81/FitnessProgressTracker"
+                  onDetails={() => setActiveSlideshow({ title: "Fitness Progress Tracker", slides: PROJECT_SLIDES.fitness })}
+                  detailsText={t.projects.details}
                 />
 
                 <ProjectCard 
@@ -253,6 +370,8 @@ const HeroStage = () => {
                     : "My personal website. Built with React, Three.js and an integrated AI agent that answers questions about me."}
                   tags={['React', 'Vite', 'Three.js', 'Vercel AI']}
                   link="https://github.com/klasolsson81/portfolio-klas"
+                  onDetails={() => setActiveSlideshow({ title: "Portfolio AI", slides: PROJECT_SLIDES.portfolio })}
+                  detailsText={t.projects.details}
                 />
 
                  <div className="mt-4 p-4 border-2 border-dashed border-white/10 rounded-xl text-center text-gray-500 text-xs bg-black/20">
@@ -280,7 +399,7 @@ const NavButton = ({ label, icon, active, onClick }) => (
   </button>
 );
 
-const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText }) => (
+const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText }) => (
   <div className="bg-gradient-to-br from-white/5 to-transparent p-5 rounded-xl border border-white/10 hover:border-neon-cyan/50 transition-all group shadow-lg hover:shadow-neon-cyan/20 relative">
     <div className="flex justify-between items-start pr-8">
       <h3 className="font-bold text-base md:text-lg text-white group-hover:text-neon-cyan transition-colors">{title}</h3>
@@ -300,6 +419,14 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText }) =
                 <Play size={10} fill="currentColor" /> {watchText}
             </button>
         )}
+        
+        {/* NY KNAPP: Deep Dive / Detaljer */}
+        <button 
+          onClick={(e) => { e.preventDefault(); onDetails(); }}
+          className="flex items-center gap-2 px-2 py-1 bg-white/5 text-gray-300 border border-white/10 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-white/10 hover:text-white transition-colors"
+        >
+            <Layers size={10} fill="currentColor" /> {detailsText}
+        </button>
     </div>
 
     <div className="flex flex-wrap gap-1.5 mt-auto">
