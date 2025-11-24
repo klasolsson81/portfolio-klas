@@ -28,19 +28,21 @@ const PROJECT_SLIDES = {
       title: "Projektöversikt",
       type: "intro",
       content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>,
-      image: detectiveImg2 // Huvudmeny
+      // ÄNDRAT: Nu visas startbilden (Loggan) här
+      image: detectiveImg1 
     },
     {
       title: "Utmaning: Att blanda logik och UI",
       type: "problem",
       content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
-      image: detectiveImg1 // Logga
+      // ÄNDRAT: Nu visas den inloggade menyn här
+      image: detectiveImg2 
     },
     {
       title: "Spelmekanik & AI",
       type: "solution",
       content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
-      image: detectiveImg3 // In-game scen
+      image: detectiveImg3
     },
     {
       title: "Lärdom: Arkitektur är allt",
