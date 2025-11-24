@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
 import ChatUI from './ChatUI';
@@ -22,7 +22,7 @@ import fitnessImg2 from '../assets/fitness-2.png';
 import fitnessImg3 from '../assets/fitness-3.png';
 import fitnessImg4 from '../assets/fitness-4.png';
 
-// --- PROJEKTDATA (SLIDES) ---
+// --- PROJEKTDATA ---
 const PROJECT_SLIDES = {
   detective: [
     {
@@ -112,8 +112,7 @@ const PROJECT_SLIDES = {
 const TRANSLATIONS = {
   sv: {
     role: "Systemutvecklare .NET (Student)",
-    // ÄNDRAT: Kortare namn på menyn för mobilen
-    nav: { about: "Om mig", chat: "AI-Chat", projects: "Projekt", hire: "Anlita", cv: "CV" },
+    nav: { about: "Om mig", chat: "AI-Chat", projects: "Projekt", hire: "Anlita" },
     titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt", hire: "Anlita mig" },
     about: {
       intro1: "Driven Systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på kod och arkitektur.",
@@ -127,8 +126,7 @@ const TRANSLATIONS = {
   },
   en: {
     role: ".NET System Developer (Student)",
-    // ÄNDRAT: Kortare namn på menyn för mobilen
-    nav: { about: "About", chat: "AI Chat", projects: "Projects", hire: "Hire Me", cv: "CV" },
+    nav: { about: "About", chat: "AI Chat", projects: "Projects", hire: "Hire Me" },
     titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects", hire: "Hire Me" },
     about: {
       intro1: "Driven System Developer focusing on .NET. Currently on leave of absence to fully commit to code and architecture.",
@@ -217,6 +215,7 @@ const HeroStage = () => {
             <p className="text-neon-cyan font-mono text-sm mt-1 uppercase tracking-wider">{t.role}</p>
           </motion.div>
 
+          {/* KONTAKT & CV - Uppdaterad för mobil */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 my-4 z-10 w-full">
             <div className="flex gap-3">
               <button 
@@ -235,37 +234,24 @@ const HeroStage = () => {
 
             <div className="hidden md:block w-px h-5 bg-white/20"></div>
 
-{/* --- NY KOD (Tydlig "Piller-knapp" med text och ikon) --- */}
-<a 
-  href="/CV_Klas_Olsson.pdf" 
-  download="CV_Klas_Olsson.pdf"
-  onClick={() => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#00f3ff', '#bd00ff', '#ffffff']
-    });
-    toast.success('Tack för visat intresse! CV laddas ner.');
-  }}
-  // ÄNDRAT: Ändrat formen från 'p-2 rounded-full' till 'px-4 py-2 rounded-full flex gap-2'.
-  // ÄNDRAT: Tog bort 'animate-pulse' för att göra texten mer läsbar, lade till hover:text-white.
-  className="relative group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-neon-purple/10 border border-neon-purple/30 rounded-full text-neon-cyan hover:bg-neon-purple/20 hover:text-white hover:border-neon-purple transition-all duration-300"
-  title={t.nav.cv}
->
-  {/* Glow-effekt på hover */}
-  <div className="absolute inset-0 rounded-full bg-neon-purple/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-  
-  {/* Ikon */}
-  <Download size={18} className="relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300"/>
-  
-  {/* ÄNDRAT: Lade till texten "CV" */}
-  <span className="relative z-10 font-bold text-sm tracking-wider leading-none pt-0.5">CV</span>
-</a>
+            {/* NY CV-KNAPP: Bara ikon + Glow-effekt */}
+            <a 
+              href="/CV_Klas_Olsson.pdf" 
+              download="CV_Klas_Olsson.pdf"
+              onClick={() => {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#00f3ff', '#bd00ff', '#ffffff'] });
+                toast.success('Tack för visat intresse! CV laddas ner.');
+              }}
+              className="relative group p-3 bg-neon-purple/10 border border-neon-purple/30 rounded-full text-neon-cyan hover:bg-neon-purple/20 hover:text-white hover:border-neon-purple transition-all duration-300 animate-pulse hover:animate-none"
+              title="Ladda ner CV"
+            >
+              <div className="absolute inset-0 rounded-full bg-neon-purple/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <Download size={20} className="relative z-10"/>
+            </a>
           </div>
 
-          {/* ÄNDRAT: Mindre gap på mobilen för menyn */}
-          <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-1 md:gap-0 md:space-y-2">
+          {/* MENY: Uppdaterad för mobil (ikoner över text) */}
+          <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-2 md:space-y-2 md:gap-0 justify-between md:justify-start">
             <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} />
             <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} />
             <NavButton label={t.nav.projects} icon={<Code />} active={section === 'projects'} onClick={() => setSection('projects')} />
@@ -276,7 +262,7 @@ const HeroStage = () => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // ÄNDRAT: h-full på mobilen istället för fast höjd, för att fixa scrollen
+          // ÄNDRING: h-full för att fylla ut utrymmet och låta innehållet (HireMe) scrolla
           className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full"
         >
           <AnimatePresence mode="wait">
@@ -321,7 +307,6 @@ const HeroStage = () => {
                 </div>
 
                 <GithubStats />
-
               </motion.div>
             )}
 
@@ -343,12 +328,9 @@ const HeroStage = () => {
                 className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
                 <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.projects}</h2>
-                
                 <ProjectCard 
                   title="Console Detective AI" 
-                  desc={lang === 'sv' 
-                    ? "Ett textbaserat noir-detektivspel där du löser AI-genererade brott. Innehåller inbyggt e-postsystem och dynamisk pixel-art." 
-                    : "A text-based noir detective game where you solve AI-generated crimes. Features built-in email system and dynamic pixel art."}
+                  desc={lang === 'sv' ? "Ett textbaserat noir-detektivspel..." : "A text-based noir detective game..."}
                   tags={['C#', '.NET 8', 'OpenAI API', 'Spectre.Console']}
                   link="https://github.com/klasolsson81/Console_Detective"
                   videoSrc={detectiveVideo} 
@@ -357,45 +339,39 @@ const HeroStage = () => {
                   onDetails={() => setActiveSlideshow({ title: "Console Detective AI", slides: PROJECT_SLIDES.detective })}
                   detailsText={t.projects.details}
                 />
-
                 <ProjectCard 
                   title="Fitness Progress Tracker" 
-                  desc={lang === 'sv' 
-                    ? "Jag var Team Lead & Scrum Master för detta grupparbete. En terminal-app för PTs och klienter med starkt fokus på OOP, JSON och struktur." 
-                    : "I was Team Lead & Scrum Master for this group project. A terminal app for PTs and clients focusing heavily on OOP, JSON, and structure."}
+                  desc={lang === 'sv' ? "Jag var Team Lead & Scrum Master..." : "I was Team Lead & Scrum Master..."}
                   tags={['Team Lead', 'Scrum', 'C#', 'OOP']}
                   link="https://github.com/klasolsson81/FitnessProgressTracker"
                   onDetails={() => setActiveSlideshow({ title: "Fitness Progress Tracker", slides: PROJECT_SLIDES.fitness })}
                   detailsText={t.projects.details}
                 />
-
                 <ProjectCard 
                   title="Portfolio AI (This Site)" 
-                  desc={lang === 'sv' 
-                    ? "Min personliga hemsida. Byggd med React, Three.js och en integrerad AI-agent som svarar på frågor om mig." 
-                    : "My personal website. Built with React, Three.js and an integrated AI agent that answers questions about me."}
+                  desc={lang === 'sv' ? "Min personliga hemsida..." : "My personal website..."}
                   tags={['React', 'Vite', 'Three.js', 'Vercel AI']}
                   link="https://github.com/klasolsson81/portfolio-klas"
                   onDetails={() => setActiveSlideshow({ title: "Portfolio AI", slides: PROJECT_SLIDES.portfolio })}
                   detailsText={t.projects.details}
                 />
-
-                 <div className="mt-4 p-4 border-2 border-dashed border-white/10 rounded-xl text-center text-gray-500 text-xs bg-black/20">
+                <div className="mt-4 p-4 border-2 border-dashed border-white/10 rounded-xl text-center text-gray-500 text-xs bg-black/20">
                    {t.projects.more}
                  </div>
               </motion.div>
             )}
 
-{section === 'hire' && (
+            {/* HÄR: HireMe omsluts nu av en scrollbar-div */}
+            {section === 'hire' && (
               <motion.div 
                 key="hire" 
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
-                // ÄNDRING: Lade till 'overflow-y-auto custom-scrollbar' här så att hela vyn kan scrollas
-                className="h-full flex flex-col overflow-y-auto custom-scrollbar pr-2"
+                className="h-full flex flex-col overflow-y-auto custom-scrollbar"
               >
                 <HireMe lang={lang} />
               </motion.div>
             )}
+
           </AnimatePresence>
         </motion.div>
       </motion.div>
@@ -403,18 +379,18 @@ const HeroStage = () => {
   );
 };
 
-// ÄNDRAT: NavButton anpassad för mobil (mindre text, staplad ikon/text)
+// NavButton för mobil (Ikon över text)
 const NavButton = ({ label, icon, active, onClick }) => (
   <button 
     onClick={onClick}
-    className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-1.5 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium transition-all duration-300 group
+    className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium transition-all duration-300 group
       ${active ? 'bg-neon-purple/20 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' : 'text-gray-400 hover:bg-white/5 hover:text-white'}
     `}
   >
     <span className={`transition-colors ${active ? 'text-neon-cyan' : 'group-hover:text-neon-purple'}`}>
-      {React.cloneElement(icon, { size: window.innerWidth < 768 ? 16 : 18 })}
+      {React.cloneElement(icon, { size: window.innerWidth < 768 ? 18 : 16 })}
     </span>
-    <span className="md:inline text-center md:text-left truncate w-full md:w-auto">{label}</span>
+    <span className="text-center md:text-left">{label}</span>
   </button>
 );
 
@@ -426,34 +402,20 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
         <ExternalLink size={18} />
       </a>
     </div>
-    
     <p className="text-xs md:text-sm text-gray-300 mt-2 mb-3 leading-relaxed">{desc}</p>
-    
     <div className="flex gap-3 mb-3">
         {videoSrc && (
-            <button 
-              onClick={(e) => { e.preventDefault(); onPlay(); }}
-              className="flex items-center gap-2 px-3 py-1.5 bg-neon-purple/10 text-neon-purple border border-neon-purple/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all shadow-sm"
-            >
+            <button onClick={(e) => { e.preventDefault(); onPlay(); }} className="flex items-center gap-2 px-3 py-1.5 bg-neon-purple/10 text-neon-purple border border-neon-purple/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all shadow-sm">
                 <Play size={12} fill="currentColor" /> {watchText}
             </button>
         )}
-        
-        <button 
-          onClick={(e) => { e.preventDefault(); onDetails(); }}
-          className="flex items-center gap-2 px-3 py-1.5 bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-cyan hover:text-black hover:border-neon-cyan transition-all shadow-sm"
-        >
+        <button onClick={(e) => { e.preventDefault(); onDetails(); }} className="flex items-center gap-2 px-3 py-1.5 bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-cyan hover:text-black hover:border-neon-cyan transition-all shadow-sm">
             <Layers size={12} /> {detailsText}
         </button>
     </div>
-
     <div className="flex flex-wrap gap-1.5 mt-auto">
       {tags.map(t => (
-        <span key={t} className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border border-white/10
-            ${t === 'Team Lead' || t === 'Scrum' ? 'bg-neon-purple/20 text-white border-neon-purple/30' : 'bg-black/40 text-gray-400'}
-        `}>
-            {t}
-        </span>
+        <span key={t} className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border border-white/10 ${t === 'Team Lead' || t === 'Scrum' ? 'bg-neon-purple/20 text-white border-neon-purple/30' : 'bg-black/40 text-gray-400'}`}>{t}</span>
       ))}
     </div>
   </div>

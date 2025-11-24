@@ -3,7 +3,6 @@ import { Loader2, CheckCircle, XCircle, Briefcase, Send, RefreshCw, User, Mail, 
 import axios from 'axios';
 import { toast } from 'sonner';
 
-// Språkdatabas
 const TRANSLATIONS = {
   sv: {
     title: "Anlita mig",
@@ -105,13 +104,13 @@ const TRANSLATIONS = {
   }
 };
 
-const HireMe = ({ lang = 'sv' }) => { // Tar emot lang som prop (default sv)
-  const t = TRANSLATIONS[lang]; // Hämta rätt språk
+const HireMe = ({ lang = 'sv' }) => {
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.sv;
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    orgType: 'Privatperson', // Vi hanterar översättning av värdet vid inskick
+    orgType: 'Privatperson',
     projectType: 'Hemsida (Enkel)',
     paymentType: 'Betalt',
     amount: '',
@@ -188,9 +187,11 @@ Feedback: "${analysis.feedback}"
     }
   };
 
+  // Snygg Input-styling (Gör dropdowns mörka och snygga)
   const inputClass = "w-full bg-[#1a1b2e] border border-white/10 rounded-lg p-3 text-white focus:border-neon-purple outline-none transition-colors placeholder-gray-600 appearance-none text-sm";
   const labelClass = "block text-[10px] text-gray-400 uppercase mb-1 font-bold tracking-wider";
 
+  // --- SUCCESS SCREEN ---
   if (status === 'sent') {
     return (
       <div className="h-full flex flex-col items-center justify-center text-center p-6 animate-fade-in">
@@ -215,9 +216,10 @@ Feedback: "${analysis.feedback}"
   }
 
   return (
-    <div className="w-full flex flex-col p-1">
+    <div className="w-full flex flex-col p-1 pb-10"> 
       <h2 className="text-2xl font-bold text-neon-purple mb-2">{t.title}</h2>
       
+      {/* Disclaimer */}
       <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-lg mb-6 text-xs text-amber-100/90 leading-relaxed flex gap-3 items-start shadow-sm">
          <Briefcase className="text-amber-400 shrink-0 mt-0.5" size={18} />
          <p>{t.disclaimer}</p>
@@ -252,7 +254,7 @@ Feedback: "${analysis.feedback}"
                       type="radio" 
                       name="orgType"
                       value={type}
-                      checked={formData.orgType === type} // Note: Logic slightly simplified for translation match, assumes order matches
+                      checked={formData.orgType === type}
                       onChange={e => setFormData({...formData, orgType: type})}
                       className="accent-neon-purple"
                     />
@@ -269,6 +271,8 @@ Feedback: "${analysis.feedback}"
             <select className={inputClass} value={formData.projectType} onChange={e => setFormData({...formData, projectType: e.target.value})}>
               {t.options.types.map(opt => <option key={opt} value={opt}>{opt}</option>)}
             </select>
+            {/* Pilen för dropdown */}
+            <div className="absolute right-3 top-[32px] pointer-events-none text-gray-500 text-xs">▼</div>
           </div>
 
           <div className="flex gap-4">
@@ -277,9 +281,9 @@ Feedback: "${analysis.feedback}"
               <select className={inputClass} value={formData.paymentType} onChange={e => setFormData({...formData, paymentType: e.target.value})}>
                 {t.options.payment.map(opt => <option key={opt} value={opt}>{opt}</option>)}
               </select>
+              <div className="absolute right-3 top-[32px] pointer-events-none text-gray-500 text-xs">▼</div>
             </div>
             
-            {/* Visar budgetfältet om man inte valt "Pro Bono" (andra alternativet) */}
             {formData.paymentType !== t.options.payment[1] && (
               <div className="flex-1">
                 <label className={labelClass}>{t.labels.budget}</label>
@@ -320,6 +324,8 @@ Feedback: "${analysis.feedback}"
         </form>
       )}
 
+      {/* --- STATUS-VYER --- */}
+
       {status === 'analyzing' && (
         <div className="flex flex-col items-center justify-center h-64 text-center space-y-4">
           <Loader2 size={48} className="text-neon-cyan animate-spin" />
@@ -334,7 +340,7 @@ Feedback: "${analysis.feedback}"
           <p className="text-gray-300 text-sm leading-relaxed bg-[#0a0b1e] p-4 rounded-lg border border-white/5">"{analysis?.feedback}"</p>
           <div className="text-xs text-gray-500 uppercase tracking-wider">{t.status.time}: <span className="text-green-400 font-bold">{analysis?.estimatedHours}{t.status.hours}</span></div>
           
-          <button onClick={sendRealEmail} disabled={isSending} className="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-500 transition-all flex items-center justify-center gap-2">
+          <button onClick={sendRealEmail} disabled={isSending} className="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-500 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-green-500/20">
             {isSending ? <Loader2 className="animate-spin" /> : <Send size={18} />} 
             {isSending ? t.buttons.sending : t.buttons.send}
           </button>
