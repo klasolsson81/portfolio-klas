@@ -8,7 +8,18 @@ import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import ProjectSlideshow from './ProjectSlideshow';
 
+// VIDEO
 import detectiveVideo from '../assets/video.mp4';
+
+// BILDER (Se till att namnen matchar exakt i din assets-mapp!)
+import detectiveImg1 from '../assets/detective-2.png'; // Huvudmeny "Klas Detektivbyrå"
+import detectiveImg2 from '../assets/detective-3.png'; // Hotell Aurora (Fall)
+import detectiveImg3 from '../assets/detective-1.png'; // Console Detective AI Logga
+
+import fitnessImg1 from '../assets/fitness-1.png';     // Huvudmeny
+import fitnessImg2 from '../assets/fitness-3.png';     // Kostschema
+import fitnessImg3 from '../assets/fitness-2.png';     // Hantera Klas (PT vy)
+import fitnessImg4 from '../assets/fitness-4.png';     // GitHub Board (Process)
 
 // --- PROJEKTDATA (DJUPDYKNINGAR) ---
 const PROJECT_SLIDES = {
@@ -16,57 +27,61 @@ const PROJECT_SLIDES = {
     {
       title: "Projektöversikt",
       type: "intro",
-      content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>
+      content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>,
+      image: detectiveImg1
     },
     {
-      title: "Utmaning: Spectre.Console & Arkitektur",
+      title: "Utmaning: Att blanda logik och UI",
       type: "problem",
-      content: <p>Jag skrev först all spellogik för att få det att fungera ("Make it work"). När jag sedan skulle implementera <strong>Spectre.Console</strong> för ett snyggare UI, insåg jag att min logik var för hårt kopplad till den vanliga <code>Console.WriteLine</code>. Det krävde en omfattande refaktorisering.</p>
+      content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
+      image: detectiveImg3
     },
     {
-      title: "Reflektion: Clean Code vs. Verklighet",
+      title: "Lärdom: Arkitektur är allt",
       type: "learning",
-      content: <p>Detta lärde mig en läxa om separation of concerns. Även efter refaktoriseringen kände jag att UI-koden blandades med logiken i vissa klasser. Om jag gjorde om det idag hade jag använt ett tydligare designmönster (t.ex. MVC eller MVVM) från start för att hålla <code>Spectre</code>-koden helt isolerad.</p>
+      content: <p>Resultatet blev att UI-kod och logik blandades mer än jag hade velat ("Spaghetti-kod"). Om jag gjorde om det idag hade jag separerat det tydligare från start (t.ex. med MVC-mönster) för att hålla koden renare (Clean Code).</p>
     },
     {
-      title: "Lösningen: System Prompts",
+      title: "Spelmekanik & AI",
       type: "solution",
-      content: <p>För att få AI:n att vara konsekvent skapade jag en <code>CaseContext</code>-klass som håller tillståndet. Denna "sanning" skickas med som en dold System Prompt i varje anrop, vilket gör att AI:n inte "glömmer" vem mördaren är.</p>
+      content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
+      image: detectiveImg2
     },
     {
-      title: "Teknik: LINQ & OOP",
+      title: "Teknik: LINQ & C#",
       type: "code",
-      content: <p>Jag använde mycket <strong>LINQ</strong> för att filtrera ledtrådar och hantera listor av misstänkta objekt. Projektet fördjupade min förståelse för objektorientering (arv och interface) för att skapa olika typer av bevis.</p>
+      content: <p>Projektet gav mig djupare förståelse för C#-grunderna, särskilt <strong>LINQ</strong> för att hantera listor av ledtrådar och objektorientering för att bygga upp spelets värld.</p>
     }
   ],
   fitness: [
     {
       title: "Projektöversikt",
       type: "intro",
-      content: <p><strong>Fitness Progress Tracker</strong> var ett omfattande grupparbete där vi byggde ett system för PTs och klienter. Jag axlade rollen som <strong>Team Lead & Scrum Master</strong>.</p>
+      content: <p><strong>Fitness Progress Tracker</strong> var ett omfattande grupparbete där vi byggde ett system för PTs och klienter. Jag axlade rollen som <strong>Team Lead & Scrum Master</strong>.</p>,
+      image: fitnessImg1
     },
     {
-      title: "Min Roll: Ledarskap & Kommunikation",
-      type: "learning",
-      content: <p>Jag är väldigt engagerad och vill ofta koda och planera i högt tempo. En stor utmaning var att hantera teamets olika ambitionsnivåer och tidscheman. Det var ibland frustrerande att vänta på PRs, men det lärde mig vikten av tydlig kommunikation, tålamod och att stötta mindre aktiva medlemmar.</p>
+      title: "Utmaning: Team & Kommunikation",
+      type: "problem",
+      content: <p>Den största utmaningen var inte koden, utan kommunikationen. Jag är väldigt engagerad och vill koda snabbt, men i ett team måste man vänta in varandra. Det var ibland frustrerande när tempot varierade, men det lärde mig tålamod och vikten av tydliga uppgifter.</p>
     },
     {
-      title: "Process: GitHub & Webhooks",
+      title: "Process: GitHub Projects",
       type: "solution",
-      content: <p>För att få struktur satte jag upp <strong>GitHub Projects</strong> (Kanban) och kopplade webhooks till vår Discord. Det gjorde att vi direkt såg när någon pushade kod eller öppnade en Pull Request, vilket minskade ledtiderna.</p>
+      content: <p>För att få struktur satte jag upp en <strong>Kanban-board</strong> på GitHub och kopplade webhooks till vår Discord. Det gjorde att alla såg när en ny "Pull Request" kom in, vilket minskade ledtiderna.</p>,
+      image: fitnessImg4
     },
     {
-      title: "Arkitektur: Generics & JSON",
+      title: "Funktion: Kostscheman",
       type: "code",
-      content: <p>Jag ansvarade för arkitekturen och skapade en generisk <code>JsonDataStore&lt;T&gt;</code>. Detta gjorde att vi kunde spara vilken datatyp som helst (User, Workout, Diet) utan att duplicera kod. DRY i praktiken!</p>,
-      code: `public class JsonDataStore<T> : IDataStore<T> 
-{
-    public void Save(List<T> items) 
+      content: <p>Vi byggde funktioner för att generera detaljerade kostscheman. Här använde vi objektorientering för att strukturera data kring kalorier och makronutrienter.</p>,
+      image: fitnessImg2
+    },
     {
-        string json = JsonSerializer.Serialize(items);
-        File.WriteAllText(_filePath, json);
-    }
-}`
+      title: "PT-Vyn (Admin)",
+      type: "intro",
+      content: <p>PT:n har en egen vy för att hantera sina klienter. Här lärde jag mig mycket om hur man hanterar olika användarroller och behörigheter i en applikation.</p>,
+      image: fitnessImg3
     }
   ],
   portfolio: [
@@ -78,7 +93,7 @@ const PROJECT_SLIDES = {
     {
       title: "Upplevelse: Flow & Kreativitet",
       type: "learning",
-      content: <p>Det var både utmanande och otroligt roligt. Tiden flyger iväg när man sitter med CSS-animationer och direkt ser resultatet på skärmen. Jag har fått en ny respekt för frontend-utveckling och hur mycket man kan göra med bibliotek som Framer Motion och Three.js.</p>
+      content: <p>Det var både utmanande och otroligt roligt! Tiden flyger iväg när man sitter med CSS-animationer och direkt ser resultatet. Jag har fått en ny respekt för frontend-utveckling och hur mycket man kan göra med bibliotek som Framer Motion och Three.js.</p>
     },
     {
       title: "AI-Integrationen (RAG)",
@@ -92,6 +107,10 @@ const PROJECT_SLIDES = {
     }
   ]
 };
+
+// ... (Resten av filen är oförändrad: TRANSLATIONS, calculateAge, HeroStage etc.)
+// Kopiera bara in PROJECT_SLIDES delen ovan och behåll resten av din HeroStage-fil som den var,
+// ELLER om du vill vara säker, kopiera hela filen nedan:
 
 const TRANSLATIONS = {
   sv: {
@@ -372,7 +391,6 @@ const NavButton = ({ label, icon, active, onClick }) => (
   </button>
 );
 
-// FIX: Snyggare knappar för Video och Details
 const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText }) => (
   <div className="bg-gradient-to-br from-white/5 to-transparent p-5 rounded-xl border border-white/10 hover:border-neon-cyan/50 transition-all group shadow-lg hover:shadow-neon-cyan/20 relative">
     <div className="flex justify-between items-start pr-8">
@@ -384,20 +402,20 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
     
     <p className="text-xs md:text-sm text-gray-300 mt-2 mb-3 leading-relaxed">{desc}</p>
     
+    {/* FIX: Snyggare och mer kompakta knappar */}
     <div className="flex gap-3 mb-3">
         {videoSrc && (
             <button 
               onClick={(e) => { e.preventDefault(); onPlay(); }}
-              className="flex items-center gap-2 px-3 py-1.5 bg-neon-purple/10 text-neon-purple border border-neon-purple/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all"
+              className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-neon-purple/20 to-neon-purple/10 text-white border border-neon-purple/50 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:from-neon-purple hover:to-neon-cyan hover:border-transparent transition-all shadow-md shadow-neon-purple/20"
             >
                 <Play size={12} fill="currentColor" /> {watchText}
             </button>
         )}
         
-        {/* FIX: Snyggare Deep Dive knapp */}
         <button 
           onClick={(e) => { e.preventDefault(); onDetails(); }}
-          className="flex items-center gap-2 px-3 py-1.5 bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-cyan hover:text-black hover:border-neon-cyan transition-all"
+          className="flex items-center gap-2 px-3 py-1.5 bg-white/5 text-gray-200 border border-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-white/10 hover:text-white hover:border-neon-cyan/50 transition-all shadow-sm"
         >
             <Layers size={12} /> {detailsText}
         </button>
