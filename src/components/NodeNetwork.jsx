@@ -3,8 +3,8 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 // ÖKAT ANTAL OCH TYDLIGHET
-const PARTICLE_COUNT = 100; // Fler punkter
-const CONNECT_DISTANCE = 4;
+const PARTICLE_COUNT = 45;
+const CONNECT_DISTANCE = 5.5;
 
 function Network() {
   const points = useMemo(() => {
