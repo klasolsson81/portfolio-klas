@@ -11,7 +11,7 @@ import ProjectSlideshow from './ProjectSlideshow';
 // VIDEO
 import detectiveVideo from '../assets/video.mp4';
 
-// BILDER (Kontrollera att filnamnen matchar exakt i din assets-mapp!)
+// BILDER
 import detectiveImg1 from '../assets/detective-1.png'; // ASCII Logga
 import detectiveImg2 from '../assets/detective-2.png'; // Huvudmeny
 import detectiveImg3 from '../assets/detective-3.png'; // In-game scen
@@ -28,19 +28,19 @@ const PROJECT_SLIDES = {
       title: "Projektöversikt",
       type: "intro",
       content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>,
-      image: detectiveImg2 // Huvudmeny
+      image: detectiveImg1 // Startbilden (Loggan)
     },
     {
       title: "Utmaning: Att blanda logik och UI",
       type: "problem",
       content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
-      image: detectiveImg1 // Logga
+      image: detectiveImg2 // Menyn (Inloggad)
     },
     {
       title: "Spelmekanik & AI",
       type: "solution",
       content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
-      image: detectiveImg3 // In-game scen
+      image: detectiveImg3
     },
     {
       title: "Lärdom: Arkitektur är allt",
@@ -188,7 +188,8 @@ const HeroStage = () => {
 
       <motion.div 
         layout
-        className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:max-h-[90vh]"
+        // HÄR: Låst höjd på desktop (md:h-[850px]) för att undvika hopp
+        className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
@@ -261,7 +262,8 @@ const HeroStage = () => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden"
+          // HÄR: h-full så den fyller ut den låsta containern
+          className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-[60dvh] md:h-full"
         >
           <AnimatePresence mode="wait">
             
