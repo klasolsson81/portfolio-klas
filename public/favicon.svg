@@ -1,0 +1,7 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="16" fill="#0a0b1e"/>
+  
+  <rect x="3" y="3" width="58" height="58" rx="13" stroke="#bd00ff" stroke-width="3" fill="none" opacity="0.8"/>
+  
+  <text x="50%" y="55%" font-family="monospace" font-weight="bold" font-size="32" fill="#00f3ff" text-anchor="middle" dominant-baseline="middle" style="text-shadow: 0 0 5px #00f3ff;">KO</text>
+</svg>
