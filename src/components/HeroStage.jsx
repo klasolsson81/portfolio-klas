@@ -106,6 +106,19 @@ const PROJECT_SLIDES = {
       type: "problem",
       content: <p>Att köra 3D i webbläsaren är tungt. Jag fick lära mig att optimera renderingen och hantera responsivitet så att sidan fungerar lika bra på en mobil som på en stor 4K-skärm.</p>
     }
+    {
+      title: "Feature: AI-Projektledare",
+      type: "code",
+      content: <p>Jag byggde en funktion där kunder kan skicka uppdragsförfrågningar. En AI-agent analyserar förfrågan i realtid, bedömer om den passar min tidsplan (8h gräns för pro bono) och ger direkt feedback innan mailet ens skickas.</p>,
+      code: `// AI-logik i backend (förenklad)
+if (hours < 8 && payment === 'Pro Bono') {
+  return { approved: true, feedback: "Perfekt portfolio-projekt!" };
+} else if (hours > 40 && payment === 'Pro Bono') {
+  return { approved: false, feedback: "Tyvärr, för stort för att göra gratis." };
+}`
+    }
+
+
   ]
 };
 
