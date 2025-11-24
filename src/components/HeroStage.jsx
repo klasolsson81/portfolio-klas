@@ -235,25 +235,33 @@ const HeroStage = () => {
 
             <div className="hidden md:block w-px h-5 bg-white/20"></div>
 
-            {/* ÄNDRAT: Ny, animerad CV-knapp utan text */}
-            <a 
-              href="/CV_Klas_Olsson.pdf" 
-              download="CV_Klas_Olsson.pdf"
-              onClick={() => {
-                confetti({
-                  particleCount: 100,
-                  spread: 70,
-                  origin: { y: 0.6 },
-                  colors: ['#00f3ff', '#bd00ff', '#ffffff']
-                });
-                toast.success('Tack för visat intresse! CV laddas ner.');
-              }}
-              className="relative group p-2 md:p-3 bg-neon-purple/10 border border-neon-purple/30 rounded-full text-neon-cyan hover:bg-neon-purple/30 hover:border-neon-purple transition-all duration-300 animate-pulse hover:animate-none"
-              title={t.nav.cv}
-            >
-              <div className="absolute inset-0 rounded-full bg-neon-purple/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <Download size={20} className="relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300"/>
-            </a>
+{/* --- NY KOD (Tydlig "Piller-knapp" med text och ikon) --- */}
+<a 
+  href="/CV_Klas_Olsson.pdf" 
+  download="CV_Klas_Olsson.pdf"
+  onClick={() => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#00f3ff', '#bd00ff', '#ffffff']
+    });
+    toast.success('Tack för visat intresse! CV laddas ner.');
+  }}
+  // ÄNDRAT: Ändrat formen från 'p-2 rounded-full' till 'px-4 py-2 rounded-full flex gap-2'.
+  // ÄNDRAT: Tog bort 'animate-pulse' för att göra texten mer läsbar, lade till hover:text-white.
+  className="relative group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-neon-purple/10 border border-neon-purple/30 rounded-full text-neon-cyan hover:bg-neon-purple/20 hover:text-white hover:border-neon-purple transition-all duration-300"
+  title={t.nav.cv}
+>
+  {/* Glow-effekt på hover */}
+  <div className="absolute inset-0 rounded-full bg-neon-purple/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  
+  {/* Ikon */}
+  <Download size={18} className="relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300"/>
+  
+  {/* ÄNDRAT: Lade till texten "CV" */}
+  <span className="relative z-10 font-bold text-sm tracking-wider leading-none pt-0.5">CV</span>
+</a>
           </div>
 
           {/* ÄNDRAT: Mindre gap på mobilen för menyn */}
