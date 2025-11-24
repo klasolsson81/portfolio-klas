@@ -7,7 +7,7 @@ import GithubStats from './GithubStats';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 
-// Importera videon (Se till att filnamnet stämmer i assets!)
+// Importera videon
 import detectiveVideo from '../assets/video.mp4';
 
 const TRANSLATIONS = {
@@ -83,14 +83,14 @@ const HeroStage = () => {
 
       <motion.div 
         layout
-        // HÄR: Ökad max-width och max-height för responsivitet
         className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[85vh]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
-        <motion.div layout className="p-8 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-hidden">
+        {/* FIX: Bytte overflow-hidden mot overflow-y-auto och custom-scrollbar. Minskade padding p-8 till p-6 */}
+        <motion.div layout className="p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar">
           
-          <div className="flex w-full justify-between md:justify-end gap-3 mb-6 relative z-20">
+          <div className="flex w-full justify-between md:justify-end gap-3 mb-4 relative z-20">
             <button onClick={toggleLang} className="flex items-center gap-2 text-[10px] text-gray-400 hover:text-neon-cyan uppercase tracking-widest bg-black/40 px-3 py-1.5 rounded-full border border-white/10 transition-colors">
                <Languages size={12}/> {lang === 'sv' ? "EN" : "SV"}
             </button>
@@ -103,15 +103,16 @@ const HeroStage = () => {
           
           <ProfilePhoto disableMotion={reduceMotion} />
           
-          <motion.div layout className="mt-8 text-center md:text-left z-10">
+          {/* FIX: Minskad margin-top (mt-8 -> mt-6) */}
+          <motion.div layout className="mt-6 text-center md:text-left z-10">
             <h1 className="text-4xl font-bold tracking-tight animate-text-gradient bg-clip-text text-transparent pb-1">
               Klas Olsson
             </h1>
             <p className="text-neon-cyan font-mono text-sm mt-2 uppercase tracking-wider">{t.role}</p>
           </motion.div>
 
-          {/* KONTAKT & CV - Nu grupperade på samma rad */}
-          <div className="flex flex-wrap items-center gap-4 my-8 z-10">
+          {/* FIX: Minskad margin (my-8 -> my-6) */}
+          <div className="flex flex-wrap items-center gap-4 my-6 z-10">
             <div className="flex gap-4">
               <button 
                 onClick={() => {
@@ -148,7 +149,7 @@ const HeroStage = () => {
             </a>
           </div>
 
-          <nav className="w-full space-y-3 z-10">
+          <nav className="w-full space-y-2 z-10 pb-4">
             <NavButton label={t.nav.about} icon={<User size={18}/>} active={section === 'about'} onClick={() => setSection('about')} />
             <NavButton label={t.nav.chat} icon={<Terminal size={18}/>} active={section === 'chat'} onClick={() => setSection('chat')} />
             <NavButton label={t.nav.projects} icon={<Code size={18}/>} active={section === 'projects'} onClick={() => setSection('projects')} />
@@ -158,7 +159,6 @@ const HeroStage = () => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // HÄR: Flexibel höjd som anpassar sig
           className="flex-1 p-6 md:p-10 bg-black/30 relative flex flex-col overflow-hidden h-[60dvh] md:h-auto"
         >
           <AnimatePresence mode="wait">
@@ -167,7 +167,6 @@ const HeroStage = () => {
               <motion.div 
                 key="about" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                // HÄR: h-full för att scrollen ska funka
                 className="space-y-8 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
                 <h2 className="text-2xl font-bold text-neon-purple mb-6">{t.titles.whoami}</h2>
@@ -178,7 +177,6 @@ const HeroStage = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-white/10">
                   <div>
-                     {/* ANIMERAD RUBRIK */}
                      <h3 className="text-xs font-bold mb-3 uppercase tracking-widest animate-subtitle-shimmer bg-clip-text text-transparent">
                      {t.about.factsTitle}
                      </h3>
@@ -191,7 +189,6 @@ const HeroStage = () => {
                   </div>
                   
                   <div>
-                    {/* ANIMERAD RUBRIK */}
                     <h3 className="text-xs font-bold mb-3 uppercase tracking-widest animate-subtitle-shimmer bg-clip-text text-transparent">
                     {t.about.stackTitle}
                     </h3>
@@ -315,7 +312,6 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText }) =
         </span>
       ))}
     </div>
-    
   </div>
 );
 
