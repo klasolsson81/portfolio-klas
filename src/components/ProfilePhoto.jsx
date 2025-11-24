@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 // Importera din bild
-import myPhoto from '../assets/klas.jpg';
+import myPhoto from '../assets/klas-olsson-profil.jpg';
 
 const ProfilePhoto = ({ disableMotion }) => {
   // ... (All logik för 3D-effekten är kvar)
