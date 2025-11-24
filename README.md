@@ -1,25 +1,24 @@
-# 🚀 Klas Olsson - Interactive Portfolio
+# 🚀 Min Interaktiva Portfolio
 
-Min personliga portfolio byggd med modern webbteknik och AI-integration.
-Sidan fungerar som en interaktiv CV där besökare kan chatta med en "AI-version" av mig.
+Detta är källkoden till min personliga portfolio. Sidan är byggd för att vara mer än bara ett CV – den är en interaktiv upplevelse med en integrerad AI-agent.
 
 🔗 **Live Demo:** [www.klasolsson.se](https://www.klasolsson.se)
 
-## 🛠 Tech Stack
-- **Frontend:** React (Vite), Tailwind CSS
-- **Animation:** Framer Motion, CSS Keyframes
-- **3D/Visuals:** Three.js (React Three Fiber)
-- **AI:** OpenAI API (GPT-4o), Vercel Serverless Functions
-- **Deployment:** Vercel
+## 🛠 Teknisk Stack
+* **Frontend:** React (Vite), Tailwind CSS
+* **Animation:** Framer Motion
+* **3D:** Three.js / React Three Fiber
+* **AI:** OpenAI API (GPT-4o), Vercel Serverless Functions
+* **Deployment:** Vercel (CI/CD)
 
 ## ✨ Huvudfunktioner
-- **AI-Chatbot:** En RAG-liknande agent som svarar på frågor om min kompetens.
-- **Github Integration:** Visar min kod-aktivitet live.
-- **Video Showcase:** Inbäddade trailers för mina projekt.
-- **Tvåspråkig:** Fullt stöd för Svenska och Engelska.
+* **AI-Chatbot:** En RAG-liknande agent som svarar på frågor om min kompetens och bakgrund.
+* **Github Integration:** Visar min kod-aktivitet live.
+* **Project Deep Dives:** Modaler med case-studies för mina projekt.
+* **Responsiv Design:** Anpassad för allt från mobil till ultrawide-skärmar.
 
-## 📦 Installation
-1. Klona repot.
-2. Kör `npm install`.
-3. Skapa en `.env` fil med `OPENAI_API_KEY`.
-4. Kör `npm run dev`.
+## 📦 Kör lokalt
+1.  Klona repot.
+2.  `npm install`
+3.  Skapa en `.env` fil med `OPENAI_API_KEY`.
+4.  `npm run dev`
