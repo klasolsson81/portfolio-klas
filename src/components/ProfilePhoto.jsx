@@ -8,7 +8,7 @@ const ProfilePhoto = ({ disableMotion }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const springConfig = { damping: 25, stiffness: 150 };
-  const rotateX = useSpring(useTransform(y, [-100, 100], [5, -5]), springConfig); // Mildare rotation
+  const rotateX = useSpring(useTransform(y, [-100, 100], [5, -5]), springConfig);
   const rotateY = useSpring(useTransform(x, [-100, 100], [-5, 5]), springConfig);
 
   const handleMouseMove = (e) => {
@@ -37,26 +37,36 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      // HÄR: Tillbaka till fasta proportioner så den inte blir en bred banner
-      className="relative w-48 h-48 md:w-64 md:h-64 mx-auto md:mx-0 rounded-[2.5rem] shadow-2xl transition-all duration-500 group cursor-pointer z-10"
+      // ÄNDRING 1: Dynamisk storlek. 
+      // 'w-40 h-40' på laptop/standard (mindre än förut för att spara plats).
+      // 'xl:w-64 xl:h-64' på riktigt stora skärmar.
+      className="relative w-40 h-40 xl:w-64 xl:h-64 mx-auto md:mx-0 rounded-[2.5rem] shadow-2xl transition-all duration-500 group cursor-pointer z-10"
     >
-      {/* Bakgrundsglow (Energin) */}
-      <div className="absolute -inset-1 bg-gradient-to-br from-neon-purple/50 via-transparent to-neon-cyan/40 blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500 rounded-[3rem]"></div>
+      {/* ÄNDRING 2: Starkare bakgrundsglow (Motion) */}
+      {/* Om motion är PÅ (!disableMotion): Visa stark animerad blob */}
+      {!disableMotion && (
+        <div className="absolute -inset-4 bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-2xl opacity-60 animate-pulse-slow rounded-full z-0"></div>
+      )}
+      
+      {/* Om motion är AV: Visa svagare statisk glow */}
+      {disableMotion && (
+        <div className="absolute -inset-1 bg-neon-purple/20 blur-md rounded-[2.5rem] z-0"></div>
+      )}
 
-      {/* Bildcontainer med mjuk maskning */}
-      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-[#0a0b1e]">
+      {/* Bildcontainer */}
+      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-[#0a0b1e] z-10">
         <motion.img
           src={profileImg}
           alt="Klas Olsson"
-          animate={{ scale: isHovered && !disableMotion ? 1.05 : 1 }}
+          animate={{ scale: isHovered && !disableMotion ? 1.1 : 1 }}
           transition={{ duration: 0.5 }}
-          // HÄR: En mjukare mask som inte klipper för mycket av ansiktet
-          // 'mask-image' gör att kanterna tonas ut mot transparent
-          className="w-full h-full object-cover [mask-image:radial-gradient(circle_at_center,black_50%,transparent_100%)]"
+          // ÄNDRING 3: Aggressivare maskning (Vinjett)
+          // 'black_40%' betyder att bara 40% i mitten är helt synligt, sen tonas det ut snabbt.
+          className="w-full h-full object-cover [mask-image:radial-gradient(circle_at_center,black_40%,transparent_90%)]"
         />
         
-        {/* Scanline-effekt (valfritt, ger lite tech-känsla) */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.2)_50%)] bg-[length:100%_4px] pointer-events-none opacity-20 mix-blend-overlay"></div>
+        {/* Scanlines */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.2)_50%)] bg-[length:100%_4px] pointer-events-none opacity-30 mix-blend-overlay"></div>
       </div>
     </motion.div>
   );
