@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Terminal, Lightbulb, AlertTriangle, BookOpen } from 'lucide-react';
 
 const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // FIX: Nollställ alltid index när modalen öppnas eller byter projekt
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentIndex(0);
+    }
+  }, [isOpen, title]);
 
   if (!isOpen || !slides) return null;
 
@@ -15,9 +22,9 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
     if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
   };
 
-  const currentSlide = slides[currentIndex];
+  // Säkerhetskoll så vi inte kraschar om index är fel
+  const currentSlide = slides[currentIndex] || slides[0];
 
-  // Ikon-väljare baserat på slide-typ
   const getIcon = (type) => {
     switch(type) {
       case 'problem': return <AlertTriangle className="text-red-400" size={24} />;
@@ -38,12 +45,11 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
         onClick={e => e.stopPropagation()}
       >
         
-        {/* --- HEADER --- */}
         <div className="p-6 border-b border-white/10 flex justify-between items-center bg-black/20">
           <div>
             <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">{title}</h2>
             <p className="text-xs text-gray-400 uppercase tracking-wider mt-1">
-              Slide {currentIndex + 1} / {slides.length}
+              Sida {currentIndex + 1} av {slides.length}
             </p>
           </div>
           <button onClick={onClose} className="p-2 rounded-full hover:bg-white/10 transition-colors text-gray-400 hover:text-white">
@@ -51,8 +57,7 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
           </button>
         </div>
 
-        {/* --- CONTENT AREA --- */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-10 relative">
+        <div className="flex-1 overflow-y-auto p-6 md:p-10 relative custom-scrollbar">
           <AnimatePresence mode="wait">
             <motion.div 
               key={currentIndex}
@@ -62,7 +67,6 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
               transition={{ duration: 0.3 }}
               className="h-full flex flex-col gap-6"
             >
-              {/* Slide Titel & Ikon */}
               <div className="flex items-center gap-3 mb-2">
                 {getIcon(currentSlide.type)}
                 <h3 className={`text-2xl font-bold ${currentSlide.type === 'problem' ? 'text-red-400' : currentSlide.type === 'solution' ? 'text-yellow-400' : 'text-neon-cyan'}`}>
@@ -70,19 +74,16 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
                 </h3>
               </div>
 
-              {/* Textinnehåll */}
-              <div className="text-gray-300 text-lg leading-relaxed space-y-4">
+              <div className="text-gray-300 text-base md:text-lg leading-relaxed space-y-4">
                 {currentSlide.content}
               </div>
 
-              {/* Kodblock (Om det finns) */}
               {currentSlide.code && (
                 <div className="bg-black/50 border border-white/10 rounded-xl p-4 font-mono text-sm overflow-x-auto custom-scrollbar text-gray-300 shadow-inner">
                   <pre>{currentSlide.code}</pre>
                 </div>
               )}
 
-              {/* Bild (Om det finns - Platshållare för dina screenshots) */}
               {currentSlide.image && (
                 <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg mt-4">
                   <img src={currentSlide.image} alt="Project Screenshot" className="w-full h-auto object-cover" />
@@ -93,7 +94,6 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
           </AnimatePresence>
         </div>
 
-        {/* --- FOOTER CONTROLS --- */}
         <div className="p-6 border-t border-white/10 bg-black/20 flex justify-between items-center">
           <button 
             onClick={prevSlide} 
@@ -103,7 +103,6 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title }) => {
             <ChevronLeft size={20} /> Föregående
           </button>
 
-          {/* Dots Indicator */}
           <div className="flex gap-2">
             {slides.map((_, idx) => (
               <div 

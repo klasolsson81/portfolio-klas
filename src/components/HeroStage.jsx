@@ -8,10 +8,9 @@ import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import ProjectSlideshow from './ProjectSlideshow';
 
-// Importera videon
 import detectiveVideo from '../assets/video.mp4';
 
-// --- PROJEKTDATA (SLIDES) ---
+// --- PROJEKTDATA (DJUPDYKNINGAR) ---
 const PROJECT_SLIDES = {
   detective: [
     {
@@ -20,33 +19,24 @@ const PROJECT_SLIDES = {
       content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>
     },
     {
-      title: "Utmaningen: AI-konsistens",
+      title: "Utmaning: Spectre.Console & Arkitektur",
       type: "problem",
-      content: <p>Det svåraste var att få AI:n att vara konsekvent. I början kunde AI:n säga att mordvapnet var en kniv i ett rum, men en pistol i nästa. Spelaren måste kunna lita på ledtrådarna för att lösa fallet.</p>
+      content: <p>Jag skrev först all spellogik för att få det att fungera ("Make it work"). När jag sedan skulle implementera <strong>Spectre.Console</strong> för ett snyggare UI, insåg jag att min logik var för hårt kopplad till den vanliga <code>Console.WriteLine</code>. Det krävde en omfattande refaktorisering.</p>
+    },
+    {
+      title: "Reflektion: Clean Code vs. Verklighet",
+      type: "learning",
+      content: <p>Detta lärde mig en läxa om separation of concerns. Även efter refaktoriseringen kände jag att UI-koden blandades med logiken i vissa klasser. Om jag gjorde om det idag hade jag använt ett tydligare designmönster (t.ex. MVC eller MVVM) från start för att hålla <code>Spectre</code>-koden helt isolerad.</p>
     },
     {
       title: "Lösningen: System Prompts",
       type: "solution",
-      content: <p>Jag löste det genom att skapa en robust <code>CaseContext</code>-klass som håller tillståndet (Vem, Vad, Var, Varför). Denna "sanning" skickas med som en dold System Prompt i varje anrop till OpenAI, så att den aldrig glömmer detaljerna.</p>,
-      code: `// Exempel på System Prompt struktur
-var prompt = $"Du är en spelledare för ett Noir-deckarspel.
-FALLET:
-Offer: {victim.Name}
-Mördare: {killer.Name}
-Vapen: {weapon}
-Motiv: {motive}
-
-Din uppgift: Beskriv rummet baserat på ovanstående fakta, men avslöja inte mördaren direkt.";`
+      content: <p>För att få AI:n att vara konsekvent skapade jag en <code>CaseContext</code>-klass som håller tillståndet. Denna "sanning" skickas med som en dold System Prompt i varje anrop, vilket gör att AI:n inte "glömmer" vem mördaren är.</p>
     },
     {
-      title: "Funktion: E-postsystemet",
+      title: "Teknik: LINQ & OOP",
       type: "code",
-      content: <p>För att verifiera användare byggde jag en tjänst som skickar riktiga mail med koder. Jag använde <code>SmtpClient</code> och App Passwords för att säkert hantera utskicket.</p>
-    },
-    {
-      title: "Lärdomar & Reflektion",
-      type: "learning",
-      content: <p>Jag lärde mig enormt mycket om <strong>Prompt Engineering</strong> och hur man hanterar tillstånd (State) i en applikation som är beroende av externa, "oberäkneliga" API:er. Jag fick också öva på att bygga snygga UI i konsolen med <code>Spectre.Console</code>.</p>
+      content: <p>Jag använde mycket <strong>LINQ</strong> för att filtrera ledtrådar och hantera listor av misstänkta objekt. Projektet fördjupade min förståelse för objektorientering (arv och interface) för att skapa olika typer av bevis.</p>
     }
   ],
   fitness: [
@@ -56,14 +46,19 @@ Din uppgift: Beskriv rummet baserat på ovanstående fakta, men avslöja inte m�
       content: <p><strong>Fitness Progress Tracker</strong> var ett omfattande grupparbete där vi byggde ett system för PTs och klienter. Jag axlade rollen som <strong>Team Lead & Scrum Master</strong>.</p>
     },
     {
-      title: "Min Roll: Team Lead",
+      title: "Min Roll: Ledarskap & Kommunikation",
       type: "learning",
-      content: <p>Utöver att koda arkitekturen ansvarade jag för att sätta upp <strong>GitHub Projects</strong> för vår Kanban-board, skapa Webhooks till Discord för notiser om Pull Requests, och hålla i Dailys. Det lärde mig vikten av tydlig kommunikation.</p>
+      content: <p>Jag är väldigt engagerad och vill ofta koda och planera i högt tempo. En stor utmaning var att hantera teamets olika ambitionsnivåer och tidscheman. Det var ibland frustrerande att vänta på PRs, men det lärde mig vikten av tydlig kommunikation, tålamod och att stötta mindre aktiva medlemmar.</p>
+    },
+    {
+      title: "Process: GitHub & Webhooks",
+      type: "solution",
+      content: <p>För att få struktur satte jag upp <strong>GitHub Projects</strong> (Kanban) och kopplade webhooks till vår Discord. Det gjorde att vi direkt såg när någon pushade kod eller öppnade en Pull Request, vilket minskade ledtiderna.</p>
     },
     {
       title: "Arkitektur: Generics & JSON",
       type: "code",
-      content: <p>För att spara data (Användare, Scheman, Loggar) skapade jag en generisk <code>DataStore&lt;T&gt;</code>. Detta gjorde att vi slapp skriva om spara/ladda-kod för varje ny datatyp. DRY (Don't Repeat Yourself) i praktiken!</p>,
+      content: <p>Jag ansvarade för arkitekturen och skapade en generisk <code>JsonDataStore&lt;T&gt;</code>. Detta gjorde att vi kunde spara vilken datatyp som helst (User, Workout, Diet) utan att duplicera kod. DRY i praktiken!</p>,
       code: `public class JsonDataStore<T> : IDataStore<T> 
 {
     public void Save(List<T> items) 
@@ -71,47 +66,29 @@ Din uppgift: Beskriv rummet baserat på ovanstående fakta, men avslöja inte m�
         string json = JsonSerializer.Serialize(items);
         File.WriteAllText(_filePath, json);
     }
-    // ... Load method
 }`
-    },
-    {
-      title: "Utmaning: Merge Conflicts",
-      type: "problem",
-      content: <p>När fem personer jobbar i samma kodbas uppstår konflikter. Vi lärde oss den hårda vägen att arbeta i små, tydliga branches och göra Pull Requests ofta istället för stora "Big Bang"-merges i slutet av veckan.</p>
-    },
-    {
-      title: "Resultat",
-      type: "solution",
-      content: <p>Vi levererade en fungerande applikation där PTs kan skapa scheman (med AI-stöd!) och klienter kan logga sin vikt och se sina framsteg. Koden är modulär, testbar och följer SOLID-principerna.</p>
     }
   ],
   portfolio: [
     {
       title: "Projektöversikt",
       type: "intro",
-      content: <p>Denna hemsida är mitt gesällprov i modern frontend. Målet var att gå utanför min "Comfort Zone" (.NET) och bygga något visuellt och interaktivt med <strong>React</strong> och <strong>Three.js</strong>.</p>
+      content: <p>Denna hemsida är mitt första riktiga projekt i <strong>React</strong> och <strong>JavaScript</strong>. Jag ville gå från den "tunga" Visual Studio-miljön (.NET) till den lättare VS Code-världen och lära mig modern frontend.</p>
+    },
+    {
+      title: "Upplevelse: Flow & Kreativitet",
+      type: "learning",
+      content: <p>Det var både utmanande och otroligt roligt. Tiden flyger iväg när man sitter med CSS-animationer och direkt ser resultatet på skärmen. Jag har fått en ny respekt för frontend-utveckling och hur mycket man kan göra med bibliotek som Framer Motion och Three.js.</p>
     },
     {
       title: "AI-Integrationen (RAG)",
       type: "code",
-      content: <p>Chattboten du pratar med har en "System Prompt" som innehåller mitt CV och min profil. När du ställer en fråga, skickas den tillsammans med min profil till OpenAI, vilket gör att den kan svara korrekt om mig.</p>,
-      code: `const KLAS_CONTEXT = \`
-Du är Klas Olsson. Svara i jag-form.
-PROFIL:
-- Namn: Klas Olsson
-- Stack: C#, .NET, React
-- Bakgrund: 22 år i fordonsindustrin
-\`;`
+      content: <p>Chattboten du pratar med har en "System Prompt" som innehåller mitt CV. När du ställer en fråga, skickas den tillsammans med min profil till OpenAI. Det gör att den kan svara som mig, om mig.</p>
     },
     {
-      title: "Utmaning: Prestanda",
+      title: "Prestanda & Optimering",
       type: "problem",
-      content: <p>3D-grafik i webbläsaren kan vara tungt. Jag fick optimera <code>NodeNetwork</code>-bakgrunden genom att begränsa antalet partiklar och använda <code>useFrame</code> effektivt för att inte sänka FPS:en på laptops.</p>
-    },
-    {
-      title: "Lärdomar",
-      type: "learning",
-      content: <p>Jag har lärt mig massor om <strong>Tailwind CSS</strong> för styling, <strong>Framer Motion</strong> för animationer och hur man deployar serverless-funktioner på Vercel. Det har gjort mig till en mer komplett Fullstack-utvecklare.</p>
+      content: <p>Att köra 3D i webbläsaren är tungt. Jag fick lära mig att optimera renderingen och hantera responsivitet så att sidan fungerar lika bra på en mobil som på en stor 4K-skärm.</p>
     }
   ]
 };
@@ -158,7 +135,7 @@ const HeroStage = () => {
   const [reduceMotion, setReduceMotion] = useState(false);
   const [lang, setLang] = useState('sv');
   const [activeVideo, setActiveVideo] = useState(null);
-  const [activeSlideshow, setActiveSlideshow] = useState(null); // State för slideshow
+  const [activeSlideshow, setActiveSlideshow] = useState(null);
 
   const t = TRANSLATIONS[lang]; 
   const myAge = calculateAge('1981-02-04');
@@ -168,7 +145,6 @@ const HeroStage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 md:p-8 relative z-10">
       
-      {/* --- VIDEO MODAL --- */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div 
@@ -188,7 +164,6 @@ const HeroStage = () => {
         )}
       </AnimatePresence>
 
-      {/* --- SLIDESHOW MODAL --- */}
       <ProjectSlideshow 
         isOpen={!!activeSlideshow}
         onClose={() => setActiveSlideshow(null)}
@@ -201,7 +176,6 @@ const HeroStage = () => {
         className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
-        {/* VÄNSTER: Profil & Kontakt */}
         <motion.div layout className="p-5 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
@@ -268,7 +242,6 @@ const HeroStage = () => {
           </nav>
         </motion.div>
 
-        {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
           className="flex-1 p-5 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-[60dvh] md:h-auto"
@@ -399,6 +372,7 @@ const NavButton = ({ label, icon, active, onClick }) => (
   </button>
 );
 
+// FIX: Snyggare knappar för Video och Details
 const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText }) => (
   <div className="bg-gradient-to-br from-white/5 to-transparent p-5 rounded-xl border border-white/10 hover:border-neon-cyan/50 transition-all group shadow-lg hover:shadow-neon-cyan/20 relative">
     <div className="flex justify-between items-start pr-8">
@@ -414,18 +388,18 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
         {videoSrc && (
             <button 
               onClick={(e) => { e.preventDefault(); onPlay(); }}
-              className="flex items-center gap-2 px-2 py-1 bg-neon-purple/20 text-neon-purple border border-neon-purple/50 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 bg-neon-purple/10 text-neon-purple border border-neon-purple/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all"
             >
-                <Play size={10} fill="currentColor" /> {watchText}
+                <Play size={12} fill="currentColor" /> {watchText}
             </button>
         )}
         
-        {/* NY KNAPP: Deep Dive / Detaljer */}
+        {/* FIX: Snyggare Deep Dive knapp */}
         <button 
           onClick={(e) => { e.preventDefault(); onDetails(); }}
-          className="flex items-center gap-2 px-2 py-1 bg-white/5 text-gray-300 border border-white/10 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-white/10 hover:text-white transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-cyan hover:text-black hover:border-neon-cyan transition-all"
         >
-            <Layers size={10} fill="currentColor" /> {detailsText}
+            <Layers size={12} /> {detailsText}
         </button>
     </div>
 
