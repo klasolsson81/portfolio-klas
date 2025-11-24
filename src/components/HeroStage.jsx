@@ -2,24 +2,25 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
 import ChatUI from './ChatUI';
-import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download, Layers } from 'lucide-react';
+import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download, Layers, Briefcase } from 'lucide-react';
 import GithubStats from './GithubStats';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import ProjectSlideshow from './ProjectSlideshow';
+import HireMe from './HireMe';
 
 // VIDEO
 import detectiveVideo from '../assets/video.mp4';
 
 // BILDER
-import detectiveImg1 from '../assets/detective-1.png'; // ASCII Logga
-import detectiveImg2 from '../assets/detective-2.png'; // Huvudmeny
-import detectiveImg3 from '../assets/detective-3.png'; // In-game scen
+import detectiveImg1 from '../assets/detective-1.png';
+import detectiveImg2 from '../assets/detective-2.png';
+import detectiveImg3 from '../assets/detective-3.png';
 
-import fitnessImg1 from '../assets/fitness-1.png';     // Huvudmeny
-import fitnessImg2 from '../assets/fitness-2.png';     // Hantera Klas (PT vy)
-import fitnessImg3 from '../assets/fitness-3.png';     // Kostschema
-import fitnessImg4 from '../assets/fitness-4.png';     // GitHub Board
+import fitnessImg1 from '../assets/fitness-1.png';
+import fitnessImg2 from '../assets/fitness-2.png';
+import fitnessImg3 from '../assets/fitness-3.png';
+import fitnessImg4 from '../assets/fitness-4.png';
 
 // --- PROJEKTDATA (SLIDES) ---
 const PROJECT_SLIDES = {
@@ -28,19 +29,19 @@ const PROJECT_SLIDES = {
       title: "Projektöversikt",
       type: "intro",
       content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>,
-      image: detectiveImg1 // Startbilden (Loggan)
+      image: detectiveImg2 // Huvudmeny
     },
     {
       title: "Utmaning: Att blanda logik och UI",
       type: "problem",
       content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
-      image: detectiveImg2 // Menyn (Inloggad)
+      image: detectiveImg1 // Logga
     },
     {
       title: "Spelmekanik & AI",
       type: "solution",
       content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
-      image: detectiveImg3
+      image: detectiveImg3 // In-game scen
     },
     {
       title: "Lärdom: Arkitektur är allt",
@@ -111,8 +112,8 @@ const PROJECT_SLIDES = {
 const TRANSLATIONS = {
   sv: {
     role: "Systemutvecklare .NET (Student)",
-    nav: { about: "Snabbfakta", chat: "Fråga mig (AI)", projects: "Portfolio", cv: "Ladda ner CV" },
-    titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt" },
+    nav: { about: "Snabbfakta", chat: "Fråga mig (AI)", projects: "Portfolio", hire: "Anlita mig", cv: "Ladda ner CV" },
+    titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt", hire: "Anlita mig" },
     about: {
       intro1: "Driven Systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på kod och arkitektur.",
       intro2: "Jag kombinerar djup .NET-kunskap med modern AI-utveckling. Jag är inte rädd för nya språk och använder AI för att snabbt sätta mig in i nya tekniker vid behov.",
@@ -125,8 +126,8 @@ const TRANSLATIONS = {
   },
   en: {
     role: ".NET System Developer (Student)",
-    nav: { about: "Quick Facts", chat: "Ask me (AI)", projects: "Portfolio", cv: "Download CV" },
-    titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects" },
+    nav: { about: "Quick Facts", chat: "Ask me (AI)", projects: "Portfolio", hire: "Hire Me", cv: "Download CV" },
+    titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects", hire: "Hire Me" },
     about: {
       intro1: "Driven System Developer focusing on .NET. Currently on leave of absence to fully commit to code and architecture.",
       intro2: "Combining deep .NET knowledge with modern AI development. I'm adaptable and leverage AI to rapidly master new languages or frameworks when projects require it.",
@@ -188,7 +189,6 @@ const HeroStage = () => {
 
       <motion.div 
         layout
-        // HÄR: Låst höjd på desktop (md:h-[850px]) för att undvika hopp
         className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
@@ -256,13 +256,13 @@ const HeroStage = () => {
             <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} />
             <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} />
             <NavButton label={t.nav.projects} icon={<Code />} active={section === 'projects'} onClick={() => setSection('projects')} />
+            <NavButton label={t.nav.hire} icon={<Briefcase />} active={section === 'hire'} onClick={() => setSection('hire')} />
           </nav>
         </motion.div>
 
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // HÄR: h-full så den fyller ut den låsta containern
           className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-[60dvh] md:h-full"
         >
           <AnimatePresence mode="wait">
@@ -369,6 +369,16 @@ const HeroStage = () => {
                  <div className="mt-4 p-4 border-2 border-dashed border-white/10 rounded-xl text-center text-gray-500 text-xs bg-black/20">
                    {t.projects.more}
                  </div>
+              </motion.div>
+            )}
+
+            {section === 'hire' && (
+              <motion.div 
+                key="hire" 
+                initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
+                className="h-full flex flex-col"
+              >
+                <HireMe />
               </motion.div>
             )}
 
