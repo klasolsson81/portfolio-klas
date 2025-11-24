@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+// VIKTIGT: Vi använder din ORIGINALBILD här
 import profileImg from '../assets/klas-olsson-profil.jpg'; 
 
 const ProfilePhoto = ({ disableMotion }) => {
@@ -37,35 +38,28 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      // ÄNDRING 1: Tillbaka till rounded-[2rem] (mjuk rektangel).
-      // STORLEK: w-28 (112px) på laptop för att spara plats. w-56 på stor skärm.
-      className="relative w-28 h-28 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-[2rem] shadow-2xl transition-all duration-500 group cursor-pointer z-10"
+      // STORLEK: w-32 (128px) på laptop, w-64 på stor skärm
+      className="relative w-32 h-32 xl:w-64 xl:h-64 mx-auto md:mx-0 rounded-[2rem] transition-all duration-500 group cursor-pointer z-10"
     >
-      {/* GLOW BAKOM */}
+      {/* BAKGRUNDSEFFEKT (Glow) */}
       {!disableMotion && (
-        <div className="absolute -inset-5 bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-[2.5rem] z-0"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-full z-0"></div>
       )}
-      {disableMotion && (
-        <div className="absolute -inset-1 bg-neon-purple/20 blur-md rounded-[2rem] z-0"></div>
-      )}
-
+      
       {/* BILDCONTAINER */}
-      <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-[#0a0b1e] z-10">
-        
+      <div className="relative w-full h-full rounded-[2rem] overflow-hidden z-10">
         <motion.img
           src={profileImg}
           alt="Klas Olsson"
           animate={{ scale: isHovered && !disableMotion ? 1.1 : 1 }}
           transition={{ duration: 0.5 }}
-          className="w-full h-full object-cover"
+          // HÄR ÄR MAGIN: 'mask-image'
+          // Detta CSS-kommando gör kanterna genomskinliga så bilden smälter in
+          className="w-full h-full object-cover [mask-image:radial-gradient(circle_at_center,black_40%,transparent_85%)]"
         />
         
-        {/* ÄNDRING 2: Aggressiv toning/vinjett som smälter in i bakgrunden */}
-        {/* En mörkblå 'ring' som täcker kanterna och tonar ut mot mitten */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,#0a0b1e_95%)] pointer-events-none"></div>
-        
-        {/* Extra lila tint för att matcha temat */}
-        <div className="absolute inset-0 bg-neon-purple/10 mix-blend-overlay pointer-events-none rounded-[2rem]"></div>
+        {/* Extra mörk toning i kanterna för att matcha bakgrunden perfekt */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#0a0b1e_90%)] pointer-events-none"></div>
       </div>
     </motion.div>
   );
