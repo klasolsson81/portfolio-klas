@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
 import ChatUI from './ChatUI';
@@ -29,19 +29,19 @@ const PROJECT_SLIDES = {
       title: "Projektöversikt",
       type: "intro",
       content: <p><strong>Console Detective AI</strong> är ett textbaserat noir-detektivspel där ingen spelomgång är den andra lik. Genom att integrera OpenAI skapas brottsfall, dialoger och ledtrådar dynamiskt i realtid.</p>,
-      image: detectiveImg2 // Huvudmeny
+      image: detectiveImg2
     },
     {
       title: "Utmaning: Att blanda logik och UI",
       type: "problem",
       content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
-      image: detectiveImg1 // Logga
+      image: detectiveImg1
     },
     {
       title: "Spelmekanik & AI",
       type: "solution",
       content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
-      image: detectiveImg3 // In-game scen
+      image: detectiveImg3
     },
     {
       title: "Lärdom: Arkitektur är allt",
@@ -59,7 +59,7 @@ const PROJECT_SLIDES = {
       title: "Projektöversikt",
       type: "intro",
       content: <p><strong>Fitness Progress Tracker</strong> var ett omfattande grupparbete där vi byggde ett system för PTs och klienter. Jag axlade rollen som <strong>Team Lead & Scrum Master</strong>.</p>,
-      image: fitnessImg1 // Huvudmeny
+      image: fitnessImg1
     },
     {
       title: "Utmaning: Team & Kommunikation",
@@ -70,19 +70,19 @@ const PROJECT_SLIDES = {
       title: "Process: GitHub Projects",
       type: "solution",
       content: <p>För att få struktur satte jag upp en <strong>Kanban-board</strong> på GitHub och kopplade webhooks till vår Discord. Det gjorde att alla såg när en ny "Pull Request" kom in, vilket minskade ledtiderna.</p>,
-      image: fitnessImg4 // GitHub Board
+      image: fitnessImg4
     },
     {
       title: "Funktion: Kostscheman",
       type: "code",
       content: <p>Vi byggde funktioner för att generera detaljerade kostscheman. Här använde vi objektorientering för att strukturera data kring kalorier och makronutrienter.</p>,
-      image: fitnessImg3 // Kostschema
+      image: fitnessImg3
     },
     {
       title: "PT-Vyn (Admin)",
       type: "intro",
       content: <p>PT:n har en egen vy för att hantera sina klienter. Här lärde jag mig mycket om hur man hanterar olika användarroller och behörigheter i en applikation.</p>,
-      image: fitnessImg2 // Hantera Klas (PT vy)
+      image: fitnessImg2
     }
   ],
   portfolio: [
@@ -112,7 +112,8 @@ const PROJECT_SLIDES = {
 const TRANSLATIONS = {
   sv: {
     role: "Systemutvecklare .NET (Student)",
-    nav: { about: "Snabbfakta", chat: "Fråga mig (AI)", projects: "Portfolio", hire: "Anlita mig", cv: "Ladda ner CV" },
+    // ÄNDRAT: Kortare namn på menyn för mobilen
+    nav: { about: "Om mig", chat: "AI-Chat", projects: "Projekt", hire: "Anlita", cv: "CV" },
     titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt", hire: "Anlita mig" },
     about: {
       intro1: "Driven Systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på kod och arkitektur.",
@@ -126,7 +127,8 @@ const TRANSLATIONS = {
   },
   en: {
     role: ".NET System Developer (Student)",
-    nav: { about: "Quick Facts", chat: "Ask me (AI)", projects: "Portfolio", hire: "Hire Me", cv: "Download CV" },
+    // ÄNDRAT: Kortare namn på menyn för mobilen
+    nav: { about: "About", chat: "AI Chat", projects: "Projects", hire: "Hire Me", cv: "CV" },
     titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects", hire: "Hire Me" },
     about: {
       intro1: "Driven System Developer focusing on .NET. Currently on leave of absence to fully commit to code and architecture.",
@@ -215,7 +217,7 @@ const HeroStage = () => {
             <p className="text-neon-cyan font-mono text-sm mt-1 uppercase tracking-wider">{t.role}</p>
           </motion.div>
 
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 my-4 z-10 w-full">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 my-4 z-10 w-full">
             <div className="flex gap-3">
               <button 
                 onClick={() => {
@@ -233,6 +235,7 @@ const HeroStage = () => {
 
             <div className="hidden md:block w-px h-5 bg-white/20"></div>
 
+            {/* ÄNDRAT: Ny, animerad CV-knapp utan text */}
             <a 
               href="/CV_Klas_Olsson.pdf" 
               download="CV_Klas_Olsson.pdf"
@@ -245,14 +248,16 @@ const HeroStage = () => {
                 });
                 toast.success('Tack för visat intresse! CV laddas ner.');
               }}
-              className="flex items-center gap-2 bg-neon-purple/20 hover:bg-neon-purple/40 text-neon-cyan border border-neon-purple/50 px-4 py-1.5 md:px-3 md:py-1 rounded-lg transition-all font-bold text-xs md:text-[10px] uppercase tracking-wider group cursor-pointer"
+              className="relative group p-2 md:p-3 bg-neon-purple/10 border border-neon-purple/30 rounded-full text-neon-cyan hover:bg-neon-purple/30 hover:border-neon-purple transition-all duration-300 animate-pulse hover:animate-none"
+              title={t.nav.cv}
             >
-              <Download size={14} className="group-hover:-translate-y-0.5 transition-transform md:w-3 md:h-3"/>
-              <span>{t.nav.cv}</span>
+              <div className="absolute inset-0 rounded-full bg-neon-purple/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <Download size={20} className="relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300"/>
             </a>
           </div>
 
-          <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-2 md:space-y-2 md:gap-0">
+          {/* ÄNDRAT: Mindre gap på mobilen för menyn */}
+          <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-1 md:gap-0 md:space-y-2">
             <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} />
             <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} />
             <NavButton label={t.nav.projects} icon={<Code />} active={section === 'projects'} onClick={() => setSection('projects')} />
@@ -263,7 +268,8 @@ const HeroStage = () => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-[60dvh] md:h-full"
+          // ÄNDRAT: h-full på mobilen istället för fast höjd, för att fixa scrollen
+          className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full"
         >
           <AnimatePresence mode="wait">
             
@@ -372,13 +378,12 @@ const HeroStage = () => {
               </motion.div>
             )}
 
-               {section === 'hire' && (
+            {section === 'hire' && (
               <motion.div 
                 key="hire" 
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
                 className="h-full flex flex-col"
               >
-                {/* SKICKA MED SPRÅKET HÄR */}
                 <HireMe lang={lang} />
               </motion.div>
             )}
@@ -390,17 +395,18 @@ const HeroStage = () => {
   );
 };
 
+// ÄNDRAT: NavButton anpassad för mobil (mindre text, staplad ikon/text)
 const NavButton = ({ label, icon, active, onClick }) => (
   <button 
     onClick={onClick}
-    className={`flex-1 md:w-full flex items-center justify-center md:justify-start gap-2 md:gap-3 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-medium transition-all duration-300 group
+    className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-1.5 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium transition-all duration-300 group
       ${active ? 'bg-neon-purple/20 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' : 'text-gray-400 hover:bg-white/5 hover:text-white'}
     `}
   >
     <span className={`transition-colors ${active ? 'text-neon-cyan' : 'group-hover:text-neon-purple'}`}>
-      {React.cloneElement(icon, { size: window.innerWidth < 768 ? 14 : 16 })}
+      {React.cloneElement(icon, { size: window.innerWidth < 768 ? 16 : 18 })}
     </span>
-    <span className="md:inline">{label}</span>
+    <span className="md:inline text-center md:text-left truncate w-full md:w-auto">{label}</span>
   </button>
 );
 
