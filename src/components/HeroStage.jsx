@@ -372,13 +372,14 @@ const HeroStage = () => {
               </motion.div>
             )}
 
-            {section === 'hire' && (
+               {section === 'hire' && (
               <motion.div 
                 key="hire" 
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
                 className="h-full flex flex-col"
               >
-                <HireMe />
+                {/* SKICKA MED SPRÅKET HÄR */}
+                <HireMe lang={lang} />
               </motion.div>
             )}
 
