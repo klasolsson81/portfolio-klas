@@ -315,6 +315,7 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText }) =
         </span>
       ))}
     </div>
+    
   </div>
 );
 
