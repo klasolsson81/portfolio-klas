@@ -8,20 +8,20 @@ import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import ProjectSlideshow from './ProjectSlideshow';
 
-// VIDEO
+// --- IMPORT AV VIDEO ---
 import detectiveVideo from '../assets/video.mp4';
 
-// BILDER (Se till att namnen matchar exakt i din assets-mapp!)
-import detectiveImg1 from '../assets/detective-2.png'; // Huvudmeny "Klas Detektivbyrå"
-import detectiveImg2 from '../assets/detective-3.png'; // Hotell Aurora (Fall)
-import detectiveImg3 from '../assets/detective-1.png'; // Console Detective AI Logga
+// --- IMPORT AV BILDER ---
+import detectiveImg1 from '../assets/detective-1.png'; // ASCII Logga
+import detectiveImg2 from '../assets/detective-2.png'; // Huvudmeny
+import detectiveImg3 from '../assets/detective-3.png'; // In-game (Hotell Aurora)
 
 import fitnessImg1 from '../assets/fitness-1.png';     // Huvudmeny
-import fitnessImg2 from '../assets/fitness-3.png';     // Kostschema
-import fitnessImg3 from '../assets/fitness-2.png';     // Hantera Klas (PT vy)
-import fitnessImg4 from '../assets/fitness-4.png';     // GitHub Board (Process)
+import fitnessImg2 from '../assets/fitness-2.png';     // Hantera Klas
+import fitnessImg3 from '../assets/fitness-3.png';     // Kostschema
+import fitnessImg4 from '../assets/fitness-4.png';     // GitHub Board
 
-// --- PROJEKTDATA (DJUPDYKNINGAR) ---
+// --- PROJEKTDATA (SLIDES) ---
 const PROJECT_SLIDES = {
   detective: [
     {
@@ -34,18 +34,18 @@ const PROJECT_SLIDES = {
       title: "Utmaning: Att blanda logik och UI",
       type: "problem",
       content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
-      image: detectiveImg3
-    },
-    {
-      title: "Lärdom: Arkitektur är allt",
-      type: "learning",
-      content: <p>Resultatet blev att UI-kod och logik blandades mer än jag hade velat ("Spaghetti-kod"). Om jag gjorde om det idag hade jag separerat det tydligare från start (t.ex. med MVC-mönster) för att hålla koden renare (Clean Code).</p>
+      image: detectiveImg2
     },
     {
       title: "Spelmekanik & AI",
       type: "solution",
       content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
-      image: detectiveImg2
+      image: detectiveImg3
+    },
+    {
+      title: "Lärdom: Arkitektur är allt",
+      type: "learning",
+      content: <p>Resultatet blev att UI-kod och logik blandades mer än jag hade velat. Om jag gjorde om det idag hade jag separerat det tydligare från start (t.ex. med MVC-mönster) för att hålla <code>Spectre</code>-koden helt isolerad.</p>
     },
     {
       title: "Teknik: LINQ & C#",
@@ -63,7 +63,7 @@ const PROJECT_SLIDES = {
     {
       title: "Utmaning: Team & Kommunikation",
       type: "problem",
-      content: <p>Den största utmaningen var inte koden, utan kommunikationen. Jag är väldigt engagerad och vill koda snabbt, men i ett team måste man vänta in varandra. Det var ibland frustrerande när tempot varierade, men det lärde mig tålamod och vikten av tydliga uppgifter.</p>
+      content: <p>Den största utmaningen var inte koden, utan kommunikationen. Jag är väldigt engagerad och vill koda snabbt, men i ett team måste man vänta in varandra. Det lärde mig tålamod och vikten av tydliga uppgifter och gemensamma mål.</p>
     },
     {
       title: "Process: GitHub Projects",
@@ -75,13 +75,13 @@ const PROJECT_SLIDES = {
       title: "Funktion: Kostscheman",
       type: "code",
       content: <p>Vi byggde funktioner för att generera detaljerade kostscheman. Här använde vi objektorientering för att strukturera data kring kalorier och makronutrienter.</p>,
-      image: fitnessImg2
+      image: fitnessImg3
     },
     {
       title: "PT-Vyn (Admin)",
       type: "intro",
       content: <p>PT:n har en egen vy för att hantera sina klienter. Här lärde jag mig mycket om hur man hanterar olika användarroller och behörigheter i en applikation.</p>,
-      image: fitnessImg3
+      image: fitnessImg2
     }
   ],
   portfolio: [
@@ -107,10 +107,6 @@ const PROJECT_SLIDES = {
     }
   ]
 };
-
-// ... (Resten av filen är oförändrad: TRANSLATIONS, calculateAge, HeroStage etc.)
-// Kopiera bara in PROJECT_SLIDES delen ovan och behåll resten av din HeroStage-fil som den var,
-// ELLER om du vill vara säker, kopiera hela filen nedan:
 
 const TRANSLATIONS = {
   sv: {
@@ -195,6 +191,7 @@ const HeroStage = () => {
         className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
+        {/* VÄNSTER: Profil & Kontakt */}
         <motion.div layout className="p-5 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
@@ -261,6 +258,7 @@ const HeroStage = () => {
           </nav>
         </motion.div>
 
+        {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
           className="flex-1 p-5 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-[60dvh] md:h-auto"
@@ -402,20 +400,20 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
     
     <p className="text-xs md:text-sm text-gray-300 mt-2 mb-3 leading-relaxed">{desc}</p>
     
-    {/* FIX: Snyggare och mer kompakta knappar */}
     <div className="flex gap-3 mb-3">
         {videoSrc && (
             <button 
               onClick={(e) => { e.preventDefault(); onPlay(); }}
-              className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-neon-purple/20 to-neon-purple/10 text-white border border-neon-purple/50 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:from-neon-purple hover:to-neon-cyan hover:border-transparent transition-all shadow-md shadow-neon-purple/20"
+              className="flex items-center gap-2 px-3 py-1.5 bg-neon-purple/10 text-neon-purple border border-neon-purple/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all shadow-sm"
             >
                 <Play size={12} fill="currentColor" /> {watchText}
             </button>
         )}
         
+        {/* NYTT: Snygg Neon-knapp för Djupdykning */}
         <button 
           onClick={(e) => { e.preventDefault(); onDetails(); }}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white/5 text-gray-200 border border-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-white/10 hover:text-white hover:border-neon-cyan/50 transition-all shadow-sm"
+          className="flex items-center gap-2 px-3 py-1.5 bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-cyan hover:text-black hover:border-neon-cyan transition-all shadow-sm"
         >
             <Layers size={12} /> {detailsText}
         </button>
