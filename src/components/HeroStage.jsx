@@ -8,18 +8,18 @@ import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import ProjectSlideshow from './ProjectSlideshow';
 
-// --- IMPORT AV VIDEO ---
+// VIDEO
 import detectiveVideo from '../assets/video.mp4';
 
-// --- IMPORT AV BILDER ---
-import detectiveImg1 from '../assets/detective-1.png'; // ASCII Logga
-import detectiveImg2 from '../assets/detective-2.png'; // Huvudmeny
-import detectiveImg3 from '../assets/detective-3.png'; // In-game (Hotell Aurora)
+// BILDER
+import detectiveImg1 from '../assets/detective-2.png';
+import detectiveImg2 from '../assets/detective-3.png';
+import detectiveImg3 from '../assets/detective-1.png';
 
-import fitnessImg1 from '../assets/fitness-1.png';     // Huvudmeny
-import fitnessImg2 from '../assets/fitness-2.png';     // Hantera Klas
-import fitnessImg3 from '../assets/fitness-3.png';     // Kostschema
-import fitnessImg4 from '../assets/fitness-4.png';     // GitHub Board
+import fitnessImg1 from '../assets/fitness-1.png';
+import fitnessImg2 from '../assets/fitness-3.png';
+import fitnessImg3 from '../assets/fitness-2.png';
+import fitnessImg4 from '../assets/fitness-4.png';
 
 // --- PROJEKTDATA (SLIDES) ---
 const PROJECT_SLIDES = {
@@ -34,18 +34,18 @@ const PROJECT_SLIDES = {
       title: "Utmaning: Att blanda logik och UI",
       type: "problem",
       content: <p>Detta var första gången jag använde biblioteket <strong>Spectre.Console</strong>. Jag gjorde misstaget att först skriva all spellogik för vanlig konsol, och sedan försöka "tvinga in" det snygga UI:t efteråt. Det ledde till att jag fick skriva om stora delar av koden.</p>,
-      image: detectiveImg2
-    },
-    {
-      title: "Spelmekanik & AI",
-      type: "solution",
-      content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
       image: detectiveImg3
     },
     {
       title: "Lärdom: Arkitektur är allt",
       type: "learning",
-      content: <p>Resultatet blev att UI-kod och logik blandades mer än jag hade velat. Om jag gjorde om det idag hade jag separerat det tydligare från start (t.ex. med MVC-mönster) för att hålla <code>Spectre</code>-koden helt isolerad.</p>
+      content: <p>Resultatet blev att UI-kod och logik blandades mer än jag hade velat. Om jag gjorde om det idag hade jag separerat det tydligare från start (t.ex. med MVC-mönster) för att hålla koden renare (Clean Code).</p>
+    },
+    {
+      title: "Spelmekanik & AI",
+      type: "solution",
+      content: <p>För att få AI:n att hålla sig till "sanningen" i mordgåtan skapade jag en strikt <code>CaseContext</code> som skickas med som en dold System Prompt. Det gör att AI:n vet vem mördaren är, men aldrig avslöjar det för tidigt.</p>,
+      image: detectiveImg2
     },
     {
       title: "Teknik: LINQ & C#",
@@ -111,7 +111,7 @@ const PROJECT_SLIDES = {
 const TRANSLATIONS = {
   sv: {
     role: "Systemutvecklare .NET (Student)",
-    nav: { about: "Snabbfakta", chat: "Fråga mig (AI)", projects: "Portfolio", cv: "Ladda ner CV" },
+    nav: { about: "Snabbfakta", chat: "AI-Chat", projects: "Projekt", cv: "CV" }, // Kortare namn för mobil
     titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt" },
     about: {
       intro1: "Driven Systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på kod och arkitektur.",
@@ -121,11 +121,11 @@ const TRANSLATIONS = {
       facts: { age: "Ålder", city: "Bor i", lang: "Språk", family: "Familj" },
       factValues: { city: "Göteborg", lang: "Svenska / Engelska", family: "Gift familjefar" }
     },
-    projects: { more: "Fler projekt finns på min GitHub!", watch: "Se Trailer", details: "Djupdykning" }
+    projects: { more: "Fler projekt finns på min GitHub!", watch: "Trailer", details: "Info" } // Kortare knappar
   },
   en: {
     role: ".NET System Developer (Student)",
-    nav: { about: "Quick Facts", chat: "Ask me (AI)", projects: "Portfolio", cv: "Download CV" },
+    nav: { about: "Facts", chat: "AI Chat", projects: "Projects", cv: "CV" }, // Kortare namn för mobil
     titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects" },
     about: {
       intro1: "Driven System Developer focusing on .NET. Currently on leave of absence to fully commit to code and architecture.",
@@ -135,7 +135,7 @@ const TRANSLATIONS = {
       facts: { age: "Age", city: "Location", lang: "Languages", family: "Family" },
       factValues: { city: "Gothenburg", lang: "Swedish / English", family: "Married, father" }
     },
-    projects: { more: "More projects on my GitHub!", watch: "Watch Trailer", details: "Deep Dive" }
+    projects: { more: "More projects on my GitHub!", watch: "Trailer", details: "Info" } // Kortare knappar
   }
 };
 
@@ -158,7 +158,8 @@ const HeroStage = () => {
   const toggleLang = () => setLang(l => l === 'sv' ? 'en' : 'sv');
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 md:p-8 relative z-10">
+    // ÄNDRING: Mindre padding på mobilen (p-3 istället för p-4)
+    <div className="min-h-screen flex items-center justify-center p-3 md:p-8 relative z-10">
       
       <AnimatePresence>
         {activeVideo && (
@@ -188,11 +189,13 @@ const HeroStage = () => {
 
       <motion.div 
         layout
-        className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+        // ÄNDRING: max-h på mobilen till 95vh för att utnyttja skärmen bättre
+        className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:max-h-[90vh]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
-        <motion.div layout className="p-5 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar">
+        {/* ÄNDRING: Mindre padding på mobilen (p-4) */}
+        <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
             <button onClick={toggleLang} className="flex items-center gap-2 text-[10px] text-gray-400 hover:text-neon-cyan uppercase tracking-widest bg-black/40 px-3 py-1 rounded-full border border-white/10 transition-colors">
@@ -208,28 +211,33 @@ const HeroStage = () => {
           <ProfilePhoto disableMotion={reduceMotion} />
           
           <motion.div layout className="mt-4 text-center md:text-left z-10">
-            <h1 className="text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight animate-text-gradient bg-clip-text text-transparent pb-1">
+            {/* ÄNDRING: Mindre textstorlek på namnet på mobil (text-xl) för att slippa radbrytning */}
+            <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight animate-text-gradient bg-clip-text text-transparent pb-1 whitespace-nowrap">
               Klas Olsson
             </h1>
-            <p className="text-neon-cyan font-mono text-xs md:text-sm mt-1 uppercase tracking-wider">{t.role}</p>
+            {/* ÄNDRING: Större textstorlek på rollen på mobil (text-sm) för läsbarhet */}
+            <p className="text-neon-cyan font-mono text-sm mt-1 uppercase tracking-wider">{t.role}</p>
           </motion.div>
 
-          <div className="flex flex-wrap items-center gap-4 my-4 z-10">
+          {/* ÄNDRING: Kontakt-raden är mer kompakt på mobil */}
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 my-4 z-10 w-full">
             <div className="flex gap-3">
+              {/* ÄNDRING: Större ikoner på mobil (size={22}) */}
               <button 
                 onClick={() => {
                   navigator.clipboard.writeText('klasolsson81@gmail.com');
                   toast.success('Email kopierad till urklipp!');
                 }}
-                className="text-gray-400 hover:text-neon-cyan transition-colors cursor-pointer" 
+                className="text-gray-400 hover:text-neon-cyan transition-colors cursor-pointer p-1" 
                 title="Kopiera Email"
               >
-                <Mail size={20} />
+                <Mail size={22} />
               </button>
-              <a href="https://github.com/klasolsson81" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-white transition-colors" title="GitHub"><Github size={20} /></a>
-              <a href="https://www.linkedin.com/in/klasolsson81/" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-[#0077b5] transition-colors" title="LinkedIn"><Linkedin size={20} /></a>
+              <a href="https://github.com/klasolsson81" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-white transition-colors p-1" title="GitHub"><Github size={22} /></a>
+              <a href="https://www.linkedin.com/in/klasolsson81/" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-[#0077b5] transition-colors p-1" title="LinkedIn"><Linkedin size={22} /></a>
             </div>
 
+            {/* ÄNDRING: Dolt vertikalt streck på mobil */}
             <div className="hidden md:block w-px h-5 bg-white/20"></div>
 
             <a 
@@ -244,24 +252,27 @@ const HeroStage = () => {
                 });
                 toast.success('Tack för visat intresse! CV laddas ner.');
               }}
-              className="flex items-center gap-2 bg-neon-purple/20 hover:bg-neon-purple/40 text-neon-cyan border border-neon-purple/50 px-3 py-1 rounded-lg transition-all font-bold text-[10px] uppercase tracking-wider group cursor-pointer"
+              // ÄNDRING: Större text och padding på CV-knappen på mobil
+              className="flex items-center gap-2 bg-neon-purple/20 hover:bg-neon-purple/40 text-neon-cyan border border-neon-purple/50 px-4 py-1.5 md:px-3 md:py-1 rounded-lg transition-all font-bold text-xs md:text-[10px] uppercase tracking-wider group cursor-pointer"
             >
-              <Download size={12} className="group-hover:-translate-y-0.5 transition-transform"/>
-              <span>CV</span>
+              <Download size={14} className="group-hover:-translate-y-0.5 transition-transform md:w-3 md:h-3"/>
+              <span>{t.nav.cv}</span>
             </a>
           </div>
 
-          <nav className="w-full space-y-2 z-10 pb-2">
-            <NavButton label={t.nav.about} icon={<User size={16}/>} active={section === 'about'} onClick={() => setSection('about')} />
-            <NavButton label={t.nav.chat} icon={<Terminal size={16}/>} active={section === 'chat'} onClick={() => setSection('chat')} />
-            <NavButton label={t.nav.projects} icon={<Code size={16}/>} active={section === 'projects'} onClick={() => setSection('projects')} />
+          {/* ÄNDRING: Navigeringen är nu en horisontell rad (flex-row) på mobil, och vertikal (flex-col) på desktop */}
+          <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-2 md:space-y-2 md:gap-0">
+            <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} />
+            <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} />
+            <NavButton label={t.nav.projects} icon={<Code />} active={section === 'projects'} onClick={() => setSection('projects')} />
           </nav>
         </motion.div>
 
         {/* HÖGER: Innehåll */}
+        {/* ÄNDRING: flex-1 ser till att denna del tar upp resten av höjden. Mindre padding (p-4) på mobil. */}
         <motion.div 
           layout 
-          className="flex-1 p-5 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-[60dvh] md:h-auto"
+          className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden"
         >
           <AnimatePresence mode="wait">
             
@@ -271,7 +282,7 @@ const HeroStage = () => {
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
                 className="space-y-6 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
-                <h2 className="text-2xl font-bold text-neon-purple mb-4">{t.titles.whoami}</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.whoami}</h2>
                 <div className="space-y-4 text-gray-300 leading-relaxed text-sm md:text-base">
                   <p><strong className="text-white">{t.about.intro1.split('.')[0]}.</strong> {t.about.intro1.split('.').slice(1).join('.')}.</p>
                   <p dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', '<span class="text-neon-cyan font-bold">n8n</span>') }} />
@@ -315,7 +326,7 @@ const HeroStage = () => {
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
                 className="h-full flex flex-col"
               >
-                <h2 className="text-2xl font-bold text-neon-purple mb-4">{t.titles.ai}</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.ai}</h2>
                 <ChatUI lang={lang} />
               </motion.div>
             )}
@@ -326,7 +337,7 @@ const HeroStage = () => {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
-                <h2 className="text-2xl font-bold text-neon-purple mb-4">{t.titles.projects}</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.projects}</h2>
                 
                 <ProjectCard 
                   title="Console Detective AI" 
@@ -377,15 +388,18 @@ const HeroStage = () => {
   );
 };
 
+// ÄNDRING: NavButton är nu en flexibel "tab" på mobil (flex-1, py-2) och en fullbreddsknapp på desktop (md:w-full, md:py-3). Ikonstorleken anpassas.
 const NavButton = ({ label, icon, active, onClick }) => (
   <button 
     onClick={onClick}
-    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group
-      ${active ? 'bg-gradient-to-r from-neon-purple/20 to-transparent text-white border-l-2 border-neon-purple' : 'text-gray-400 hover:bg-white/5 hover:text-white'}
+    className={`flex-1 md:w-full flex items-center justify-center md:justify-start gap-2 md:gap-3 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-medium transition-all duration-300 group
+      ${active ? 'bg-neon-purple/20 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' : 'text-gray-400 hover:bg-white/5 hover:text-white'}
     `}
   >
-    <span className={`transition-colors ${active ? 'text-neon-cyan' : 'group-hover:text-neon-purple'}`}>{icon}</span>
-    {label}
+    <span className={`transition-colors ${active ? 'text-neon-cyan' : 'group-hover:text-neon-purple'}`}>
+      {React.cloneElement(icon, { size: window.innerWidth < 768 ? 14 : 16 })}
+    </span>
+    <span className="md:inline">{label}</span>
   </button>
 );
 
@@ -410,7 +424,6 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
             </button>
         )}
         
-        {/* NYTT: Snygg Neon-knapp för Djupdykning */}
         <button 
           onClick={(e) => { e.preventDefault(); onDetails(); }}
           className="flex items-center gap-2 px-3 py-1.5 bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-cyan hover:text-black hover:border-neon-cyan transition-all shadow-sm"
