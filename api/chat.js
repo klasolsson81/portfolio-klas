@@ -319,7 +319,7 @@ export default async function handler(req, res) {
   try {
     const completion = await openai.chat.completions.create({
       messages,
-      model: 'gpt-5-mini', // Uppgraderad från gpt-4o
+      model: 'gpt-4o', // Uppgraderad från gpt-4o
       temperature: 0.7,
       max_tokens: 500,
       presence_penalty: 0.1,

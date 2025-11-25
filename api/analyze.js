@@ -251,7 +251,7 @@ Analysera förfrågan enligt reglerna och svara med JSON.
         { role: 'system', content: RULES },
         { role: 'user', content: userPrompt }
       ],
-      model: 'gpt-5-mini', // Uppgraderad från gpt-4o
+      model: 'gpt-4o', // Uppgraderad från gpt-4o
       response_format: { type: 'json_object' },
       temperature: 0.3,
       max_tokens: 800
