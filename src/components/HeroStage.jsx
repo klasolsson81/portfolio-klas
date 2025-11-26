@@ -208,7 +208,7 @@ const HeroStage = () => {
       >
         {/* VÄNSTER: Profil & Kontakt */}
 
-        <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
+        <motion.div layout className="p-4 md:p-4 lg:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
             <button onClick={toggleLang} className="flex items-center gap-2 text-[10px] text-gray-400 hover:text-neon-cyan uppercase tracking-widest bg-black/40 px-3 py-1 rounded-full border border-white/10 transition-colors">
@@ -286,15 +286,20 @@ const HeroStage = () => {
               <motion.div 
                 key="about" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-6 overflow-y-auto pr-2 custom-scrollbar h-full"
+                // ÄNDRING: space-y-3 för laptop, space-y-6 för desktop
+                className="space-y-3 lg:space-y-6 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
-                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.whoami}</h2>
-                <div className="space-y-4 text-gray-300 leading-relaxed text-sm md:text-base">
+                {/* ÄNDRING: mb-2 för laptop, mb-4 för desktop */}
+                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-2 lg:mb-4">{t.titles.whoami}</h2>
+                
+                {/* ÄNDRING: space-y-2 & text-sm för laptop, space-y-4 & text-base för desktop */}
+                <div className="space-y-2 lg:space-y-4 text-gray-300 leading-relaxed text-sm lg:text-base">
                   <p><strong className="text-white">{t.about.intro1.split('.')[0]}.</strong> {t.about.intro1.split('.').slice(1).join('.')}.</p>
                   <p dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', '<span class="text-neon-cyan font-bold">n8n</span>') }} />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-white/10">
+                {/* ÄNDRING: gap-4 & pt-2 för laptop, gap-6 & pt-4 för desktop */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 pt-2 lg:pt-4 border-t border-white/10">
                   <div>
                      <h3 className="text-[10px] font-bold mb-2 uppercase tracking-widest animate-subtitle-shimmer bg-clip-text text-transparent">
                      {t.about.factsTitle}
