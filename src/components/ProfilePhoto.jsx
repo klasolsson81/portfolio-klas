@@ -38,7 +38,7 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       // ÄNDRING: w-20 (80px) på laptop. w-28 (112px) på mellan. w-56 (224px) på stor.
-      className="relative w-20 h-20 md:w-24 md:h-24 xl:w-50 xl:h-50 mx-auto md:mx-0 rounded-full shadow-2xl transition-all duration-500 group cursor-pointer z-10"
+      className="relative w-20 h-20 md:w-28 md:h-28 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-full shadow-2xl transition-all duration-500 group cursor-pointer z-10"
     >
       {/* GLOW */}
       {!disableMotion && (
