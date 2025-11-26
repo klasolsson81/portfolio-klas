@@ -172,7 +172,8 @@ const HeroStage = () => {
   const toggleLang = () => setLang(l => l === 'sv' ? 'en' : 'sv');
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-3 md:p-8 relative z-10">
+    // FIX 1: Ändrat padding från p-3 md:p-8 till p-2 md:p-4 för att spara plats i ytterkant
+    <div className="min-h-screen flex items-center justify-center p-2 md:p-4 relative z-10">
       
       <AnimatePresence>
         {activeVideo && (
@@ -203,7 +204,8 @@ const HeroStage = () => {
 
       <motion.div 
         layout
-        className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[95vh] md:h-[90vh] max-h-[900px]"
+        // FIX 2: Ändrat höjd till h-[85vh] (var 95/90) för att garantera att det ryms
+        className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[90vh] md:h-[85vh] max-h-[900px]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
@@ -230,7 +232,7 @@ const HeroStage = () => {
             <p className="text-neon-cyan font-mono text-sm mt-1 uppercase tracking-wider">{t.role}</p>
           </motion.div>
 
-          {/* KONTAKT & CV - Uppdaterad för mobil */}
+          {/* KONTAKT & CV */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 my-4 z-10 w-full">
             <div className="flex gap-3">
               <button 
@@ -249,7 +251,6 @@ const HeroStage = () => {
 
             <div className="hidden md:block w-px h-5 bg-white/20"></div>
 
-            {/* NY CV-KNAPP: Bara ikon + Glow-effekt */}
             <a 
               href="/CV_Klas_Olsson.pdf" 
               download="CV_Klas_Olsson.pdf"
@@ -265,7 +266,6 @@ const HeroStage = () => {
             </a>
           </div>
 
-          {/* MENY: Uppdaterad för mobil (ikoner över text) */}
           <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-2 md:space-y-2 md:gap-0 justify-between md:justify-start">
             <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} />
             <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} />
@@ -277,7 +277,6 @@ const HeroStage = () => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // ÄNDRING: h-full för att fylla ut utrymmet och låta innehållet (HireMe) scrolla
           className="flex-1 p-4 md:p-8 bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full"
         >
           <AnimatePresence mode="wait">
@@ -286,20 +285,19 @@ const HeroStage = () => {
               <motion.div 
                 key="about" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                // ÄNDRING: space-y-3 för laptop, space-y-6 för desktop
-                className="space-y-3 lg:space-y-6 overflow-y-auto pr-2 custom-scrollbar h-full"
+                // FIX 3: Tvingat space-y-4 och tagit bort "lg:space-y-6". Detta gör det kompakt oavsett skärmbredd.
+                className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
-                {/* ÄNDRING: mb-2 för laptop, mb-4 för desktop */}
-                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-2 lg:mb-4">{t.titles.whoami}</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-2">{t.titles.whoami}</h2>
                 
-                {/* ÄNDRING: space-y-2 & text-sm för laptop, space-y-4 & text-base för desktop */}
-                <div className="space-y-2 lg:space-y-4 text-gray-300 leading-relaxed text-sm lg:text-base">
+                {/* FIX 4: Tvingat text-sm (mindre text) för alla skärmar */}
+                <div className="space-y-3 text-gray-300 leading-relaxed text-sm">
                   <p><strong className="text-white">{t.about.intro1.split('.')[0]}.</strong> {t.about.intro1.split('.').slice(1).join('.')}.</p>
                   <p dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', '<span class="text-neon-cyan font-bold">n8n</span>') }} />
                 </div>
 
-                {/* ÄNDRING: gap-4 & pt-2 för laptop, gap-6 & pt-4 för desktop */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 pt-2 lg:pt-4 border-t border-white/10">
+                {/* FIX 5: Tvingat gap-4 och pt-4, tagit bort större "lg" värden */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/10">
                   <div>
                      <h3 className="text-[10px] font-bold mb-2 uppercase tracking-widest animate-subtitle-shimmer bg-clip-text text-transparent">
                      {t.about.factsTitle}
@@ -381,7 +379,6 @@ const HeroStage = () => {
               </motion.div>
             )}
 
-            {/* HÄR: HireMe omsluts nu av en scrollbar-div */}
             {section === 'hire' && (
               <motion.div 
                 key="hire" 
@@ -399,7 +396,6 @@ const HeroStage = () => {
   );
 };
 
-// NavButton för mobil (Ikon över text)
 const NavButton = ({ label, icon, active, onClick }) => (
   <button 
     onClick={onClick}
