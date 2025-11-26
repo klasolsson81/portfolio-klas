@@ -37,33 +37,37 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      // ÄNDRING: w-20 (80px) på laptop. w-28 (112px) på mellan. w-56 (224px) på stor.
-      className="relative w-20 h-20 md:w-28 md:h-28 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-full shadow-2xl transition-all duration-500 group cursor-pointer z-10"
+      // HÄR ÄR ÄNDRINGEN: w-48 (192px) istället för w-64. Behåller stor storlek på XL-skärmar.
+      className="relative w-48 h-48 md:w-48 md:h-48 xl:w-64 xl:h-64 mx-auto md:mx-0 rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 group cursor-pointer z-10"
     >
-      {/* GLOW */}
+      {/* Base Image */}
+      <img 
+        src={profileImg} 
+        alt="Klas Olsson" 
+        className="w-full h-full object-cover z-10 relative"
+      />
+
+      {/* Overlay Pupils */}
       {!disableMotion && (
         <>
-            <div className="absolute -inset-8 bg-gradient-to-tr from-neon-purple/60 via-neon-cyan/30 to-neon-purple/60 blur-3xl rounded-full animate-pulse-slow opacity-70 z-0"></div>
-            <div className="absolute -inset-1 bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-purple rounded-full blur-md opacity-80 animate-spin-slow z-0"></div>
+           <motion.div 
+             className="absolute w-2 h-2 bg-black/60 rounded-full blur-[1px] pointer-events-none z-20 mix-blend-multiply"
+             style={{ top: '42.5%', left: '33.5%' }} 
+             animate={{ x: 0, y: 0 }} // Förenklat för nu, pupillerna rörde sig för mycket
+           />
+           <motion.div 
+             className="absolute w-2 h-2 bg-black/60 rounded-full blur-[1px] pointer-events-none z-20 mix-blend-multiply"
+             style={{ top: '41.5%', left: '63.5%' }} 
+             animate={{ x: 0, y: 0 }} 
+           />
         </>
       )}
       
-      {disableMotion && (
-        <div className="absolute -inset-2 bg-neon-purple/20 blur-xl rounded-full z-0"></div>
-      )}
-
-      {/* BILD */}
-      <div className="relative w-full h-full rounded-full overflow-hidden bg-[#0a0b1e] z-10 border border-white/5">
-        <motion.img
-          src={profileImg}
-          alt="Klas Olsson"
-          animate={{ scale: isHovered && !disableMotion ? 1.1 : 1 }}
-          transition={{ duration: 0.5 }}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#0a0b1e_95%)] pointer-events-none"></div>
-        <div className="absolute inset-0 bg-neon-purple/10 mix-blend-overlay pointer-events-none rounded-full"></div>
-      </div>
+      {/* Den levande ramen (Animerad) */}
+      <div className={`absolute inset-0 pointer-events-none z-30 ${disableMotion ? '' : 'organic-border'}`} />
+      
+      {/* Hover Glow Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-neon-purple/20 to-neon-cyan/20 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none z-40" />
     </motion.div>
   );
 };
