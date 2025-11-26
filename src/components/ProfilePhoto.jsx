@@ -37,19 +37,20 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      // STORLEK: w-48 (192px) på laptop, w-64 (256px) på stor skärm.
-      className="relative w-48 h-48 xl:w-64 xl:h-64 mx-auto md:mx-0 rounded-[2rem] shadow-2xl transition-all duration-500 group cursor-pointer z-10"
+      // STORLEK: w-32 (128px) på laptop, w-56 (224px) på stor skärm.
+      // FORM: rounded-full (Rund)
+      className="relative w-32 h-32 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-full shadow-2xl transition-all duration-500 group cursor-pointer z-10"
     >
       {/* GLOW BAKOM */}
       {!disableMotion && (
-        <div className="absolute -inset-5 bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-[2.5rem] z-0"></div>
+        <div className="absolute -inset-6 bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-full z-0"></div>
       )}
       {disableMotion && (
-        <div className="absolute -inset-1 bg-neon-purple/20 blur-md rounded-[2rem] z-0"></div>
+        <div className="absolute -inset-2 bg-neon-purple/20 blur-xl rounded-full z-0"></div>
       )}
 
-      {/* BILDCONTAINER */}
-      <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-[#0a0b1e] z-10">
+      {/* BILDCONTAINER (Rund) */}
+      <div className="relative w-full h-full rounded-full overflow-hidden bg-[#0a0b1e] z-10 border border-white/5">
         
         <motion.img
           src={profileImg}
@@ -59,11 +60,11 @@ const ProfilePhoto = ({ disableMotion }) => {
           className="w-full h-full object-cover"
         />
         
-        {/* VÄNSTER OCH HÖGER TONING (Vinjett) */}
+        {/* VÄNSTER OCH HÖGER TONING (Vinjett) - Anpassad för rund form */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,#0a0b1e_95%)] pointer-events-none"></div>
         
         {/* LILA TINT */}
-        <div className="absolute inset-0 bg-neon-purple/10 mix-blend-overlay pointer-events-none rounded-[2rem]"></div>
+        <div className="absolute inset-0 bg-neon-purple/10 mix-blend-overlay pointer-events-none rounded-full"></div>
       </div>
     </motion.div>
   );
