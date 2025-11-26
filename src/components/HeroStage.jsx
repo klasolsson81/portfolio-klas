@@ -172,8 +172,8 @@ const HeroStage = () => {
   const toggleLang = () => setLang(l => l === 'sv' ? 'en' : 'sv');
 
   return (
-    // FIX 1: Ändrat padding från p-3 md:p-8 till p-2 md:p-4 för att spara plats i ytterkant
-    <div className="min-h-screen flex items-center justify-center p-2 md:p-4 relative z-10">
+    // FIX 1: "h-screen overflow-hidden". Detta TVINGAR bort yttre scrollbar.
+    <div className="h-screen w-full flex items-center justify-center p-2 md:p-6 overflow-hidden relative z-10">
       
       <AnimatePresence>
         {activeVideo && (
@@ -204,8 +204,9 @@ const HeroStage = () => {
 
       <motion.div 
         layout
-        // FIX 2: Ändrat höjd till h-[85vh] (var 95/90) för att garantera att det ryms
-        className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[90vh] md:h-[85vh] max-h-[900px]"
+        // FIX 2: "h-full" gör att den fyller utrymmet som paddingen i föräldern lämnar kvar.
+        // max-h-[900px] ser till att det inte ser konstigt ut på gigantiska skärmar.
+        className="w-full max-w-7xl bg-[#0a0b1e]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-full max-h-[900px]"
         style={{ borderRadius: 24, boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
@@ -285,18 +286,16 @@ const HeroStage = () => {
               <motion.div 
                 key="about" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                // FIX 3: Tvingat space-y-4 och tagit bort "lg:space-y-6". Detta gör det kompakt oavsett skärmbredd.
+                // FIX 3: Behåller de kompakta avstånden (space-y-4)
                 className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
                 <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-2">{t.titles.whoami}</h2>
                 
-                {/* FIX 4: Tvingat text-sm (mindre text) för alla skärmar */}
                 <div className="space-y-3 text-gray-300 leading-relaxed text-sm">
                   <p><strong className="text-white">{t.about.intro1.split('.')[0]}.</strong> {t.about.intro1.split('.').slice(1).join('.')}.</p>
                   <p dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', '<span class="text-neon-cyan font-bold">n8n</span>') }} />
                 </div>
 
-                {/* FIX 5: Tvingat gap-4 och pt-4, tagit bort större "lg" värden */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/10">
                   <div>
                      <h3 className="text-[10px] font-bold mb-2 uppercase tracking-widest animate-subtitle-shimmer bg-clip-text text-transparent">
