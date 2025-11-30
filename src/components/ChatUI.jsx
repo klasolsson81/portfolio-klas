@@ -4,7 +4,6 @@ import { Send, Loader2, Sparkles } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import aiKlasImage from '../assets/aiklas.png';
 
-// NYTT: Tar emot isDark prop
 const ChatUI = ({ lang, isDark }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -21,16 +20,15 @@ const ChatUI = ({ lang, isDark }) => {
     setMessages([{ role: 'assistant', content: welcomeText }]);
   }, [lang]);
 
-  // ... (sendMessage och handleKeyDown är samma som förut, inga ändringar behövs där) ...
   const sendMessage = async (e) => { if (e) e.preventDefault(); const cleanInput = input.trim(); if (!cleanInput || loading) return; const userMsg = { role: 'user', content: cleanInput }; setMessages(prev => [...prev, userMsg]); setInput(''); if (textareaRef.current) { textareaRef.current.style.height = 'auto'; } setLoading(true); try { const res = await axios.post('/api/chat', { message: cleanInput.substring(0, MAX_LENGTH), lang: lang }, { timeout: 15000 }); setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]); } catch (err) { console.error('Chat error:', err); let errorMsg = lang === 'sv' ? "Något gick fel. Försök igen." : "Something went wrong. Please try again."; if (err.code === 'ECONNABORTED') { errorMsg = lang === 'sv' ? "Det tog för lång tid. Försök igen." : "Timeout - please try again."; } setMessages(prev => [...prev, { role: 'assistant', content: errorMsg }]); } finally { setLoading(false); } };
   const handleKeyDown = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } };
   const handleInput = (e) => { setInput(e.target.value); e.target.style.height = 'auto'; e.target.style.height = `${e.target.scrollHeight}px`; };
   useEffect(() => { scrollRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
   return (
-    // ÄNDRING: Ljusare bakgrund i ljust läge
+    // ÄNDRING: bg-[#fffbf5] (varmvit) och border-stone-200
     <div className={`flex flex-col h-full w-full rounded-2xl overflow-hidden border shadow-inner relative transition-colors duration-300
-      ${isDark ? 'bg-black/40 border-white/5' : 'bg-white border-gray-200'}`}>
+      ${isDark ? 'bg-black/40 border-white/5' : 'bg-[#fffbf5] border-stone-200'}`}>
        
        <div className="absolute top-4 right-4 opacity-20 pointer-events-none">
           <Sparkles size={40} className="text-neon-purple animate-pulse"/>
@@ -48,11 +46,11 @@ const ChatUI = ({ lang, isDark }) => {
               />
             )}
 
-            {/* ÄNDRING: Anpassade färger för bubblorna i ljust/mörkt läge */}
+            {/* ÄNDRING: Varmare färger på bubblorna i ljust läge */}
             <div className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed shadow-sm overflow-hidden transition-colors duration-300 ${
               m.role === 'user' 
-                ? (isDark ? 'bg-neon-purple/20 text-white border border-neon-purple/30 rounded-tr-sm' : 'bg-neon-purple/10 text-gray-800 border border-neon-purple/20 rounded-tr-sm')
-                : (isDark ? 'bg-[#1a1b2e] text-gray-200 border border-white/5 rounded-tl-sm' : 'bg-gray-100 text-gray-800 border border-gray-200 rounded-tl-sm')
+                ? (isDark ? 'bg-neon-purple/20 text-white border border-neon-purple/30 rounded-tr-sm' : 'bg-purple-100 text-purple-900 border border-purple-200 rounded-tr-sm')
+                : (isDark ? 'bg-[#1a1b2e] text-gray-200 border border-white/5 rounded-tl-sm' : 'bg-[#f5eee6] text-stone-700 border border-stone-200 rounded-tl-sm')
             }`}>
               <ReactMarkdown
                 components={{
@@ -77,9 +75,9 @@ const ChatUI = ({ lang, isDark }) => {
                     alt="AI Klas Thinking"
                     className="w-14 h-14 rounded-full mr-3 shrink-0 object-cover border border-neon-purple/30 opacity-80"
                   />
-                {/* ÄNDRING: Laddar-bubbla anpassad */}
+                {/* ÄNDRING: Varmare laddar-bubbla */}
                 <div className={`p-4 rounded-2xl rounded-tl-sm border flex items-center gap-2 text-sm transition-colors duration-300
-                  ${isDark ? 'bg-[#1a1b2e] border-white/5 text-gray-400' : 'bg-gray-100 border-gray-200 text-gray-600'}`}>
+                  ${isDark ? 'bg-[#1a1b2e] border-white/5 text-gray-400' : 'bg-[#f5eee6] border-stone-200 text-stone-500'}`}>
                     <Loader2 className="animate-spin text-neon-purple" size={16} />
                     {lang === 'sv' ? "Tänker..." : "Thinking..."}
                 </div>
@@ -88,11 +86,10 @@ const ChatUI = ({ lang, isDark }) => {
         <div ref={scrollRef} />
       </div>
 
-      {/* ÄNDRING: Input-område anpassat */}
+      {/* ÄNDRING: Varmare Input-område */}
       <form onSubmit={sendMessage} className={`p-3 md:p-4 border-t relative transition-colors duration-300
-        ${isDark ? 'bg-black/80 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+        ${isDark ? 'bg-black/80 border-white/10' : 'bg-[#fbf7f2] border-stone-200'}`}>
         <div className="flex gap-2 items-end">
-            {/* ÄNDRING: Textarea anpassad */}
             <textarea 
               ref={textareaRef}
               rows={1}
@@ -100,10 +97,11 @@ const ChatUI = ({ lang, isDark }) => {
               onChange={handleInput}
               onKeyDown={handleKeyDown}
               placeholder={lang === 'sv' ? "Skriv din fråga här..." : "Type your question..."}
+              // ÄNDRING: Varmare input-fält
               className={`flex-1 rounded-xl px-4 py-3 outline-none text-sm transition-colors resize-none overflow-hidden min-h-[46px] max-h-[120px]
                 ${isDark 
                   ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-neon-purple/50' 
-                  : 'bg-white border border-gray-300 text-gray-800 placeholder-gray-400 focus:border-neon-purple'}`}
+                  : 'bg-white border border-stone-300 text-stone-800 placeholder-stone-400 focus:border-neon-purple'}`}
               maxLength={MAX_LENGTH} 
               aria-label="Chat input"
             />
