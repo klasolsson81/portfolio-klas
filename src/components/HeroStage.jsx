@@ -194,8 +194,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        // HÄR: Snyggare bakgrund i ljust läge (vit med svag lila tint och skugga)
-        className="w-full max-w-7xl bg-white/80 dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
+        className="w-full max-w-7xl bg-white dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
@@ -257,7 +256,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // ÄNDRING: Mjukare ljus bakgrund och övergång
           className="flex-1 p-4 md:p-8 bg-white/50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
         >
           <AnimatePresence mode="wait">
@@ -293,7 +291,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                     </h3>
                     <div className="flex flex-wrap gap-1.5">
                         {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Tailwind CSS', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
-                        <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-neon-purple/10 border border-gray-200 dark:border-neon-purple/30 rounded text-[10px] md:text-xs text-neon-purple dark:text-neon-cyan font-mono cursor-default hover:bg-gray-200 dark:hover:bg-neon-purple/20 transition-colors">
+                        <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-neon-purple/10 border border-gray-300 dark:border-neon-purple/30 rounded text-[10px] md:text-xs text-neon-purple dark:text-neon-cyan font-mono cursor-default hover:bg-gray-300 dark:hover:bg-neon-purple/20 transition-colors">
                             {tag}
                         </span>
                         ))}
@@ -323,7 +321,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
                 <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.projects}</h2>
-                {/* HÄR ÄR RÄTTELSEN: ProjectCards har nu fixade färger för Dark Mode */}
+                
                 <ProjectCard 
                   title="Console Detective AI" 
                   desc={lang === 'sv' ? "Ett textbaserat noir-detektivspel..." : "A text-based noir detective game..."}
@@ -334,6 +332,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   watchText={t.projects.watch}
                   onDetails={() => setActiveSlideshow({ title: "Console Detective AI", slides: PROJECT_SLIDES.detective })}
                   detailsText={t.projects.details}
+                  isDark={isDark}
                 />
                 <ProjectCard 
                   title="Fitness Progress Tracker" 
@@ -342,6 +341,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   link="https://github.com/klasolsson81/FitnessProgressTracker"
                   onDetails={() => setActiveSlideshow({ title: "Fitness Progress Tracker", slides: PROJECT_SLIDES.fitness })}
                   detailsText={t.projects.details}
+                  isDark={isDark}
                 />
                 <ProjectCard 
                   title="Portfolio AI (This Site)" 
@@ -350,8 +350,10 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   link="https://github.com/klasolsson81/portfolio-klas"
                   onDetails={() => setActiveSlideshow({ title: "Portfolio AI", slides: PROJECT_SLIDES.portfolio })}
                   detailsText={t.projects.details}
+                  isDark={isDark}
                 />
-                <div className="mt-4 p-4 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-xl text-center text-gray-500 text-xs bg-gray-50 dark:bg-black/20">
+
+                 <div className="mt-4 p-4 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-xl text-center text-gray-500 text-xs bg-gray-50 dark:bg-black/20">
                    {t.projects.more}
                  </div>
               </motion.div>
@@ -390,31 +392,45 @@ const NavButton = ({ label, icon, active, onClick }) => (
   </button>
 );
 
-const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText }) => (
-  <div className="bg-white dark:bg-gradient-to-br dark:from-white/5 dark:to-transparent p-5 rounded-xl border border-gray-200 dark:border-white/10 hover:border-neon-purple dark:hover:border-neon-cyan/50 transition-all group shadow-sm dark:shadow-lg hover:shadow-neon-purple/20 dark:hover:shadow-neon-cyan/20 relative">
+// ÄNDRING: Nu tar ProjectCard emot 'isDark' och anpassar stilen
+const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText, isDark }) => (
+  <div className={`p-5 rounded-xl border transition-all group relative shadow-lg
+    ${isDark 
+      ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 hover:shadow-neon-cyan/20' 
+      : 'bg-white border-gray-200 hover:border-neon-purple/50 hover:shadow-neon-purple/20'}`}>
+      
     <div className="flex justify-between items-start pr-8">
-      <h3 className="font-bold text-base md:text-lg text-gray-800 dark:text-white group-hover:text-neon-purple dark:group-hover:text-neon-cyan transition-colors">{title}</h3>
-      <a href={link} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-black dark:hover:text-white transition-colors" title="View Code">
+      <h3 className={`font-bold text-base md:text-lg transition-colors ${isDark ? 'text-white group-hover:text-neon-cyan' : 'text-gray-800 group-hover:text-neon-purple'}`}>{title}</h3>
+      <a href={link} target="_blank" rel="noopener noreferrer" className={`transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`} title="View Code">
         <ExternalLink size={18} />
       </a>
     </div>
-    <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-2 mb-3 leading-relaxed">{desc}</p>
+    
+    <p className={`text-xs md:text-sm mt-2 mb-3 leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{desc}</p>
+    
     <div className="flex gap-3 mb-3">
         {videoSrc && (
-            <button onClick={(e) => { e.preventDefault(); onPlay(); }} className="flex items-center gap-2 px-3 py-1.5 bg-purple-50 dark:bg-neon-purple/10 text-neon-purple border border-purple-200 dark:border-neon-purple/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all shadow-sm">
+            <button onClick={(e) => { e.preventDefault(); onPlay(); }} className={`flex items-center gap-2 px-3 py-1.5 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm
+              ${isDark 
+                ? 'bg-neon-purple/10 text-neon-purple border-neon-purple/30 hover:bg-neon-purple hover:text-white' 
+                : 'bg-purple-50 text-neon-purple border-purple-200 hover:bg-neon-purple hover:text-white'}`}>
                 <Play size={12} fill="currentColor" /> {watchText}
             </button>
         )}
-        <button onClick={(e) => { e.preventDefault(); onDetails(); }} className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 dark:bg-neon-cyan/10 text-gray-700 dark:text-neon-cyan border border-gray-200 dark:border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-gray-200 dark:hover:bg-neon-cyan hover:text-black transition-all shadow-sm">
+        <button onClick={(e) => { e.preventDefault(); onDetails(); }} className={`flex items-center gap-2 px-3 py-1.5 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm
+          ${isDark 
+            ? 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan hover:text-black' 
+            : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:text-black'}`}>
             <Layers size={12} /> {detailsText}
         </button>
     </div>
+    
     <div className="flex flex-wrap gap-1.5 mt-auto">
       {tags.map(t => (
-        <span key={t} className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border border-gray-200 dark:border-white/10 
-            ${t === 'Team Lead' || t === 'Scrum' 
-              ? 'bg-purple-50 dark:bg-neon-purple/10 text-neon-purple border-purple-200 dark:border-neon-purple/30' 
-              : 'bg-gray-50 dark:bg-black/40 text-gray-500 dark:text-gray-400'}`}>{t}</span>
+        <span key={t} className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border 
+            ${isDark 
+              ? (t === 'Team Lead' || t === 'Scrum' ? 'bg-neon-purple/20 text-white border-neon-purple/30' : 'bg-black/40 text-gray-400 border-white/10')
+              : (t === 'Team Lead' || t === 'Scrum' ? 'bg-purple-50 text-neon-purple border-purple-200' : 'bg-gray-100 text-gray-500 border-gray-200')}`}>{t}</span>
       ))}
     </div>
   </div>
