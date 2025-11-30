@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
 import ChatUI from './ChatUI';
-import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download, Layers, Briefcase, Moon, Sun } from 'lucide-react';
+import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download, Layers, Briefcase, Moon, Sun, TrendingUp } from 'lucide-react';
 import GithubStats from './GithubStats';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import ProjectSlideshow from './ProjectSlideshow';
 import HireMe from './HireMe';
 import FloatingCTA from './FloatingCTA';
+import DevTimeline from './DevTimeline';
 
 // VIDEO
 import detectiveVideo from '../assets/video.mp4';
@@ -118,8 +119,21 @@ const PROJECT_SLIDES = {
 const TRANSLATIONS = {
   sv: {
     role: "IT-Konsult & Systemutvecklare",
-    nav: { about: "Om mig", chat: "AI-Chat", projects: "Projekt", hire: "Anlita", cv: "CV" },
-    titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt", hire: "Anlita mig" },
+    nav: { 
+      about: "Om mig", 
+      chat: "AI-Chat", 
+      projects: "Projekt", 
+      journey: "Min resa",
+      hire: "Anlita", 
+      cv: "CV" 
+    },
+    titles: { 
+      whoami: "Vem är jag?", 
+      ai: "Fråga mig vad som helst", 
+      projects: "Projekt", 
+      journey: "Min resa",
+      hire: "Anlita mig" 
+    },
     about: {
       intro1: "Driven Systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på kod och arkitektur.",
       intro2: "Jag kombinerar djup .NET-kunskap med modern AI-utveckling. Jag är inte rädd för nya språk och använder AI för att snabbt sätta mig in i nya tekniker vid behov.",
@@ -132,8 +146,21 @@ const TRANSLATIONS = {
   },
   en: {
     role: "IT Consultant & System Developer",
-    nav: { about: "About", chat: "AI Chat", projects: "Projects", hire: "Hire Me", cv: "CV" },
-    titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects", hire: "Hire Me" },
+    nav: { 
+      about: "About", 
+      chat: "AI Chat", 
+      projects: "Projects", 
+      journey: "Journey",
+      hire: "Hire Me", 
+      cv: "CV" 
+    },
+    titles: { 
+      whoami: "Who am I?", 
+      ai: "Ask me anything", 
+      projects: "Projects", 
+      journey: "My Journey",
+      hire: "Hire Me" 
+    },
     about: {
       intro1: "Driven System Developer focusing on .NET. Currently on leave of absence to fully commit to code and architecture.",
       intro2: "Combining deep .NET knowledge with modern AI development. I'm adaptable and leverage AI to rapidly master new languages or frameworks when projects require it.",
@@ -163,7 +190,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
   // FIX: Automatisk språk-detektering vid start
   useEffect(() => {
     const userLang = navigator.language || navigator.userLanguage;
-    // Om språket inte är svenska, sätt engelska som standard
     if (!userLang.startsWith('sv')) {
       setLang('en');
     }
@@ -213,7 +239,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        // UPPDATERAD: Mjuk varm bakgrund för light mode
         className={`w-full max-w-7xl backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
           ${isDark 
             ? 'bg-neon-darkbg/80 border border-white/10 shadow-2xl' 
@@ -227,7 +252,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             ${isDark ? 'border-white/10' : 'border-warm-border'}`}
         >          
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
-            {/* Theme toggle */}
             <button 
               onClick={toggleTheme} 
               className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm
@@ -238,7 +262,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            {/* Language toggle */}
             <button 
               onClick={toggleLang} 
               className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm hover:scale-105 active:scale-95 overflow-hidden
@@ -250,7 +273,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-lg`}></span>
             </button>
             
-            {/* Motion toggle */}
             <button 
               onClick={() => setReduceMotion(!reduceMotion)} 
               className={`text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border transition-colors shadow-sm
@@ -262,7 +284,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             </button>
           </div>
 
-          {/* Gradient overlay */}
           <div className={`absolute inset-0 pointer-events-none
             ${isDark 
               ? 'bg-gradient-to-br from-neon-purple/10 to-transparent' 
@@ -282,7 +303,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             </p>
           </motion.div>
 
-          {/* Social links & CV */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 my-4 z-10 w-full">
             <div className="flex gap-3">
               <button 
@@ -338,9 +358,10 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             </a>
           </div>
 
-          {/* Navigation */}
-          <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-2 md:space-y-2 md:gap-0 justify-between md:justify-start">
+          {/* Navigation - UPPDATERAD med "Min resa" */}
+          <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-1 md:space-y-1.5 md:gap-0 justify-between md:justify-start overflow-x-auto">
             <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} isDark={isDark} />
+            <NavButton label={t.nav.journey} icon={<TrendingUp />} active={section === 'journey'} onClick={() => setSection('journey')} isDark={isDark} />
             <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} isDark={isDark} />
             <NavButton label={t.nav.projects} icon={<Code />} active={section === 'projects'} onClick={() => setSection('projects')} isDark={isDark} />
             <NavButton label={t.nav.hire} icon={<Briefcase />} active={section === 'hire'} onClick={() => setSection('hire')} isDark={isDark} />
@@ -410,6 +431,17 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 </div>
 
                 <GithubStats isDark={isDark} />
+              </motion.div>
+            )}
+
+            {/* NY SEKTION: Min resa / DevTimeline */}
+            {section === 'journey' && (
+              <motion.div 
+                key="journey" 
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                className="flex-1 min-h-0 flex flex-col overflow-hidden"
+              >
+                <DevTimeline lang={lang} isDark={isDark} />
               </motion.div>
             )}
 
@@ -493,7 +525,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
   );
 };
 
-// UPPDATERAD NavButton med isDark prop
 const NavButton = ({ label, icon, active, onClick, isDark }) => (
   <button 
     onClick={onClick}
@@ -516,7 +547,6 @@ const NavButton = ({ label, icon, active, onClick, isDark }) => (
   </button>
 );
 
-// UPPDATERAD ProjectCard med mjuka light mode-färger
 const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText, isDark }) => (
   <div className={`p-5 rounded-xl border transition-all group relative shadow-lg
     ${isDark 
