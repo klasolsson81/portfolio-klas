@@ -37,31 +37,35 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      // ÄNDRING: w-20 (80px) på laptop. w-28 (112px) på mellan. w-56 (224px) på stor.
-      className="relative w-20 h-20 md:w-28 md:h-28 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-full shadow-2xl transition-all duration-500 group cursor-pointer z-10"
+      // STORLEK: w-32 (128px) på laptop, w-56 (224px) på stor skärm.
+      className="relative w-32 h-32 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-full shadow-2xl transition-all duration-500 group cursor-pointer z-10"
     >
-      {/* GLOW */}
+      {/* GLOW BAKOM */}
       {!disableMotion && (
-        <>
-            <div className="absolute -inset-8 bg-gradient-to-tr from-neon-purple/60 via-neon-cyan/30 to-neon-purple/60 blur-3xl rounded-full animate-pulse-slow opacity-70 z-0"></div>
-            <div className="absolute -inset-1 bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-purple rounded-full blur-md opacity-80 animate-spin-slow z-0"></div>
-        </>
+        <div className="absolute -inset-6 bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-full z-0"></div>
       )}
-      
       {disableMotion && (
         <div className="absolute -inset-2 bg-neon-purple/20 blur-xl rounded-full z-0"></div>
       )}
 
-      {/* BILD */}
+      {/* BILDCONTAINER */}
       <div className="relative w-full h-full rounded-full overflow-hidden bg-[#0a0b1e] z-10 border border-white/5">
+        
         <motion.img
           src={profileImg}
-          alt="Klas Olsson"
+          alt="Klas Olsson - Systemutvecklare .NET"
+          // PERFORMANCE OPTIMERINGAR HÄR:
+          loading="lazy"
+          decoding="async"
           animate={{ scale: isHovered && !disableMotion ? 1.1 : 1 }}
           transition={{ duration: 0.5 }}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#0a0b1e_95%)] pointer-events-none"></div>
+        
+        {/* VÄNSTER OCH HÖGER TONING (Vinjett) */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,#0a0b1e_95%)] pointer-events-none"></div>
+        
+        {/* LILA TINT */}
         <div className="absolute inset-0 bg-neon-purple/10 mix-blend-overlay pointer-events-none rounded-full"></div>
       </div>
     </motion.div>

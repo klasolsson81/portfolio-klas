@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Send, Loader2, User, Sparkles } from 'lucide-react';
-import ReactMarkdown from 'react-markdown'; // <--- NY IMPORT
-
+import ReactMarkdown from 'react-markdown';
 import aiKlasImage from '../assets/aiklas.png';
 
 const ChatUI = ({ lang }) => {
@@ -10,6 +9,8 @@ const ChatUI = ({ lang }) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
+  const textareaRef = useRef(null); // Ny ref för textfältet
+  const MAX_LENGTH = 500;
 
   useEffect(() => {
     const welcomeText = lang === 'sv' 
@@ -20,22 +21,61 @@ const ChatUI = ({ lang }) => {
   }, [lang]);
 
   const sendMessage = async (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+    if (e) e.preventDefault();
+    
+    const cleanInput = input.trim();
+    if (!cleanInput || loading) return;
 
-    const userMsg = { role: 'user', content: input };
+    const userMsg = { role: 'user', content: cleanInput };
     setMessages(prev => [...prev, userMsg]);
+    
+    // Återställ input och höjd
     setInput('');
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
+    
     setLoading(true);
 
     try {
-      const res = await axios.post('/api/chat', { message: input, lang: lang });
+      const res = await axios.post('/api/chat', { 
+        message: cleanInput.substring(0, MAX_LENGTH), 
+        lang: lang 
+      }, {
+        timeout: 15000 
+      });
+
       setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
+
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'assistant', content: lang === 'sv' ? "Kunde inte nå servern." : "Could not reach server." }]);
+      console.error('Chat error:', err);
+      let errorMsg = lang === 'sv' ? "Något gick fel. Försök igen." : "Something went wrong. Please try again.";
+      
+      if (err.code === 'ECONNABORTED') {
+        errorMsg = lang === 'sv' ? "Det tog för lång tid. Försök igen." : "Timeout - please try again.";
+      }
+
+      setMessages(prev => [...prev, { role: 'assistant', content: errorMsg }]);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Hantera tangenter (Enter skickar, Shift+Enter gör ny rad)
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // Hindra ny rad
+      sendMessage();
+    }
+  };
+
+  // Auto-expand funktion
+  const handleInput = (e) => {
+    setInput(e.target.value);
+    // Nollställ höjd för att räkna om
+    e.target.style.height = 'auto';
+    // Sätt ny höjd baserat på innehåll
+    e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
   useEffect(() => {
@@ -48,7 +88,6 @@ const ChatUI = ({ lang }) => {
           <Sparkles size={40} className="text-neon-purple animate-pulse"/>
        </div>
 
-      {/* Meddelandelista */}
       <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start items-end'}`}>
@@ -66,12 +105,9 @@ const ChatUI = ({ lang }) => {
                 ? 'bg-neon-purple/20 text-white border border-neon-purple/30 rounded-tr-sm' 
                 : 'bg-[#1a1b2e] text-gray-200 border border-white/5 rounded-tl-sm'
             }`}>
-              {/* HÄR ÄR MAGIN: ReactMarkdown renderar texten snyggt */}
               <ReactMarkdown
                 components={{
-                  // Gör länkar Cyan, understrukna och öppnas i ny flik
                   a: ({node, ...props}) => <a {...props} className="text-neon-cyan underline hover:text-white break-all" target="_blank" rel="noopener noreferrer" />,
-                  // Fixa listor och paragrafer
                   p: ({node, ...props}) => <p {...props} className="mb-2 last:mb-0" />,
                   ul: ({node, ...props}) => <ul {...props} className="list-disc pl-4 mb-2 space-y-1" />,
                   ol: ({node, ...props}) => <ol {...props} className="list-decimal pl-4 mb-2 space-y-1" />,
@@ -101,22 +137,36 @@ const ChatUI = ({ lang }) => {
         <div ref={scrollRef} />
       </div>
 
-      {/* Input */}
-      <form onSubmit={sendMessage} className="p-3 md:p-4 bg-black/80 border-t border-white/10 flex gap-2 items-center">
-        <input 
-          type="text" 
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={lang === 'sv' ? "Skriv din fråga här..." : "Type your question here..."}
-          className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2.5 outline-none text-white text-sm placeholder-gray-500 focus:border-neon-purple/50 transition-colors"
-        />
-        <button 
-          type="submit" 
-          disabled={loading}
-          className="p-2.5 rounded-full bg-neon-cyan text-black hover:bg-neon-purple hover:text-white transition-all disabled:opacity-50 shadow-lg shadow-neon-cyan/20 shrink-0"
-        >
-          <Send size={18} />
-        </button>
+      <form onSubmit={sendMessage} className="p-3 md:p-4 bg-black/80 border-t border-white/10 relative">
+        {/* Flex-container som justerar knappen längst ner (items-end) */}
+        <div className="flex gap-2 items-end">
+            <textarea 
+              ref={textareaRef}
+              rows={1}
+              value={input}
+              onChange={handleInput}
+              onKeyDown={handleKeyDown}
+              placeholder={lang === 'sv' ? "Skriv din fråga här..." : "Type your question..."}
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none text-white text-sm placeholder-gray-500 focus:border-neon-purple/50 transition-colors resize-none overflow-hidden min-h-[46px] max-h-[120px]"
+              maxLength={MAX_LENGTH} 
+              aria-label="Chat input"
+            />
+            
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="p-3 rounded-xl bg-neon-cyan text-black hover:bg-neon-purple hover:text-white transition-all disabled:opacity-50 shadow-lg shadow-neon-cyan/20 shrink-0 mb-[1px]"
+            >
+              <Send size={18} />
+            </button>
+        </div>
+
+        {/* Teckenräknare */}
+        {input.length > 400 && (
+            <div className="absolute bottom-1 left-6 text-[10px] text-gray-500">
+                {input.length} / {MAX_LENGTH}
+            </div>
+        )}
       </form>
     </div>
   );

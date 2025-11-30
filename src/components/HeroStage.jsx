@@ -124,7 +124,7 @@ if (hours < 8 && payment === 'Pro Bono') {
 
 const TRANSLATIONS = {
   sv: {
-    role: "Systemutvecklare .NET (Student)",
+    role: "Systemutvecklare | IT-Konsult",
     nav: { about: "Om mig", chat: "AI-Chat", projects: "Projekt", hire: "Anlita" },
     titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt", hire: "Anlita mig" },
     about: {
@@ -138,7 +138,7 @@ const TRANSLATIONS = {
     projects: { more: "Fler projekt finns på min GitHub!", watch: "Se Trailer", details: "Djupdykning" }
   },
   en: {
-    role: ".NET System Developer (Student)",
+    role: "System Developer | IT Consultant",
     nav: { about: "About", chat: "AI Chat", projects: "Projects", hire: "Hire Me" },
     titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects", hire: "Hire Me" },
     about: {
