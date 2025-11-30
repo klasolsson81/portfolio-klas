@@ -109,16 +109,8 @@ const PROJECT_SLIDES = {
     {
       title: "Feature: AI-Projektledare",
       type: "code",
-      content: <p>Jag byggde en funktion där kunder kan skicka uppdragsförfrågningar. En AI-agent analyserar förfrågan i realtid, bedömer om den passar min tidsplan (8h gräns för pro bono) och ger direkt feedback innan mailet ens skickas.</p>,
-      code: `// AI-logik i backend (förenklad)
-if (hours < 8 && payment === 'Pro Bono') {
-  return { approved: true, feedback: "Perfekt portfolio-projekt!" };
-} else if (hours > 40 && payment === 'Pro Bono') {
-  return { approved: false, feedback: "Tyvärr, för stort för att göra gratis." };
-}`
+      content: <p>Jag byggde en funktion där kunder kan skicka uppdragsförfrågningar. En AI-agent analyserar förfrågan i realtid, bedömer om den passar min tidsplan (8h gräns för pro bono) och ger direkt feedback innan mailet ens skickas.</p>
     }
-
-
   ]
 };
 
@@ -202,28 +194,28 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        // ÄNDRING: Använder 'bg-white' istället för 'bg-white/80' i ljust läge för att slippa genomskinlighet mot den ljusgrå bakgrunden.
-        className="w-full max-w-7xl bg-white dark:bg-[#0a0b1e]/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-colors duration-300"
+        // HÄR: Snyggare bakgrund i ljust läge (vit med svag lila tint och skugga)
+        className="w-full max-w-7xl bg-white/80 dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
-        <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-gray-200 dark:border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
+        <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-gray-200/50 dark:border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
-            <button onClick={toggleTheme} className="flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan bg-gray-100 dark:bg-black/40 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
+            <button onClick={toggleTheme} className="flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan bg-white dark:bg-black/40 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
                {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
-            <button onClick={toggleLang} className="flex items-center gap-2 text-[10px] text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan uppercase tracking-widest bg-gray-100 dark:bg-black/40 px-3 py-1 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
+
+            <button onClick={toggleLang} className="flex items-center gap-2 text-[10px] text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan uppercase tracking-widest bg-white dark:bg-black/40 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
                <Languages size={12}/> {lang === 'sv' ? "EN" : "SV"}
             </button>
-            <button onClick={() => setReduceMotion(!reduceMotion)} className="text-[10px] text-gray-600 dark:text-gray-600 hover:text-black dark:hover:text-white uppercase tracking-widest bg-gray-100 dark:bg-black/40 px-3 py-1 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
+            <button onClick={() => setReduceMotion(!reduceMotion)} className="text-[10px] text-gray-600 dark:text-gray-600 hover:text-black dark:hover:text-white uppercase tracking-widest bg-white dark:bg-black/40 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
               {reduceMotion ? "Motion: OFF" : "Motion: ON"}
             </button>
           </div>
 
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-transparent to-transparent dark:from-neon-purple/10 dark:to-transparent pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-transparent dark:from-neon-purple/10 dark:to-transparent pointer-events-none"></div>
           
-          {/* VIKTIGT: Skicka med isDark till ProfilePhoto */}
           <ProfilePhoto disableMotion={reduceMotion} isDark={isDark} />
           
           <motion.div layout className="mt-4 text-center md:text-left z-10">
@@ -246,7 +238,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               href="/CV_Klas_Olsson.pdf" 
               download="CV_Klas_Olsson.pdf"
               onClick={() => {confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#00f3ff', '#bd00ff', '#ffffff'] }); toast.success('Tack för visat intresse! CV laddas ner.');}}
-              className="relative group p-3 bg-gray-100 dark:bg-neon-purple/10 border border-gray-300 dark:border-neon-purple/30 rounded-full text-neon-purple dark:text-neon-cyan hover:bg-gray-200 dark:hover:bg-neon-purple/20 hover:border-neon-purple transition-all duration-300"
+              className="relative group p-3 bg-white dark:bg-neon-purple/10 border border-gray-200 dark:border-neon-purple/30 rounded-full text-neon-purple dark:text-neon-cyan hover:bg-gray-50 dark:hover:bg-neon-purple/20 hover:border-neon-purple transition-all duration-300 shadow-sm"
               title="Ladda ner CV"
             >
               <div className="absolute inset-0 rounded-full bg-neon-purple/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -265,8 +257,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // ÄNDRING: Mjukare bakgrund i ljust läge (gray-50)
-          className="flex-1 p-4 md:p-8 bg-gray-50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-300"
+          // ÄNDRING: Mjukare ljus bakgrund och övergång
+          className="flex-1 p-4 md:p-8 bg-white/50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
         >
           <AnimatePresence mode="wait">
             
@@ -301,7 +293,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                     </h3>
                     <div className="flex flex-wrap gap-1.5">
                         {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Tailwind CSS', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
-                        <span key={tag} className="px-2 py-1 bg-gray-200 dark:bg-neon-purple/10 border border-gray-300 dark:border-neon-purple/30 rounded text-[10px] md:text-xs text-neon-purple dark:text-neon-cyan font-mono cursor-default hover:bg-gray-300 dark:hover:bg-neon-purple/20 transition-colors">
+                        <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-neon-purple/10 border border-gray-200 dark:border-neon-purple/30 rounded text-[10px] md:text-xs text-neon-purple dark:text-neon-cyan font-mono cursor-default hover:bg-gray-200 dark:hover:bg-neon-purple/20 transition-colors">
                             {tag}
                         </span>
                         ))}
@@ -309,7 +301,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   </div>
                 </div>
 
-                {/* VIKTIGT: Skicka med isDark till GithubStats */}
                 <GithubStats isDark={isDark} />
               </motion.div>
             )}
@@ -321,7 +312,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 className="h-full flex flex-col"
               >
                 <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.ai}</h2>
-                {/* VIKTIGT: Skicka med isDark till ChatUI */}
                 <ChatUI lang={lang} isDark={isDark} />
               </motion.div>
             )}
@@ -333,8 +323,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
                 <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.projects}</h2>
-                {/* (KLISTRA IN DINA PROJECT CARDS HÄR IGEN) */}
-                 <ProjectCard 
+                {/* HÄR ÄR RÄTTELSEN: ProjectCards har nu fixade färger för Dark Mode */}
+                <ProjectCard 
                   title="Console Detective AI" 
                   desc={lang === 'sv' ? "Ett textbaserat noir-detektivspel..." : "A text-based noir detective game..."}
                   tags={['C#', '.NET 8', 'OpenAI API', 'Spectre.Console']}
@@ -345,6 +335,25 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   onDetails={() => setActiveSlideshow({ title: "Console Detective AI", slides: PROJECT_SLIDES.detective })}
                   detailsText={t.projects.details}
                 />
+                <ProjectCard 
+                  title="Fitness Progress Tracker" 
+                  desc={lang === 'sv' ? "Jag var Team Lead & Scrum Master..." : "I was Team Lead & Scrum Master..."}
+                  tags={['Team Lead', 'Scrum', 'C#', 'OOP']}
+                  link="https://github.com/klasolsson81/FitnessProgressTracker"
+                  onDetails={() => setActiveSlideshow({ title: "Fitness Progress Tracker", slides: PROJECT_SLIDES.fitness })}
+                  detailsText={t.projects.details}
+                />
+                <ProjectCard 
+                  title="Portfolio AI (This Site)" 
+                  desc={lang === 'sv' ? "Min personliga hemsida..." : "My personal website..."}
+                  tags={['React', 'Vite', 'Three.js', 'Vercel AI']}
+                  link="https://github.com/klasolsson81/portfolio-klas"
+                  onDetails={() => setActiveSlideshow({ title: "Portfolio AI", slides: PROJECT_SLIDES.portfolio })}
+                  detailsText={t.projects.details}
+                />
+                <div className="mt-4 p-4 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-xl text-center text-gray-500 text-xs bg-gray-50 dark:bg-black/20">
+                   {t.projects.more}
+                 </div>
               </motion.div>
             )}
 
@@ -354,7 +363,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
                 className="h-full flex flex-col overflow-y-auto custom-scrollbar"
               >
-                {/* VIKTIGT: Skicka med isDark till HireMe */}
                 <HireMe lang={lang} isDark={isDark} />
               </motion.div>
             )}
@@ -371,8 +379,8 @@ const NavButton = ({ label, icon, active, onClick }) => (
     onClick={onClick}
     className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium transition-all duration-300 group
       ${active 
-        ? 'bg-gray-200 dark:bg-neon-purple/20 text-black dark:text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' 
-        : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-black dark:hover:text-white'}
+        ? 'bg-purple-100 dark:bg-neon-purple/20 text-purple-900 dark:text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' 
+        : 'text-gray-500 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-black dark:hover:text-white'}
     `}
   >
     <span className={`transition-colors ${active ? 'text-neon-purple dark:text-neon-cyan' : 'group-hover:text-neon-purple'}`}>
@@ -393,11 +401,11 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
     <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-2 mb-3 leading-relaxed">{desc}</p>
     <div className="flex gap-3 mb-3">
         {videoSrc && (
-            <button onClick={(e) => { e.preventDefault(); onPlay(); }} className="flex items-center gap-2 px-3 py-1.5 bg-neon-purple/10 text-neon-purple border border-neon-purple/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all shadow-sm">
+            <button onClick={(e) => { e.preventDefault(); onPlay(); }} className="flex items-center gap-2 px-3 py-1.5 bg-purple-50 dark:bg-neon-purple/10 text-neon-purple border border-purple-200 dark:border-neon-purple/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all shadow-sm">
                 <Play size={12} fill="currentColor" /> {watchText}
             </button>
         )}
-        <button onClick={(e) => { e.preventDefault(); onDetails(); }} className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-neon-cyan/10 text-gray-700 dark:text-neon-cyan border border-gray-300 dark:border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-gray-200 dark:hover:bg-neon-cyan hover:text-black transition-all shadow-sm">
+        <button onClick={(e) => { e.preventDefault(); onDetails(); }} className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 dark:bg-neon-cyan/10 text-gray-700 dark:text-neon-cyan border border-gray-200 dark:border-neon-cyan/30 rounded-md text-[10px] font-bold uppercase tracking-wider hover:bg-gray-200 dark:hover:bg-neon-cyan hover:text-black transition-all shadow-sm">
             <Layers size={12} /> {detailsText}
         </button>
     </div>
@@ -405,8 +413,8 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
       {tags.map(t => (
         <span key={t} className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border border-gray-200 dark:border-white/10 
             ${t === 'Team Lead' || t === 'Scrum' 
-              ? 'bg-neon-purple/10 text-neon-purple border-neon-purple/30' 
-              : 'bg-gray-100 dark:bg-black/40 text-gray-500 dark:text-gray-400'}`}>{t}</span>
+              ? 'bg-purple-50 dark:bg-neon-purple/10 text-neon-purple border-purple-200 dark:border-neon-purple/30' 
+              : 'bg-gray-50 dark:bg-black/40 text-gray-500 dark:text-gray-400'}`}>{t}</span>
       ))}
     </div>
   </div>
