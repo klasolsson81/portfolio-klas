@@ -203,7 +203,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        className="w-full max-w-7xl bg-white/70 dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
+        // ÄNDRING: Ljust läge = bg-[#fffbf5]/90 (Varmvit), border-stone-200 (Varmgrå kant)
+        className="w-full max-w-7xl bg-[#fffbf5]/90 dark:bg-[#0a0b1e]/80 backdrop-blur-xl border border-stone-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
@@ -271,7 +272,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          className="flex-1 p-4 md:p-8 bg-white/50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
+          // ÄNDRING: bg-[#fdf6e9] (Ljus persika/beige)
+          className="flex-1 p-4 md:p-8 bg-[#fdf6e9] dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
         >
           <AnimatePresence mode="wait">
             

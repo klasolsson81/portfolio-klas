@@ -11,26 +11,27 @@
   color: #e5e7eb;
 }
 
-/* ÄNDRING HÄR: Mjukare ljus bakgrund (#f3f4f6 istället för vitt) */
+/* NY VARM BAKGRUND FÖR LJUST LÄGE */
 body {
-  background-color: #f3f4f6; 
-  color: #1f2937; /* Mörkgrå text istället för kolsvart för mjukare läsning */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #fff8f0; /* Varm, ljus beige/gräddvit */
+  color: #4a4036;            /* Mjuk mörkbrun/grå text */
+  transition: background-color 0.5s ease, color 0.3s ease;
 }
 
-/* ... RESTEN AV FILEN ÄR SAMMA SOM FÖRUT ... */
+/* ... RESTEN AV FILEN ÄR SAMMA (Scrollbars etc) ... */
 /* Custom Scrollbar (Mörk) */
 .dark ::-webkit-scrollbar { width: 6px; }
 .dark ::-webkit-scrollbar-track { background: #0a0b1e; }
 .dark ::-webkit-scrollbar-thumb { background: #bd00ff; border-radius: 3px; }
 .dark ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
 
-/* Custom Scrollbar (Ljus) */
+/* Custom Scrollbar (Ljus - Anpassad till beige) */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #e5e7eb; }
-::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #2dd4bf; }
+::-webkit-scrollbar-track { background: #fff8f0; }
+::-webkit-scrollbar-thumb { background: #d4c5b0; border-radius: 3px; } /* Beige-brun */
+::-webkit-scrollbar-thumb:hover { background: #bd00ff; }
 
+/* ... (Behåll animationerna organic-pulse etc) ... */
 @keyframes organic-pulse {
   0% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
   50% { border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; opacity: 0.9; transform: scale(1.05); filter: blur(15px); }
@@ -58,8 +59,9 @@ body {
   animation: text-shimmer 5s linear infinite;
 }
 
+/* Ljust läge för text-gradient (Anpassad för beige) */
 .light-mode-gradient {
-  background: linear-gradient(to right, #4c1d95 20%, #0891b2 30%, #7c3aed 70%, #4c1d95 80%);
+  background: linear-gradient(to right, #5b21b6 20%, #00f3ff 50%, #5b21b6 80%); /* Lila/Cyan som poppar mot beige */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
