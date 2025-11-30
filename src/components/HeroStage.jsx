@@ -199,6 +199,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         onClose={() => setActiveSlideshow(null)}
         slides={activeSlideshow?.slides}
         title={activeSlideshow?.title}
+        isDark={isDark} // <--- NYTT
       />
 
       <motion.div 
