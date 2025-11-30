@@ -18,19 +18,13 @@ function App() {
   const toggleTheme = () => setIsDark(!isDark);
 
   return (
-    <main className="relative w-full min-h-screen overflow-hidden font-sans selection:bg-neon-cyan selection:text-black transition-colors duration-500">
+    // Transition på bakgrundsfärgen för mjuk övergång
+    <main className={`relative w-full min-h-screen overflow-hidden font-sans selection:bg-neon-cyan selection:text-black transition-colors duration-700 ${isDark ? 'bg-[#0a0b1e]' : 'bg-[#f3f4f6]'}`}>
       
-      {/* MÖRK BAKGRUND (3D) */}
-      {isDark && (
-        <Suspense fallback={<div className="fixed inset-0 bg-neon-darkbg" />}>
-          <NodeNetwork />
-        </Suspense>
-      )}
-      
-      {/* LJUS BAKGRUND (Animerad Gradient) */}
-      {!isDark && (
-        <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-100 via-blue-50 to-white -z-10 animate-pulse-slow" />
-      )}
+      {/* 3D Bakgrund (Nu aktiv i BÅDA lägen, skickar med isDark) */}
+      <Suspense fallback={<div className="fixed inset-0" />}>
+        <NodeNetwork isDark={isDark} />
+      </Suspense>
 
       <FloatingCode isDark={isDark} />
       

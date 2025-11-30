@@ -13,14 +13,14 @@ import HireMe from './HireMe';
 import detectiveVideo from '../assets/video.mp4';
 
 // BILDER
-import detectiveImg1 from '../assets/detective-1.png';
-import detectiveImg2 from '../assets/detective-2.png';
-import detectiveImg3 from '../assets/detective-3.png';
+import detectiveImg1 from '../assets/detective-1.png'; // ASCII Logga
+import detectiveImg2 from '../assets/detective-2.png'; // Huvudmeny
+import detectiveImg3 from '../assets/detective-3.png'; // In-game scen
 
-import fitnessImg1 from '../assets/fitness-1.png';
-import fitnessImg2 from '../assets/fitness-2.png';
-import fitnessImg3 from '../assets/fitness-3.png';
-import fitnessImg4 from '../assets/fitness-4.png';
+import fitnessImg1 from '../assets/fitness-1.png';     // Huvudmeny
+import fitnessImg2 from '../assets/fitness-2.png';     // Hantera Klas (PT vy)
+import fitnessImg3 from '../assets/fitness-3.png';     // Kostschema
+import fitnessImg4 from '../assets/fitness-4.png';     // GitHub Board
 
 // --- PROJEKTDATA ---
 const PROJECT_SLIDES = {
@@ -194,7 +194,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        className="w-full max-w-7xl bg-white dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
+        // ÄNDRING: bg-white/70 och border-white/40 i ljust läge för "Frosted Glass"-känsla
+        className="w-full max-w-7xl bg-white/70 dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
@@ -237,11 +238,11 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               href="/CV_Klas_Olsson.pdf" 
               download="CV_Klas_Olsson.pdf"
               onClick={() => {confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#00f3ff', '#bd00ff', '#ffffff'] }); toast.success('Tack för visat intresse! CV laddas ner.');}}
-              className="relative group p-3 bg-white dark:bg-neon-purple/10 border border-gray-200 dark:border-neon-purple/30 rounded-full text-neon-purple dark:text-neon-cyan hover:bg-gray-50 dark:hover:bg-neon-purple/20 hover:border-neon-purple transition-all duration-300 shadow-sm"
-              title="Ladda ner CV"
+              className="relative group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-white dark:bg-neon-purple/10 border border-gray-200 dark:border-neon-purple/30 rounded-full text-neon-purple dark:text-neon-cyan hover:bg-gray-50 dark:hover:bg-neon-purple/20 hover:border-neon-purple transition-all duration-300 shadow-sm"
+              title={t.nav.cv}
             >
-              <div className="absolute inset-0 rounded-full bg-neon-purple/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <Download size={20} className="relative z-10"/>
+              <Download size={18} className="relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300"/>
+              <span className="relative z-10 font-bold text-sm tracking-wider leading-none pt-0.5">CV</span>
             </a>
           </div>
 
@@ -291,7 +292,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                     </h3>
                     <div className="flex flex-wrap gap-1.5">
                         {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Tailwind CSS', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
-                        <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-neon-purple/10 border border-gray-300 dark:border-neon-purple/30 rounded text-[10px] md:text-xs text-neon-purple dark:text-neon-cyan font-mono cursor-default hover:bg-gray-300 dark:hover:bg-neon-purple/20 transition-colors">
+                        <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-neon-purple/10 border border-gray-300 dark:border-neon-purple/30 rounded text-[10px] md:text-xs text-neon-purple dark:text-neon-cyan font-mono cursor-default hover:bg-gray-200 dark:hover:bg-neon-purple/20 transition-colors">
                             {tag}
                         </span>
                         ))}
@@ -352,8 +353,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   detailsText={t.projects.details}
                   isDark={isDark}
                 />
-
-                 <div className="mt-4 p-4 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-xl text-center text-gray-500 text-xs bg-gray-50 dark:bg-black/20">
+                <div className="mt-4 p-4 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-xl text-center text-gray-500 text-xs bg-gray-50 dark:bg-black/20">
                    {t.projects.more}
                  </div>
               </motion.div>
@@ -392,7 +392,6 @@ const NavButton = ({ label, icon, active, onClick }) => (
   </button>
 );
 
-// ÄNDRING: Nu tar ProjectCard emot 'isDark' och anpassar stilen
 const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText, isDark }) => (
   <div className={`p-5 rounded-xl border transition-all group relative shadow-lg
     ${isDark 
