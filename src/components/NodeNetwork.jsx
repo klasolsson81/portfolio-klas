@@ -2,15 +2,15 @@ import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// Vi minskade antalet partiklar tidigare för prestanda (45 st)
-const PARTICLE_COUNT = 45;
-const CONNECT_DISTANCE = 5.5;
+// SÄNK DENNA FRÅN 100 TILL 45 FÖR PRESTANDA
+const PARTICLE_COUNT = 45; 
+const CONNECT_DISTANCE = 5.5; 
 
 function Network({ isDark }) {
-  // Definiera färger beroende på tema
-  const pointColor = isDark ? "#00f3ff" : "#4f46e5"; // Cyan (Mörk) vs Indigo (Ljus)
-  const lineColor = isDark ? "#bd00ff" : "#9333ea";  // Lila (Mörk) vs Lila (Ljus)
-  const opacity = isDark ? 0.8 : 0.5; // Lite svagare i ljust läge
+  // ÄNDRING: Mörkare färger i ljust läge för bättre synlighet
+  const pointColor = isDark ? "#00f3ff" : "#6366f1"; // Cyan (Mörk) vs Indigo-600 (Ljus)
+  const lineColor = isDark ? "#bd00ff" : "#9333ea";  // Lila (Mörk) vs Purple-600 (Ljus)
+  const opacity = isDark ? 0.8 : 0.6; // Lite starkare i ljust läge
 
   const points = useMemo(() => {
     return new Array(PARTICLE_COUNT).fill(0).map(() => ({
@@ -76,7 +76,7 @@ function Network({ isDark }) {
       </points>
       <lineSegments>
         <bufferGeometry ref={linesGeometry} />
-        <lineBasicMaterial color={lineColor} transparent opacity={isDark ? 0.3 : 0.15} linewidth={2} />
+        <lineBasicMaterial color={lineColor} transparent opacity={isDark ? 0.3 : 0.2} linewidth={2} />
       </lineSegments>
     </group>
   );
@@ -84,11 +84,10 @@ function Network({ isDark }) {
 
 export default function NodeNetwork({ isDark }) {
   return (
-    // Vi sätter bakgrundsfärgen i CSS istället för här, så vi låter Canvas vara transparent
     <div className="fixed inset-0 z-[-1]">
       <Canvas camera={{ position: [0, 0, 15], fov: 75 }}>
-        {/* Dimma för djup - Anpassad färg */}
-        <fog attach="fog" args={[isDark ? '#0a0b1e' : '#f3f4f6', 5, 30]} />
+        {/* ÄNDRING: Tar bort dimman i ljust läge så noderna syns skarpt */}
+        {isDark && <fog attach="fog" args={['#0a0b1e', 5, 30]} />}
         <Network isDark={isDark} />
       </Canvas>
     </div>

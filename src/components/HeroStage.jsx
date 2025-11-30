@@ -194,8 +194,9 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        // ÄNDRING: bg-white/70 och border-white/40 i ljust läge för "Frosted Glass"-känsla
-        className="w-full max-w-7xl bg-white/70 dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
+        // ÄNDRING: bg-white (solid) istället för bg-white/70. 
+        // border-gray-300 istället för border-white/40 för tydligare kant.
+        className="w-full max-w-7xl bg-white dark:bg-[#0a0b1e]/80 backdrop-blur-none dark:backdrop-blur-2xl border border-gray-300 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
@@ -257,7 +258,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          className="flex-1 p-4 md:p-8 bg-white/50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
+          // ÄNDRING: bg-gray-50 för en svag kontrast mot det vita kortet
+          className="flex-1 p-4 md:p-8 bg-gray-50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
         >
           <AnimatePresence mode="wait">
             
