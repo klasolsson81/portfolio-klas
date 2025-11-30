@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark; /* Standard är mörkt */
+  color-scheme: dark;
 }
 
-/* När klassen 'dark' finns på html-taggen */
 .dark body {
   background-color: #0a0b1e;
   color: #e5e7eb;
 }
 
-/* När klassen 'dark' INTE finns (Ljust läge) */
+/* ÄNDRING HÄR: Mjukare ljus bakgrund (#f3f4f6 istället för vitt) */
 body {
-  background-color: #f3f4f6; /* Ljusgrå */
-  color: #111827;            /* Mörkgrå text */
+  background-color: #f3f4f6; 
+  color: #1f2937; /* Mörkgrå text istället för kolsvart för mjukare läsning */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* ... RESTEN AV FILEN ÄR SAMMA SOM FÖRUT ... */
 /* Custom Scrollbar (Mörk) */
 .dark ::-webkit-scrollbar { width: 6px; }
 .dark ::-webkit-scrollbar-track { background: #0a0b1e; }
@@ -28,10 +28,9 @@ body {
 /* Custom Scrollbar (Ljus) */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #e5e7eb; }
-::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 3px; } /* Ljuslila */
-::-webkit-scrollbar-thumb:hover { background: #2dd4bf; } /* Ljus-cyan */
+::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #2dd4bf; }
 
-/* Animation för den "levande" ramen */
 @keyframes organic-pulse {
   0% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
   50% { border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; opacity: 0.9; transform: scale(1.05); filter: blur(15px); }
@@ -44,7 +43,6 @@ body {
   background-size: 200% 200%;
 }
 
-/* Text Gradient (Ljus & Mörk anpassning görs i komponenterna med Tailwind) */
 @keyframes text-shimmer {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -60,7 +58,6 @@ body {
   animation: text-shimmer 5s linear infinite;
 }
 
-/* Ljust läge för text-gradient (Mörkare färger för kontrast) */
 .light-mode-gradient {
   background: linear-gradient(to right, #4c1d95 20%, #0891b2 30%, #7c3aed 70%, #4c1d95 80%);
   -webkit-background-clip: text;

@@ -124,7 +124,7 @@ if (hours < 8 && payment === 'Pro Bono') {
 
 const TRANSLATIONS = {
   sv: {
-    role: "Systemutvecklare | IT-Konsult",
+    role: "IT-Konsult & Systemutvecklare",
     nav: { about: "Om mig", chat: "AI-Chat", projects: "Projekt", hire: "Anlita", cv: "CV" },
     titles: { whoami: "Vem är jag?", ai: "Fråga mig vad som helst", projects: "Projekt", hire: "Anlita mig" },
     about: {
@@ -138,7 +138,7 @@ const TRANSLATIONS = {
     projects: { more: "Fler projekt finns på min GitHub!", watch: "Se Trailer", details: "Djupdykning" }
   },
   en: {
-    role: "System Developer | IT Consultant",
+    role: "IT Consultant & System Developer",
     nav: { about: "About", chat: "AI Chat", projects: "Projects", hire: "Hire Me", cv: "CV" },
     titles: { whoami: "Who am I?", ai: "Ask me anything", projects: "Projects", hire: "Hire Me" },
     about: {
@@ -159,7 +159,7 @@ function calculateAge(birthday) {
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
-const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
+const HeroStage = ({ isDark, toggleTheme }) => {
   const [section, setSection] = useState('about');
   const [reduceMotion, setReduceMotion] = useState(false);
   const [lang, setLang] = useState('sv');
@@ -202,34 +202,31 @@ const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
 
       <motion.div 
         layout
-        // ÄNDRING: Ljusa/Mörka färger (bg-white/80 vs bg-[#0a0b1e]/80)
-        className="w-full max-w-7xl bg-white/80 dark:bg-[#0a0b1e]/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-colors duration-300"
+        // ÄNDRING: Använder 'bg-white' istället för 'bg-white/80' i ljust läge för att slippa genomskinlighet mot den ljusgrå bakgrunden.
+        className="w-full max-w-7xl bg-white dark:bg-[#0a0b1e]/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-colors duration-300"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
         <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-gray-200 dark:border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
           
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
-            
-            {/* TEMA KNAPP */}
-            <button onClick={toggleTheme} className="flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan bg-gray-200 dark:bg-black/40 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
+            <button onClick={toggleTheme} className="flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan bg-gray-100 dark:bg-black/40 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
                {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
-
-            <button onClick={toggleLang} className="flex items-center gap-2 text-[10px] text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan uppercase tracking-widest bg-gray-200 dark:bg-black/40 px-3 py-1 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
+            <button onClick={toggleLang} className="flex items-center gap-2 text-[10px] text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan uppercase tracking-widest bg-gray-100 dark:bg-black/40 px-3 py-1 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
                <Languages size={12}/> {lang === 'sv' ? "EN" : "SV"}
             </button>
-            <button onClick={() => setReduceMotion(!reduceMotion)} className="text-[10px] text-gray-600 dark:text-gray-600 hover:text-black dark:hover:text-white uppercase tracking-widest bg-gray-200 dark:bg-black/40 px-3 py-1 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
+            <button onClick={() => setReduceMotion(!reduceMotion)} className="text-[10px] text-gray-600 dark:text-gray-600 hover:text-black dark:hover:text-white uppercase tracking-widest bg-gray-100 dark:bg-black/40 px-3 py-1 rounded-full border border-gray-300 dark:border-white/10 transition-colors">
               {reduceMotion ? "Motion: OFF" : "Motion: ON"}
             </button>
           </div>
 
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-100 dark:from-neon-purple/10 to-transparent pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-transparent to-transparent dark:from-neon-purple/10 dark:to-transparent pointer-events-none"></div>
           
-          <ProfilePhoto disableMotion={reduceMotion} />
+          {/* VIKTIGT: Skicka med isDark till ProfilePhoto */}
+          <ProfilePhoto disableMotion={reduceMotion} isDark={isDark} />
           
           <motion.div layout className="mt-4 text-center md:text-left z-10">
-            {/* Text Gradient ändras baserat på tema (se index.css) */}
             <h1 className={`text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight ${isDark ? 'animate-text-gradient' : 'light-mode-gradient'} bg-clip-text text-transparent pb-1 whitespace-nowrap`}>
               Klas Olsson
             </h1>
@@ -249,9 +246,10 @@ const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
               href="/CV_Klas_Olsson.pdf" 
               download="CV_Klas_Olsson.pdf"
               onClick={() => {confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#00f3ff', '#bd00ff', '#ffffff'] }); toast.success('Tack för visat intresse! CV laddas ner.');}}
-              className="relative group p-3 bg-white dark:bg-neon-purple/10 border border-gray-300 dark:border-neon-purple/30 rounded-full text-neon-purple dark:text-neon-cyan hover:bg-gray-100 dark:hover:bg-neon-purple/20 hover:border-neon-purple transition-all duration-300"
+              className="relative group p-3 bg-gray-100 dark:bg-neon-purple/10 border border-gray-300 dark:border-neon-purple/30 rounded-full text-neon-purple dark:text-neon-cyan hover:bg-gray-200 dark:hover:bg-neon-purple/20 hover:border-neon-purple transition-all duration-300"
               title="Ladda ner CV"
             >
+              <div className="absolute inset-0 rounded-full bg-neon-purple/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <Download size={20} className="relative z-10"/>
             </a>
           </div>
@@ -267,7 +265,8 @@ const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          className="flex-1 p-4 md:p-8 bg-gray-50/50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full"
+          // ÄNDRING: Mjukare bakgrund i ljust läge (gray-50)
+          className="flex-1 p-4 md:p-8 bg-gray-50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-300"
         >
           <AnimatePresence mode="wait">
             
@@ -310,13 +309,11 @@ const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
                   </div>
                 </div>
 
-                <GithubStats />
+                {/* VIKTIGT: Skicka med isDark till GithubStats */}
+                <GithubStats isDark={isDark} />
               </motion.div>
             )}
 
-            {/* ... CHAT OCH PROJEKT OCH HIREME BEHÅLLER DU SOM DE ÄR (fast anpassade färger om du vill pilla) ... */}
-            {/* För att spara plats antar jag att du kan behålla logiken där, men se till att byta text-colors till dark:text-white etc om det ser konstigt ut. */}
-            
             {section === 'chat' && (
               <motion.div 
                 key="chat" 
@@ -324,7 +321,8 @@ const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
                 className="h-full flex flex-col"
               >
                 <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.ai}</h2>
-                <ChatUI lang={lang} />
+                {/* VIKTIGT: Skicka med isDark till ChatUI */}
+                <ChatUI lang={lang} isDark={isDark} />
               </motion.div>
             )}
 
@@ -335,8 +333,8 @@ const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
                 className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
                 <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.projects}</h2>
-                {/* (Klistra in dina ProjectCards här precis som förut, men med dark: klasser på texten) */}
-                <ProjectCard 
+                {/* (KLISTRA IN DINA PROJECT CARDS HÄR IGEN) */}
+                 <ProjectCard 
                   title="Console Detective AI" 
                   desc={lang === 'sv' ? "Ett textbaserat noir-detektivspel..." : "A text-based noir detective game..."}
                   tags={['C#', '.NET 8', 'OpenAI API', 'Spectre.Console']}
@@ -347,17 +345,17 @@ const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
                   onDetails={() => setActiveSlideshow({ title: "Console Detective AI", slides: PROJECT_SLIDES.detective })}
                   detailsText={t.projects.details}
                 />
-                {/* ... fler projekt ... */}
               </motion.div>
             )}
-            
+
             {section === 'hire' && (
               <motion.div 
                 key="hire" 
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
                 className="h-full flex flex-col overflow-y-auto custom-scrollbar"
               >
-                <HireMe lang={lang} />
+                {/* VIKTIGT: Skicka med isDark till HireMe */}
+                <HireMe lang={lang} isDark={isDark} />
               </motion.div>
             )}
 
@@ -368,7 +366,6 @@ const HeroStage = ({ isDark, toggleTheme }) => { // Tar emot props från App.jsx
   );
 };
 
-// NavButton (Ljus/Mörk)
 const NavButton = ({ label, icon, active, onClick }) => (
   <button 
     onClick={onClick}
@@ -385,7 +382,6 @@ const NavButton = ({ label, icon, active, onClick }) => (
   </button>
 );
 
-// ProjectCard (Ljus/Mörk)
 const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText }) => (
   <div className="bg-white dark:bg-gradient-to-br dark:from-white/5 dark:to-transparent p-5 rounded-xl border border-gray-200 dark:border-white/10 hover:border-neon-purple dark:hover:border-neon-cyan/50 transition-all group shadow-sm dark:shadow-lg hover:shadow-neon-purple/20 dark:hover:shadow-neon-cyan/20 relative">
     <div className="flex justify-between items-start pr-8">

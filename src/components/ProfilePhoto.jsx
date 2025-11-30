@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import profileImg from '../assets/klas-olsson-profil.jpg'; 
 
-const ProfilePhoto = ({ disableMotion }) => {
+// NYTT: Tar emot isDark prop
+const ProfilePhoto = ({ disableMotion, isDark }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -37,24 +38,27 @@ const ProfilePhoto = ({ disableMotion }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      // STORLEK: w-32 (128px) på laptop, w-56 (224px) på stor skärm.
       className="relative w-32 h-32 xl:w-56 xl:h-56 mx-auto md:mx-0 rounded-full shadow-2xl transition-all duration-500 group cursor-pointer z-10"
     >
-      {/* GLOW BAKOM */}
+      {/* GLOW BAKOM - ÄNDRAD för att vara mjukare i ljust läge */}
       {!disableMotion && (
-        <div className="absolute -inset-6 bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple blur-3xl opacity-50 animate-pulse-slow rounded-full z-0"></div>
+        <div className={`absolute -inset-6 blur-3xl animate-pulse-slow rounded-full z-0 transition-opacity duration-300
+          ${isDark 
+            ? 'bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple opacity-50' 
+            : 'bg-gradient-to-br from-neon-purple/40 via-neon-cyan/40 to-neon-purple/40 opacity-30'}`}></div>
       )}
       {disableMotion && (
-        <div className="absolute -inset-2 bg-neon-purple/20 blur-xl rounded-full z-0"></div>
+        <div className={`absolute -inset-2 blur-xl rounded-full z-0 transition-colors
+          ${isDark ? 'bg-neon-purple/20' : 'bg-neon-purple/10'}`}></div>
       )}
 
       {/* BILDCONTAINER */}
-      <div className="relative w-full h-full rounded-full overflow-hidden bg-[#0a0b1e] z-10 border border-white/5">
+      <div className={`relative w-full h-full rounded-full overflow-hidden z-10 border transition-colors duration-300
+        ${isDark ? 'bg-[#0a0b1e] border-white/5' : 'bg-white border-gray-200'}`}>
         
         <motion.img
           src={profileImg}
           alt="Klas Olsson - Systemutvecklare .NET"
-          // PERFORMANCE OPTIMERINGAR HÄR:
           loading="lazy"
           decoding="async"
           animate={{ scale: isHovered && !disableMotion ? 1.1 : 1 }}
@@ -62,11 +66,15 @@ const ProfilePhoto = ({ disableMotion }) => {
           className="w-full h-full object-cover"
         />
         
-        {/* VÄNSTER OCH HÖGER TONING (Vinjett) */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,#0a0b1e_95%)] pointer-events-none"></div>
+        {/* VINJETT - ÄNDRAD för att passa ljust läge */}
+        <div className={`absolute inset-0 pointer-events-none transition-colors duration-300
+          ${isDark 
+            ? 'bg-[radial-gradient(circle_at_center,transparent_45%,#0a0b1e_95%)]' 
+            : 'bg-[radial-gradient(circle_at_center,transparent_55%,#ffffff_95%)] opacity-60'}`}></div>
         
-        {/* LILA TINT */}
-        <div className="absolute inset-0 bg-neon-purple/10 mix-blend-overlay pointer-events-none rounded-full"></div>
+        {/* LILA TINT - Svagare i ljust läge */}
+        <div className={`absolute inset-0 pointer-events-none rounded-full mix-blend-overlay transition-opacity
+          ${isDark ? 'bg-neon-purple/10 opacity-100' : 'bg-neon-purple/5 opacity-50'}`}></div>
       </div>
     </motion.div>
   );
