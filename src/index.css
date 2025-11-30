@@ -85,6 +85,18 @@ body {
 /* ========================================
    ANIMATIONS
    ======================================== */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 @keyframes organic-pulse {
   0% { 
     border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; 

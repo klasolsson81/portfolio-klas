@@ -8,6 +8,7 @@ import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import ProjectSlideshow from './ProjectSlideshow';
 import HireMe from './HireMe';
+import FloatingCTA from './FloatingCTA';
 
 // VIDEO
 import detectiveVideo from '../assets/video.mp4';
@@ -175,6 +176,13 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-3 md:p-8 relative z-10">
+      
+      {/* Floating CTA för "Anlita" */}
+      <FloatingCTA 
+        isDark={isDark} 
+        onNavigateToHire={() => setSection('hire')} 
+        currentSection={section}
+      />
       
       <AnimatePresence>
         {activeVideo && (

@@ -3,52 +3,160 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0b1e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#faf7f2" media="(prefers-color-scheme: light)" />
+    
+    <!-- Canonical & Language -->
     <link rel="canonical" href="https://www.klasolsson.se/" />
-    <title>Klas Olsson | Systemutvecklare .NET & IT-konsult</title>
-    <meta name="description" content="Portfolio för Klas Olsson – Driven Systemutvecklare inom .NET, C# och React. Se mina projekt, ladda ner CV och chatta med min AI-agent. Baserad i Göteborg." />
-    <meta name="keywords" content="Klas Olsson, Systemutvecklare, .NET, C#, React, Portfolio, Göteborg, LIA, Utvecklare, AI, Fullstack, Backend, Frontend, OpenAI, Azure, SQL Server, Konsult, Programmerare" />
+    <link rel="alternate" hreflang="sv" href="https://www.klasolsson.se/" />
+    <link rel="alternate" hreflang="en" href="https://www.klasolsson.se/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://www.klasolsson.se/" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Klas Olsson | Systemutvecklare .NET & AI-integration | Göteborg</title>
+    <meta name="title" content="Klas Olsson | Systemutvecklare .NET & AI-integration | Göteborg" />
+    <meta name="description" content="Erfaren .NET-utvecklare specialiserad på C#, React och AI-integration. Utforska mina projekt, chatta med min AI-agent, eller anlita mig för ditt nästa projekt. Baserad i Göteborg." />
+    <meta name="keywords" content="Klas Olsson, Systemutvecklare, .NET utvecklare, C# utvecklare, React, Portfolio, Göteborg, Backend utvecklare, AI integration, OpenAI, Azure, SQL Server, IT-konsult, Fullstack, Entity Framework, Docker, Clean Code" />
     <meta name="author" content="Klas Olsson" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="SE-O" />
+    <meta name="geo.placename" content="Göteborg" />
+    <meta name="geo.position" content="57.7089;11.9746" />
+    <meta name="ICBM" content="57.7089, 11.9746" />
 
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.klasolsson.se/" />
-    <meta property="og:title" content="Klas Olsson | Systemutvecklare .NET" />
-    <meta property="og:description" content="Interaktiv portfolio med AI-integration. Se mina projekt, ladda ner CV och kontakta mig!" />
+    <meta property="og:title" content="Klas Olsson | Systemutvecklare .NET & AI-integration" />
+    <meta property="og:description" content="Interaktiv portfolio med AI-chatbot. Se mina .NET-projekt, ladda ner CV och kontakta mig för samarbete!" />
     <meta property="og:image" content="https://www.klasolsson.se/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Klas Olsson - Systemutvecklare portfolio" />
+    <meta property="og:locale" content="sv_SE" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <meta property="og:site_name" content="Klas Olsson Portfolio" />
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://www.klasolsson.se/" />
-    <meta property="twitter:title" content="Klas Olsson | Systemutvecklare .NET" />
-    <meta property="twitter:description" content="Interaktiv portfolio med AI-integration. Se mina projekt och kontakta mig!" />
-    <meta property="twitter:image" content="https://www.klasolsson.se/og-image.png" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.klasolsson.se/" />
+    <meta name="twitter:title" content="Klas Olsson | Systemutvecklare .NET & AI-integration" />
+    <meta name="twitter:description" content="Interaktiv portfolio med AI-chatbot. Utforska projekt och kontakta mig!" />
+    <meta name="twitter:image" content="https://www.klasolsson.se/og-image.png" />
+    <meta name="twitter:image:alt" content="Klas Olsson - Systemutvecklare portfolio" />
+    <meta name="twitter:creator" content="@klasolsson81" />
 
+    <!-- Structured Data - Person -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
+        "@id": "https://www.klasolsson.se/#person",
         "name": "Klas Olsson",
+        "givenName": "Klas",
+        "familyName": "Olsson",
         "url": "https://www.klasolsson.se",
-        "image": "https://www.klasolsson.se/og-image.png",
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://www.klasolsson.se/og-image.png",
+          "width": 1200,
+          "height": 630
+        },
         "jobTitle": "Systemutvecklare .NET",
-        "description": "Driven .NET-utvecklare med fokus på AI-integrationer, Clean Code och modern backend.",
+        "description": "Driven .NET-utvecklare med fokus på AI-integrationer, Clean Code och modern backend-utveckling.",
         "email": "klasolsson81@gmail.com",
         "sameAs": [
           "https://www.linkedin.com/in/klasolsson81/",
           "https://github.com/klasolsson81"
         ],
-        "knowsAbout": ["C#", ".NET", "React", "SQL", "AI Integration", "Azure"],
+        "knowsAbout": [
+          "C#", ".NET", ".NET 8", "React", "JavaScript", "SQL Server", 
+          "Entity Framework", "AI Integration", "OpenAI API", "Azure", 
+          "Docker", "Git", "Tailwind CSS", "Clean Code", "Scrum"
+        ],
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Systemutvecklare",
+          "occupationLocation": {
+            "@type": "City",
+            "name": "Göteborg"
+          },
+          "skills": "C#, .NET, React, SQL Server, Azure, AI Integration"
+        },
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Göteborg",
+          "addressRegion": "Västra Götaland",
           "addressCountry": "SE"
+        },
+        "nationality": {
+          "@type": "Country",
+          "name": "Sweden"
         }
       }
     </script>
+
+    <!-- Structured Data - WebSite -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.klasolsson.se/#website",
+        "url": "https://www.klasolsson.se",
+        "name": "Klas Olsson Portfolio",
+        "description": "Portfolio för Klas Olsson - Systemutvecklare inom .NET och AI-integration",
+        "publisher": {
+          "@id": "https://www.klasolsson.se/#person"
+        },
+        "inLanguage": ["sv-SE", "en-GB"]
+      }
+    </script>
+
+    <!-- Structured Data - Professional Service -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Klas Olsson - IT-konsult & Systemutvecklare",
+        "description": "Konsulttjänster inom .NET-utveckling, AI-integration och fullstack-utveckling",
+        "url": "https://www.klasolsson.se",
+        "provider": {
+          "@id": "https://www.klasolsson.se/#person"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Sweden"
+        },
+        "serviceType": ["Systemutveckling", "AI-integration", "Webbutveckling", "Backend-utveckling"],
+        "availableLanguage": ["Swedish", "English"]
+      }
+    </script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://api.github.com" />
   </head>
   <body class="bg-[#0a0b1e] text-white">
+    <noscript>
+      <div style="padding: 2rem; text-align: center; background: #0a0b1e; color: white; min-height: 100vh;">
+        <h1>Klas Olsson - Systemutvecklare</h1>
+        <p>Denna sida kräver JavaScript för full funktionalitet.</p>
+        <p>Kontakta mig: <a href="mailto:klasolsson81@gmail.com" style="color: #00f3ff;">klasolsson81@gmail.com</a></p>
+        <p>
+          <a href="https://www.linkedin.com/in/klasolsson81/" style="color: #00f3ff;">LinkedIn</a> | 
+          <a href="https://github.com/klasolsson81" style="color: #00f3ff;">GitHub</a>
+        </p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

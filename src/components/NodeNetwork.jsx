@@ -1,18 +1,81 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const PARTICLE_COUNT = 50; // Lagom antal
-const CONNECT_DISTANCE = 6; 
+// =====================================================
+// PERFORMANCE HOOKS (inbyggda för att undvika extra import)
+// =====================================================
+const useIsMobile = (breakpoint = 768) => {
+  const [isMobile, setIsMobile] = useState(false);
 
-function Network({ isDark }) {
-  // Mörka noder i ljust läge (Mörkblå/Lila) för kontrast
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < breakpoint);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [breakpoint]);
+
+  return isMobile;
+};
+
+const usePrefersReducedMotion = () => {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    const handler = (e) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  return prefersReducedMotion;
+};
+
+// =====================================================
+// SIMPLE FALLBACK (för mobil / reduced motion)
+// =====================================================
+const SimpleFallback = ({ isDark }) => (
+  <div className={`fixed inset-0 z-0 pointer-events-none transition-colors duration-700 ${
+    isDark ? 'bg-neon-darkbg' : 'bg-warm-bg'
+  }`}>
+    {/* Subtila glödande orbs som CSS-animation */}
+    <div className="absolute inset-0 overflow-hidden opacity-30">
+      <div 
+        className={`absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl animate-pulse ${
+          isDark ? 'bg-neon-purple' : 'bg-purple-300'
+        }`} 
+        style={{ animationDuration: '4s' }}
+      />
+      <div 
+        className={`absolute top-1/2 right-1/4 w-48 h-48 rounded-full blur-3xl animate-pulse ${
+          isDark ? 'bg-neon-cyan' : 'bg-cyan-300'
+        }`} 
+        style={{ animationDuration: '5s', animationDelay: '1s' }}
+      />
+      <div 
+        className={`absolute bottom-1/4 left-1/3 w-56 h-56 rounded-full blur-3xl animate-pulse ${
+          isDark ? 'bg-neon-purple/50' : 'bg-purple-200'
+        }`} 
+        style={{ animationDuration: '6s', animationDelay: '2s' }}
+      />
+    </div>
+  </div>
+);
+
+// =====================================================
+// 3D NETWORK (original, med dynamiskt partikelantal)
+// =====================================================
+const CONNECT_DISTANCE = 6;
+
+function Network({ isDark, particleCount }) {
+  // Mörkare noder i ljust läge för kontrast
   const pointColor = isDark ? "#00f3ff" : "#1e3a8a"; 
   const lineColor = isDark ? "#bd00ff" : "#4f46e5";
   const opacity = isDark ? 0.6 : 0.4; 
 
   const points = useMemo(() => {
-    return new Array(PARTICLE_COUNT).fill(0).map(() => ({
+    return new Array(particleCount).fill(0).map(() => ({
       position: new THREE.Vector3(
         (Math.random() - 0.5) * 35,
         (Math.random() - 0.5) * 35,
@@ -24,7 +87,7 @@ function Network({ isDark }) {
         0
       )
     }));
-  }, []);
+  }, [particleCount]);
 
   const linesGeometry = useRef();
 
@@ -38,8 +101,8 @@ function Network({ isDark }) {
     const positions = [];
     const mouseVec = new THREE.Vector3(mouse.x * 15, mouse.y * 15, 0);
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+    for (let i = 0; i < particleCount; i++) {
+      for (let j = i + 1; j < particleCount; j++) {
         const dist = points[i].position.distanceTo(points[j].position);
         const distToMouse = points[i].position.distanceTo(mouseVec);
         
@@ -81,14 +144,24 @@ function Network({ isDark }) {
   );
 }
 
+// =====================================================
+// MAIN EXPORT (med smart fallback)
+// =====================================================
 export default function NodeNetwork({ isDark }) {
+  const isMobile = useIsMobile();
+  const prefersReducedMotion = usePrefersReducedMotion();
+  
+  // På mobil eller reduced motion: visa enkel CSS-fallback
+  if (isMobile || prefersReducedMotion) {
+    return <SimpleFallback isDark={isDark} />;
+  }
+
+  // Desktop: full 3D-upplevelse
   return (
-    // VIKTIGT: z-[-1] lägger den bakom allt. Ingen bakgrundsfärg här!
     <div className="fixed inset-0 z-0 pointer-events-none">
       <Canvas camera={{ position: [0, 0, 15], fov: 75 }} gl={{ alpha: true }}> 
-        {/* Ingen dimma i ljust läge för maximal synlighet */}
         {isDark && <fog attach="fog" args={['#0a0b1e', 5, 30]} />}
-        <Network isDark={isDark} />
+        <Network isDark={isDark} particleCount={50} />
       </Canvas>
     </div>
   );
