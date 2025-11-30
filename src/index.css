@@ -3,52 +3,48 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: dark; /* Standard är mörkt */
 }
 
-body {
-  margin: 0;
-  /* Ny basfärg */
-  background-color: #0a0b1e; 
+/* När klassen 'dark' finns på html-taggen */
+.dark body {
+  background-color: #0a0b1e;
   color: #e5e7eb;
-  overflow-x: hidden;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0a0b1e; }
-::-webkit-scrollbar-thumb { background: #bd00ff; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
+/* När klassen 'dark' INTE finns (Ljust läge) */
+body {
+  background-color: #f3f4f6; /* Ljusgrå */
+  color: #111827;            /* Mörkgrå text */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-/* Animation för den "levande" ramen runt profilbilden */
+/* Custom Scrollbar (Mörk) */
+.dark ::-webkit-scrollbar { width: 6px; }
+.dark ::-webkit-scrollbar-track { background: #0a0b1e; }
+.dark ::-webkit-scrollbar-thumb { background: #bd00ff; border-radius: 3px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
+
+/* Custom Scrollbar (Ljus) */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #e5e7eb; }
+::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 3px; } /* Ljuslila */
+::-webkit-scrollbar-thumb:hover { background: #2dd4bf; } /* Ljus-cyan */
+
+/* Animation för den "levande" ramen */
 @keyframes organic-pulse {
-  0% {
-    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%;
-    opacity: 0.6;
-    transform: scale(1);
-    filter: blur(10px);
-  }
-  50% {
-    border-radius: 30% 60% 70% 40%/50% 60% 30% 60%;
-    opacity: 0.9;
-    transform: scale(1.05); /* Växer lite */
-    filter: blur(15px); /* Mer glow */
-  }
-  100% {
-    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%;
-    opacity: 0.6;
-    transform: scale(1);
-    filter: blur(10px);
-  }
+  0% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
+  50% { border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; opacity: 0.9; transform: scale(1.05); filter: blur(15px); }
+  100% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
 }
 
 .organic-border {
   animation: organic-pulse 6s ease-in-out infinite alternate;
-  background: linear-gradient(45deg, #bd00ff, #00f3ff, #bd00ff); /* Tydligare färger */
+  background: linear-gradient(45deg, #bd00ff, #00f3ff, #bd00ff);
   background-size: 200% 200%;
 }
 
-/* Animation för text-gradient */
+/* Text Gradient (Ljus & Mörk anpassning görs i komponenterna med Tailwind) */
 @keyframes text-shimmer {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -56,13 +52,7 @@ body {
 }
 
 .animate-text-gradient {
-  background: linear-gradient(
-    to right,
-    #ffffff 20%,
-    #00f3ff 30%,
-    #bd00ff 70%,
-    #ffffff 80%
-  );
+  background: linear-gradient(to right, #ffffff 20%, #00f3ff 30%, #bd00ff 70%, #ffffff 80%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -70,17 +60,21 @@ body {
   animation: text-shimmer 5s linear infinite;
 }
 
-/* Subtilare shimmer för underrubriker (Cyan -> Lila -> Cyan) */
-.animate-subtitle-shimmer {
-  background: linear-gradient(
-    to right,
-    #00f3ff 0%,   /* Cyan */
-    #bd00ff 50%,  /* Lila */
-    #00f3ff 100%  /* Cyan */
-  );
+/* Ljust läge för text-gradient (Mörkare färger för kontrast) */
+.light-mode-gradient {
+  background: linear-gradient(to right, #4c1d95 20%, #0891b2 30%, #7c3aed 70%, #4c1d95 80%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   background-size: 200% auto;
-  animation: text-shimmer 6s linear infinite; /* Lite långsammare än huvudtiteln */
+  animation: text-shimmer 5s linear infinite;
+}
+
+.animate-subtitle-shimmer {
+  background: linear-gradient(to right, #00f3ff 0%, #bd00ff 50%, #00f3ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: text-shimmer 6s linear infinite;
 }
