@@ -204,13 +204,12 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        // ÄNDRING: Ljust läge = bg-[#fffbf5]/90 (Varmvit), border-stone-200 (Varmgrå kant)
-        className="w-full max-w-7xl bg-[#fffbf5]/90 dark:bg-[#0a0b1e]/80 backdrop-blur-xl border border-stone-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10"
+        // ÄNDRING: bg-[#fffbf0]/80 (Varm Gräddvit) och border-orange-100
+        className="w-full max-w-7xl bg-[#fffbf0]/80 dark:bg-[#0a0b1e]/80 backdrop-blur-xl border border-orange-100/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
-        <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-gray-200/50 dark:border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">
-          
+          <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-orange-100/50 dark:border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">          
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
             <button onClick={toggleTheme} className="flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan bg-white dark:bg-black/40 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
                {isDark ? <Sun size={16} /> : <Moon size={16} />}
@@ -273,8 +272,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // ÄNDRING: bg-[#fdf6e9] (Ljus persika/beige)
-          className="flex-1 p-4 md:p-8 bg-[#fdf6e9] dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
+          // ÄNDRING: bg-[#fdfcf6]/60 (Mycket svag varm ton)
+          className="flex-1 p-4 md:p-8 bg-[#fdfcf6]/60 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
         >
           <AnimatePresence mode="wait">
             
