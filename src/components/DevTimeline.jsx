@@ -12,7 +12,8 @@ import {
   ChevronUp,
   Briefcase,
   Users,
-  Sparkles
+  Sparkles,
+  ArrowUpDown
 } from 'lucide-react';
 
 // =====================================================
@@ -429,17 +430,31 @@ const DevTimeline = ({ lang, isDark }) => {
   const [activeFilters, setActiveFilters] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [sortOrder, setSortOrder] = useState('newest'); // 'newest' eller 'oldest'
 
   const allTags = useMemo(() => getAllTags(TIMELINE_EVENTS), []);
 
   const filteredEvents = useMemo(() => {
-    if (activeFilters.length === 0) return TIMELINE_EVENTS;
-    return TIMELINE_EVENTS.filter(event => 
-      activeFilters.some(filter => event.tags.includes(filter))
-    );
-  }, [activeFilters]);
+    let events = TIMELINE_EVENTS;
+    
+    // Filtrera på tags
+    if (activeFilters.length > 0) {
+      events = events.filter(event => 
+        activeFilters.some(filter => event.tags.includes(filter))
+      );
+    }
+    
+    // Sortera
+    const sorted = [...events].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+    
+    return sorted;
+  }, [activeFilters, sortOrder]);
 
-  const displayedEvents = showAll ? filteredEvents : filteredEvents.slice(0, 5);
+  const displayedEvents = showAll ? filteredEvents : filteredEvents.slice(0, 10);
 
   const toggleFilter = (tag) => {
     setActiveFilters(prev => 
@@ -450,11 +465,18 @@ const DevTimeline = ({ lang, isDark }) => {
   };
 
   const clearFilters = () => setActiveFilters([]);
+  
+  const toggleSortOrder = () => {
+    setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest');
+  };
 
   const t = {
     title: { sv: 'Min resa', en: 'My Journey' },
     subtitle: { sv: 'Utbildning, projekt & milstolpar', en: 'Education, projects & milestones' },
     filter: { sv: 'Filtrera', en: 'Filter' },
+    sort: { sv: 'Sortera', en: 'Sort' },
+    newest: { sv: 'Nyast först', en: 'Newest first' },
+    oldest: { sv: 'Äldst först', en: 'Oldest first' },
     clearFilters: { sv: 'Rensa filter', en: 'Clear filters' },
     showMore: { sv: 'Visa fler', en: 'Show more' },
     showLess: { sv: 'Visa färre', en: 'Show less' },
@@ -462,9 +484,9 @@ const DevTimeline = ({ lang, isDark }) => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="flex-1 min-h-0 flex flex-col">
       {/* Header */}
-      <div className="mb-6">
+      <div className="shrink-0 mb-4">
         <h2 className={`text-xl md:text-2xl font-bold mb-1 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
           {t.title[lang]}
         </h2>
@@ -473,8 +495,9 @@ const DevTimeline = ({ lang, isDark }) => {
         </p>
       </div>
 
-      {/* Filter-toggle */}
-      <div className="mb-4">
+      {/* Filter & Sort controls */}
+      <div className="shrink-0 mb-4 flex flex-wrap gap-2">
+        {/* Filter-knapp */}
         <button
           onClick={() => setShowFilters(!showFilters)}
           className={`flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg transition-colors
@@ -492,43 +515,55 @@ const DevTimeline = ({ lang, isDark }) => {
           {showFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
 
-        {/* Filter-chips */}
-        <AnimatePresence>
-          {showFilters && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden"
-            >
-              <div className="flex flex-wrap gap-2 mt-3 pb-2">
-                {allTags.map(tag => (
-                  <FilterChip
-                    key={tag}
-                    tag={tag}
-                    isActive={activeFilters.includes(tag)}
-                    onClick={() => toggleFilter(tag)}
-                    isDark={isDark}
-                  />
-                ))}
-                {activeFilters.length > 0 && (
-                  <button
-                    onClick={clearFilters}
-                    className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-full transition-colors
-                      ${isDark ? 'text-red-400 hover:bg-red-500/10' : 'text-red-600 hover:bg-red-50'}`}
-                  >
-                    <X size={12} />
-                    {t.clearFilters[lang]}
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Sorterings-knapp */}
+        <button
+          onClick={toggleSortOrder}
+          className={`flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg transition-colors
+            ${isDark 
+              ? 'bg-white/5 text-gray-300 hover:bg-white/10' 
+              : 'bg-warm-hover text-warm-text hover:bg-warm-active'}`}
+        >
+          <ArrowUpDown size={16} />
+          {sortOrder === 'newest' ? t.newest[lang] : t.oldest[lang]}
+        </button>
       </div>
 
+      {/* Filter-chips (expanderbar) */}
+      <AnimatePresence>
+        {showFilters && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="shrink-0 overflow-hidden"
+          >
+            <div className="flex flex-wrap gap-2 mb-4 pb-2">
+              {allTags.map(tag => (
+                <FilterChip
+                  key={tag}
+                  tag={tag}
+                  isActive={activeFilters.includes(tag)}
+                  onClick={() => toggleFilter(tag)}
+                  isDark={isDark}
+                />
+              ))}
+              {activeFilters.length > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-full transition-colors
+                    ${isDark ? 'text-red-400 hover:bg-red-500/10' : 'text-red-600 hover:bg-red-50'}`}
+                >
+                  <X size={12} />
+                  {t.clearFilters[lang]}
+                </button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Tidslinje */}
-      <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+      <div className="flex-1 min-h-0 overflow-y-auto pr-2 custom-scrollbar">
         {displayedEvents.length > 0 ? (
           <>
             <AnimatePresence mode="popLayout">
@@ -544,7 +579,7 @@ const DevTimeline = ({ lang, isDark }) => {
             </AnimatePresence>
 
             {/* Visa mer/mindre */}
-            {filteredEvents.length > 5 && (
+            {filteredEvents.length > 10 && (
               <div className="pt-4 pl-8 md:pl-12">
                 <button
                   onClick={() => setShowAll(!showAll)}
@@ -561,7 +596,7 @@ const DevTimeline = ({ lang, isDark }) => {
                   ) : (
                     <>
                       <ChevronDown size={16} />
-                      {t.showMore[lang]} ({filteredEvents.length - 5})
+                      {t.showMore[lang]} ({filteredEvents.length - 10})
                     </>
                   )}
                 </button>
