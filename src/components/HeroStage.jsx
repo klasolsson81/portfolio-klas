@@ -194,9 +194,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        // ÄNDRING: bg-white (solid) istället för bg-white/70. 
-        // border-gray-300 istället för border-white/40 för tydligare kant.
-        className="w-full max-w-7xl bg-white dark:bg-[#0a0b1e]/80 backdrop-blur-none dark:backdrop-blur-2xl border border-gray-300 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
+        // ÄNDRING: bg-white/80 och border-white/50 för mjukare look
+        className="w-full max-w-7xl bg-white/80 dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}

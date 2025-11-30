@@ -2,15 +2,14 @@ import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// SÄNK DENNA FRÅN 100 TILL 45 FÖR PRESTANDA
-const PARTICLE_COUNT = 45; 
-const CONNECT_DISTANCE = 5.5; 
+const PARTICLE_COUNT = 50; // Lagom antal
+const CONNECT_DISTANCE = 6; 
 
 function Network({ isDark }) {
-  // ÄNDRING: Mörkare färger i ljust läge för bättre synlighet
-  const pointColor = isDark ? "#00f3ff" : "#6366f1"; // Cyan (Mörk) vs Indigo-600 (Ljus)
-  const lineColor = isDark ? "#bd00ff" : "#9333ea";  // Lila (Mörk) vs Purple-600 (Ljus)
-  const opacity = isDark ? 0.8 : 0.6; // Lite starkare i ljust läge
+  // Mörka noder i ljust läge (Mörkblå/Lila) för kontrast
+  const pointColor = isDark ? "#00f3ff" : "#1e3a8a"; 
+  const lineColor = isDark ? "#bd00ff" : "#4f46e5";
+  const opacity = isDark ? 0.6 : 0.4; 
 
   const points = useMemo(() => {
     return new Array(PARTICLE_COUNT).fill(0).map(() => ({
@@ -76,7 +75,7 @@ function Network({ isDark }) {
       </points>
       <lineSegments>
         <bufferGeometry ref={linesGeometry} />
-        <lineBasicMaterial color={lineColor} transparent opacity={isDark ? 0.3 : 0.2} linewidth={2} />
+        <lineBasicMaterial color={lineColor} transparent opacity={opacity * 0.5} linewidth={2} />
       </lineSegments>
     </group>
   );
@@ -84,9 +83,10 @@ function Network({ isDark }) {
 
 export default function NodeNetwork({ isDark }) {
   return (
-    <div className="fixed inset-0 z-[-1]">
-      <Canvas camera={{ position: [0, 0, 15], fov: 75 }}>
-        {/* ÄNDRING: Tar bort dimman i ljust läge så noderna syns skarpt */}
+    // VIKTIGT: z-[-1] lägger den bakom allt. Ingen bakgrundsfärg här!
+    <div className="fixed inset-0 z-0 pointer-events-none">
+      <Canvas camera={{ position: [0, 0, 15], fov: 75 }} gl={{ alpha: true }}> 
+        {/* Ingen dimma i ljust läge för maximal synlighet */}
         {isDark && <fog attach="fog" args={['#0a0b1e', 5, 30]} />}
         <Network isDark={isDark} />
       </Canvas>
