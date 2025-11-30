@@ -214,9 +214,13 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            {/* FIX: Flaggor istället för text */}
-            <button onClick={toggleLang} className="flex items-center justify-center w-8 h-8 text-lg bg-white dark:bg-black/40 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm hover:scale-105 active:scale-95" title="Change Language">
-               {lang === 'sv' ? '🇸🇪' : '🇬🇧'}
+            {/* FIX: Riktiga CSS-flaggor istället för emojis */}
+            <button 
+              onClick={toggleLang} 
+              className="flex items-center justify-center w-8 h-8 bg-white dark:bg-black/40 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm hover:scale-105 active:scale-95 overflow-hidden" 
+              title="Change Language"
+            >
+               <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-lg`}></span>
             </button>
             
             <button onClick={() => setReduceMotion(!reduceMotion)} className="text-[10px] text-gray-600 dark:text-gray-600 hover:text-black dark:hover:text-white uppercase tracking-widest bg-white dark:bg-black/40 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
