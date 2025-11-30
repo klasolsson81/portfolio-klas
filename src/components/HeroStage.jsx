@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
 import ChatUI from './ChatUI';
@@ -13,14 +13,14 @@ import HireMe from './HireMe';
 import detectiveVideo from '../assets/video.mp4';
 
 // BILDER
-import detectiveImg1 from '../assets/detective-1.png'; // ASCII Logga
-import detectiveImg2 from '../assets/detective-2.png'; // Huvudmeny
-import detectiveImg3 from '../assets/detective-3.png'; // In-game scen
+import detectiveImg1 from '../assets/detective-1.png';
+import detectiveImg2 from '../assets/detective-2.png';
+import detectiveImg3 from '../assets/detective-3.png';
 
-import fitnessImg1 from '../assets/fitness-1.png';     // Huvudmeny
-import fitnessImg2 from '../assets/fitness-2.png';     // Hantera Klas (PT vy)
-import fitnessImg3 from '../assets/fitness-3.png';     // Kostschema
-import fitnessImg4 from '../assets/fitness-4.png';     // GitHub Board
+import fitnessImg1 from '../assets/fitness-1.png';
+import fitnessImg2 from '../assets/fitness-2.png';
+import fitnessImg3 from '../assets/fitness-3.png';
+import fitnessImg4 from '../assets/fitness-4.png';
 
 // --- PROJEKTDATA ---
 const PROJECT_SLIDES = {
@@ -158,6 +158,15 @@ const HeroStage = ({ isDark, toggleTheme }) => {
   const [activeVideo, setActiveVideo] = useState(null);
   const [activeSlideshow, setActiveSlideshow] = useState(null);
 
+  // FIX: Automatisk språk-detektering vid start
+  useEffect(() => {
+    const userLang = navigator.language || navigator.userLanguage;
+    // Om språket inte är svenska, sätt engelska som standard
+    if (!userLang.startsWith('sv')) {
+      setLang('en');
+    }
+  }, []);
+
   const t = TRANSLATIONS[lang]; 
   const myAge = calculateAge('1981-02-04');
 
@@ -194,8 +203,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        // ÄNDRING: bg-white/80 och border-white/50 för mjukare look
-        className="w-full max-w-7xl bg-white/80 dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10"
+        className="w-full max-w-7xl bg-white/70 dark:bg-[#0a0b1e]/80 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500"
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
@@ -206,9 +214,11 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            <button onClick={toggleLang} className="flex items-center gap-2 text-[10px] text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan uppercase tracking-widest bg-white dark:bg-black/40 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
-               <Languages size={12}/> {lang === 'sv' ? "EN" : "SV"}
+            {/* FIX: Flaggor istället för text */}
+            <button onClick={toggleLang} className="flex items-center justify-center w-8 h-8 text-lg bg-white dark:bg-black/40 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm hover:scale-105 active:scale-95" title="Change Language">
+               {lang === 'sv' ? '🇸🇪' : '🇬🇧'}
             </button>
+            
             <button onClick={() => setReduceMotion(!reduceMotion)} className="text-[10px] text-gray-600 dark:text-gray-600 hover:text-black dark:hover:text-white uppercase tracking-widest bg-white dark:bg-black/40 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
               {reduceMotion ? "Motion: OFF" : "Motion: ON"}
             </button>
@@ -257,8 +267,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // ÄNDRING: bg-gray-50 för en svag kontrast mot det vita kortet
-          className="flex-1 p-4 md:p-8 bg-gray-50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
+          className="flex-1 p-4 md:p-8 bg-white/50 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
         >
           <AnimatePresence mode="wait">
             
@@ -354,7 +363,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   detailsText={t.projects.details}
                   isDark={isDark}
                 />
-                <div className="mt-4 p-4 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-xl text-center text-gray-500 text-xs bg-gray-50 dark:bg-black/20">
+
+                 <div className="mt-4 p-4 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-xl text-center text-gray-500 text-xs bg-gray-50 dark:bg-black/20">
                    {t.projects.more}
                  </div>
               </motion.div>
