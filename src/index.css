@@ -2,8 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================
+   LIGHT MODE (Default) - Warm & Soft
+   ======================================== */
 :root {
+  color-scheme: light;
+  --bg-primary: #faf7f2;
+  --bg-card: #fffcf8;
+  --bg-panel: #f5f0e8;
+  --text-primary: #4a4036;
+  --text-muted: #7a6f63;
+  --text-subtle: #a39889;
+  --border-color: #e8dfd3;
+  --hover-color: #f0e9df;
+  --active-color: #ebe3d6;
+  --accent: #9333ea;
+  --accent-light: #f3e8ff;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.5s ease, color 0.3s ease;
+}
+
+/* ========================================
+   DARK MODE - Neon Cyberpunk
+   ======================================== */
+.dark {
   color-scheme: dark;
+  --bg-primary: #0a0b1e;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-panel: rgba(0, 0, 0, 0.3);
+  --text-primary: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-subtle: #6b7280;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --hover-color: rgba(255, 255, 255, 0.05);
+  --active-color: rgba(189, 0, 255, 0.2);
+  --accent: #bd00ff;
+  --accent-light: rgba(189, 0, 255, 0.1);
 }
 
 .dark body {
@@ -11,31 +49,61 @@
   color: #e5e7eb;
 }
 
-/* NY VARM BAKGRUND FÖR LJUST LÄGE */
-body {
-  background-color: #fff8f0; /* Varm, ljus beige/gräddvit */
-  color: #4a4036;            /* Mjuk mörkbrun/grå text */
-  transition: background-color 0.5s ease, color 0.3s ease;
+/* ========================================
+   SCROLLBAR STYLES
+   ======================================== */
+/* Light mode scrollbar */
+::-webkit-scrollbar { 
+  width: 6px; 
+}
+::-webkit-scrollbar-track { 
+  background: var(--bg-primary); 
+}
+::-webkit-scrollbar-thumb { 
+  background: #d4c5b0; 
+  border-radius: 3px; 
+}
+::-webkit-scrollbar-thumb:hover { 
+  background: #9333ea; 
 }
 
-/* ... RESTEN AV FILEN ÄR SAMMA (Scrollbars etc) ... */
-/* Custom Scrollbar (Mörk) */
-.dark ::-webkit-scrollbar { width: 6px; }
-.dark ::-webkit-scrollbar-track { background: #0a0b1e; }
-.dark ::-webkit-scrollbar-thumb { background: #bd00ff; border-radius: 3px; }
-.dark ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar { 
+  width: 6px; 
+}
+.dark ::-webkit-scrollbar-track { 
+  background: #0a0b1e; 
+}
+.dark ::-webkit-scrollbar-thumb { 
+  background: #bd00ff; 
+  border-radius: 3px; 
+}
+.dark ::-webkit-scrollbar-thumb:hover { 
+  background: #00f3ff; 
+}
 
-/* Custom Scrollbar (Ljus - Anpassad till beige) */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #fff8f0; }
-::-webkit-scrollbar-thumb { background: #d4c5b0; border-radius: 3px; } /* Beige-brun */
-::-webkit-scrollbar-thumb:hover { background: #bd00ff; }
-
-/* ... (Behåll animationerna organic-pulse etc) ... */
+/* ========================================
+   ANIMATIONS
+   ======================================== */
 @keyframes organic-pulse {
-  0% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
-  50% { border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; opacity: 0.9; transform: scale(1.05); filter: blur(15px); }
-  100% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
+  0% { 
+    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; 
+    opacity: 0.6; 
+    transform: scale(1); 
+    filter: blur(10px); 
+  }
+  50% { 
+    border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; 
+    opacity: 0.9; 
+    transform: scale(1.05); 
+    filter: blur(15px); 
+  }
+  100% { 
+    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; 
+    opacity: 0.6; 
+    transform: scale(1); 
+    filter: blur(10px); 
+  }
 }
 
 .organic-border {
@@ -50,6 +118,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+/* Dark mode text gradient */
 .animate-text-gradient {
   background: linear-gradient(to right, #ffffff 20%, #00f3ff 30%, #bd00ff 70%, #ffffff 80%);
   -webkit-background-clip: text;
@@ -59,9 +128,9 @@ body {
   animation: text-shimmer 5s linear infinite;
 }
 
-/* Ljust läge för text-gradient (Anpassad för beige) */
+/* Light mode text gradient - softer, warmer */
 .light-mode-gradient {
-  background: linear-gradient(to right, #5b21b6 20%, #00f3ff 50%, #5b21b6 80%); /* Lila/Cyan som poppar mot beige */
+  background: linear-gradient(to right, #7c3aed 20%, #0891b2 50%, #7c3aed 80%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -76,4 +145,34 @@ body {
   color: transparent;
   background-size: 200% auto;
   animation: text-shimmer 6s linear infinite;
+}
+
+/* Light mode subtitle shimmer - softer */
+.light-subtitle-shimmer {
+  background: linear-gradient(to right, #0891b2 0%, #7c3aed 50%, #0891b2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: text-shimmer 6s linear infinite;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(189, 0, 255, 0.3);
 }

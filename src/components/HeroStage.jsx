@@ -145,6 +145,7 @@ const TRANSLATIONS = {
   }
 };
 
+
 function calculateAge(birthday) {
   const ageDifMs = Date.now() - new Date(birthday).getTime();
   const ageDate = new Date(ageDifMs);
@@ -199,61 +200,129 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         onClose={() => setActiveSlideshow(null)}
         slides={activeSlideshow?.slides}
         title={activeSlideshow?.title}
-        isDark={isDark} // <--- NYTT
+        isDark={isDark}
       />
 
       <motion.div 
         layout
-        // ÄNDRING: bg-[#fffbf0]/80 (Varm Gräddvit) och border-orange-100
-        className="w-full max-w-7xl bg-[#fffbf0]/80 dark:bg-[#0a0b1e]/80 backdrop-blur-xl border border-orange-100/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10"
+        // UPPDATERAD: Mjuk varm bakgrund för light mode
+        className={`w-full max-w-7xl backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
+          ${isDark 
+            ? 'bg-neon-darkbg/80 border border-white/10 shadow-2xl' 
+            : 'bg-warm-card/90 border border-warm-border shadow-warm-border/20'}`}
         style={{ borderRadius: 24 }}
       >
         {/* VÄNSTER: Profil & Kontakt */}
-          <motion.div layout className="p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-orange-100/50 dark:border-white/10 flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0">          
+        <motion.div 
+          layout 
+          className={`p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0
+            ${isDark ? 'border-white/10' : 'border-warm-border'}`}
+        >          
           <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
-            <button onClick={toggleTheme} className="flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan bg-white dark:bg-black/40 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
-               {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            {/* Theme toggle */}
+            <button 
+              onClick={toggleTheme} 
+              className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm
+                ${isDark 
+                  ? 'text-gray-400 hover:text-neon-cyan bg-black/40 border-white/10' 
+                  : 'text-warm-muted hover:text-warm-accent bg-warm-card border-warm-border hover:border-warm-accent/30'}`}
+            >
+              {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            {/* FIX: Riktiga CSS-flaggor istället för emojis */}
+            {/* Language toggle */}
             <button 
               onClick={toggleLang} 
-              className="flex items-center justify-center w-8 h-8 bg-white dark:bg-black/40 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm hover:scale-105 active:scale-95 overflow-hidden" 
+              className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm hover:scale-105 active:scale-95 overflow-hidden
+                ${isDark 
+                  ? 'bg-black/40 border-white/10' 
+                  : 'bg-warm-card border-warm-border'}`}
               title="Change Language"
             >
-               <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-lg`}></span>
+              <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-lg`}></span>
             </button>
             
-            <button onClick={() => setReduceMotion(!reduceMotion)} className="text-[10px] text-gray-600 dark:text-gray-600 hover:text-black dark:hover:text-white uppercase tracking-widest bg-white dark:bg-black/40 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10 transition-colors shadow-sm">
+            {/* Motion toggle */}
+            <button 
+              onClick={() => setReduceMotion(!reduceMotion)} 
+              className={`text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border transition-colors shadow-sm
+                ${isDark 
+                  ? 'text-gray-600 hover:text-white bg-black/40 border-white/10' 
+                  : 'text-warm-subtle hover:text-warm-text bg-warm-card border-warm-border'}`}
+            >
               {reduceMotion ? "Motion: OFF" : "Motion: ON"}
             </button>
           </div>
 
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-transparent dark:from-neon-purple/10 dark:to-transparent pointer-events-none"></div>
+          {/* Gradient overlay */}
+          <div className={`absolute inset-0 pointer-events-none
+            ${isDark 
+              ? 'bg-gradient-to-br from-neon-purple/10 to-transparent' 
+              : 'bg-gradient-to-br from-purple-100/30 via-transparent to-amber-50/20'}`}
+          ></div>
           
           <ProfilePhoto disableMotion={reduceMotion} isDark={isDark} />
           
           <motion.div layout className="mt-4 text-center md:text-left z-10">
-            <h1 className={`text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight ${isDark ? 'animate-text-gradient' : 'light-mode-gradient'} bg-clip-text text-transparent pb-1 whitespace-nowrap`}>
+            <h1 className={`text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight bg-clip-text text-transparent pb-1 whitespace-nowrap
+              ${isDark ? 'animate-text-gradient' : 'light-mode-gradient'}`}>
               Klas Olsson
             </h1>
-            <p className="text-neon-purple dark:text-neon-cyan font-mono text-sm mt-1 uppercase tracking-wider">{t.role}</p>
+            <p className={`font-mono text-sm mt-1 uppercase tracking-wider
+              ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>
+              {t.role}
+            </p>
           </motion.div>
 
+          {/* Social links & CV */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 my-4 z-10 w-full">
             <div className="flex gap-3">
-              <button onClick={() => {navigator.clipboard.writeText('klasolsson81@gmail.com'); toast.success('Email kopierad!');}} className="text-gray-500 dark:text-gray-400 hover:text-neon-purple dark:hover:text-neon-cyan transition-colors cursor-pointer p-1" title="Kopiera Email"><Mail size={22} /></button>
-              <a href="https://github.com/klasolsson81" target="_blank" rel="noreferrer" className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors p-1" title="GitHub"><Github size={22} /></a>
-              <a href="https://www.linkedin.com/in/klasolsson81/" target="_blank" rel="noreferrer" className="text-gray-500 dark:text-gray-400 hover:text-[#0077b5] transition-colors p-1" title="LinkedIn"><Linkedin size={22} /></a>
+              <button 
+                onClick={() => {navigator.clipboard.writeText('klasolsson81@gmail.com'); toast.success('Email kopierad!');}} 
+                className={`transition-colors cursor-pointer p-1
+                  ${isDark 
+                    ? 'text-gray-400 hover:text-neon-cyan' 
+                    : 'text-warm-muted hover:text-warm-accent'}`}
+                title="Kopiera Email"
+              >
+                <Mail size={22} />
+              </button>
+              <a 
+                href="https://github.com/klasolsson81" 
+                target="_blank" 
+                rel="noreferrer" 
+                className={`transition-colors p-1
+                  ${isDark 
+                    ? 'text-gray-400 hover:text-white' 
+                    : 'text-warm-muted hover:text-warm-text'}`}
+                title="GitHub"
+              >
+                <Github size={22} />
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/klasolsson81/" 
+                target="_blank" 
+                rel="noreferrer" 
+                className={`transition-colors p-1
+                  ${isDark 
+                    ? 'text-gray-400 hover:text-[#0077b5]' 
+                    : 'text-warm-muted hover:text-[#0077b5]'}`}
+                title="LinkedIn"
+              >
+                <Linkedin size={22} />
+              </a>
             </div>
 
-            <div className="hidden md:block w-px h-5 bg-gray-300 dark:bg-white/20"></div>
+            <div className={`hidden md:block w-px h-5 ${isDark ? 'bg-white/20' : 'bg-warm-border'}`}></div>
 
             <a 
               href="/CV_Klas_Olsson.pdf" 
               download="CV_Klas_Olsson.pdf"
               onClick={() => {confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#00f3ff', '#bd00ff', '#ffffff'] }); toast.success('Tack för visat intresse! CV laddas ner.');}}
-              className="relative group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-white dark:bg-neon-purple/10 border border-gray-200 dark:border-neon-purple/30 rounded-full text-neon-purple dark:text-neon-cyan hover:bg-gray-50 dark:hover:bg-neon-purple/20 hover:border-neon-purple transition-all duration-300 shadow-sm"
+              className={`relative group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 rounded-full transition-all duration-300 shadow-sm
+                ${isDark 
+                  ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20 hover:border-neon-purple' 
+                  : 'bg-warm-accentLight border border-purple-200 text-warm-accent hover:bg-purple-100 hover:border-warm-accent'}`}
               title={t.nav.cv}
             >
               <Download size={18} className="relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300"/>
@@ -261,19 +330,20 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             </a>
           </div>
 
+          {/* Navigation */}
           <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-2 md:space-y-2 md:gap-0 justify-between md:justify-start">
-            <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} />
-            <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} />
-            <NavButton label={t.nav.projects} icon={<Code />} active={section === 'projects'} onClick={() => setSection('projects')} />
-            <NavButton label={t.nav.hire} icon={<Briefcase />} active={section === 'hire'} onClick={() => setSection('hire')} />
+            <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} isDark={isDark} />
+            <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} isDark={isDark} />
+            <NavButton label={t.nav.projects} icon={<Code />} active={section === 'projects'} onClick={() => setSection('projects')} isDark={isDark} />
+            <NavButton label={t.nav.hire} icon={<Briefcase />} active={section === 'hire'} onClick={() => setSection('hire')} isDark={isDark} />
           </nav>
         </motion.div>
 
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          // ÄNDRING: bg-[#fdfcf6]/60 (Mycket svag varm ton)
-          className="flex-1 p-4 md:p-8 bg-[#fdfcf6]/60 dark:bg-black/30 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500"
+          className={`flex-1 p-4 md:p-8 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500
+            ${isDark ? 'bg-black/30' : 'bg-warm-bg/60'}`}
         >
           <AnimatePresence mode="wait">
             
@@ -283,35 +353,50 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
                 className="space-y-6 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
-                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.whoami}</h2>
-                <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base">
-                  <p><strong className="text-black dark:text-white">{t.about.intro1.split('.')[0]}.</strong> {t.about.intro1.split('.').slice(1).join('.')}.</p>
-                  <p dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', '<span class="text-neon-purple dark:text-neon-cyan font-bold">n8n</span>') }} />
+                <h2 className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
+                  {t.titles.whoami}
+                </h2>
+                <div className={`space-y-4 leading-relaxed text-sm md:text-base ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
+                  <p>
+                    <strong className={isDark ? 'text-white' : 'text-warm-text'}>
+                      {t.about.intro1.split('.')[0]}.
+                    </strong> 
+                    {t.about.intro1.split('.').slice(1).join('.')}
+                  </p>
+                  <p dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', `<span class="${isDark ? 'text-neon-cyan' : 'text-warm-accent'} font-bold">n8n</span>`) }} />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-gray-200 dark:border-white/10">
+                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
                   <div>
-                     <h3 className="text-[10px] font-bold mb-2 uppercase tracking-widest animate-subtitle-shimmer bg-clip-text text-transparent">
-                     {t.about.factsTitle}
-                     </h3>
-                     <ul className="space-y-1.5 text-sm text-gray-600 dark:text-gray-300">
-                       <li><span className="text-neon-purple">➤</span> {t.about.facts.age}: <span className="text-black dark:text-white">{myAge}</span></li>
-                       <li><span className="text-neon-purple">➤</span> {t.about.facts.city}: {t.about.factValues.city}</li>
-                       <li><span className="text-neon-purple">➤</span> {t.about.facts.lang}: {t.about.factValues.lang}</li>
-                       <li><span className="text-neon-purple">➤</span> {t.about.facts.family}: {t.about.factValues.family}</li>
-                     </ul>
+                    <h3 className={`text-[10px] font-bold mb-2 uppercase tracking-widest bg-clip-text text-transparent
+                      ${isDark ? 'animate-subtitle-shimmer' : 'light-subtitle-shimmer'}`}>
+                      {t.about.factsTitle}
+                    </h3>
+                    <ul className={`space-y-1.5 text-sm ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
+                      <li><span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>➤</span> {t.about.facts.age}: <span className={isDark ? 'text-white' : 'text-warm-text'}>{myAge}</span></li>
+                      <li><span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>➤</span> {t.about.facts.city}: {t.about.factValues.city}</li>
+                      <li><span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>➤</span> {t.about.facts.lang}: {t.about.factValues.lang}</li>
+                      <li><span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>➤</span> {t.about.facts.family}: {t.about.factValues.family}</li>
+                    </ul>
                   </div>
                   
                   <div>
-                    <h3 className="text-[10px] font-bold mb-2 uppercase tracking-widest animate-subtitle-shimmer bg-clip-text text-transparent">
-                    {t.about.stackTitle}
+                    <h3 className={`text-[10px] font-bold mb-2 uppercase tracking-widest bg-clip-text text-transparent
+                      ${isDark ? 'animate-subtitle-shimmer' : 'light-subtitle-shimmer'}`}>
+                      {t.about.stackTitle}
                     </h3>
                     <div className="flex flex-wrap gap-1.5">
-                        {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Tailwind CSS', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
-                        <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-neon-purple/10 border border-gray-300 dark:border-neon-purple/30 rounded text-[10px] md:text-xs text-neon-purple dark:text-neon-cyan font-mono cursor-default hover:bg-gray-200 dark:hover:bg-neon-purple/20 transition-colors">
-                            {tag}
+                      {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Tailwind CSS', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
+                        <span 
+                          key={tag} 
+                          className={`px-2 py-1 rounded text-[10px] md:text-xs font-mono cursor-default transition-colors
+                            ${isDark 
+                              ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20' 
+                              : 'bg-warm-accentLight border border-purple-200 text-warm-accent hover:bg-purple-100'}`}
+                        >
+                          {tag}
                         </span>
-                        ))}
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -326,7 +411,9 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
                 className="h-full flex flex-col"
               >
-                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.ai}</h2>
+                <h2 className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
+                  {t.titles.ai}
+                </h2>
                 <ChatUI lang={lang} isDark={isDark} />
               </motion.div>
             )}
@@ -337,7 +424,9 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
               >
-                <h2 className="text-xl md:text-2xl font-bold text-neon-purple mb-4">{t.titles.projects}</h2>
+                <h2 className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
+                  {t.titles.projects}
+                </h2>
                 
                 <ProjectCard 
                   title="Console Detective AI" 
@@ -370,9 +459,12 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   isDark={isDark}
                 />
 
-                 <div className="mt-4 p-4 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-xl text-center text-gray-500 text-xs bg-gray-50 dark:bg-black/20">
-                   {t.projects.more}
-                 </div>
+                <div className={`mt-4 p-4 border-2 border-dashed rounded-xl text-center text-xs
+                  ${isDark 
+                    ? 'border-white/10 text-gray-500 bg-black/20' 
+                    : 'border-warm-border text-warm-subtle bg-warm-hover/50'}`}>
+                  {t.projects.more}
+                </div>
               </motion.div>
             )}
 
@@ -393,60 +485,96 @@ const HeroStage = ({ isDark, toggleTheme }) => {
   );
 };
 
-const NavButton = ({ label, icon, active, onClick }) => (
+// UPPDATERAD NavButton med isDark prop
+const NavButton = ({ label, icon, active, onClick, isDark }) => (
   <button 
     onClick={onClick}
     className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium transition-all duration-300 group
       ${active 
-        ? 'bg-purple-100 dark:bg-neon-purple/20 text-purple-900 dark:text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' 
-        : 'text-gray-500 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-black dark:hover:text-white'}
+        ? isDark 
+          ? 'bg-neon-purple/20 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' 
+          : 'bg-warm-accentLight text-warm-text border-b-2 md:border-b-0 md:border-l-2 border-warm-accent'
+        : isDark 
+          ? 'text-gray-400 hover:bg-white/5 hover:text-white' 
+          : 'text-warm-muted hover:bg-warm-hover hover:text-warm-text'}
     `}
   >
-    <span className={`transition-colors ${active ? 'text-neon-purple dark:text-neon-cyan' : 'group-hover:text-neon-purple'}`}>
+    <span className={`transition-colors ${active 
+      ? isDark ? 'text-neon-cyan' : 'text-warm-accent' 
+      : isDark ? 'group-hover:text-neon-purple' : 'group-hover:text-warm-accent'}`}>
       {React.cloneElement(icon, { size: window.innerWidth < 768 ? 18 : 16 })}
     </span>
     <span className="text-center md:text-left">{label}</span>
   </button>
 );
 
+// UPPDATERAD ProjectCard med mjuka light mode-färger
 const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText, isDark }) => (
   <div className={`p-5 rounded-xl border transition-all group relative shadow-lg
     ${isDark 
       ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 hover:shadow-neon-cyan/20' 
-      : 'bg-white border-gray-200 hover:border-neon-purple/50 hover:shadow-neon-purple/20'}`}>
+      : 'bg-warm-card border-warm-border hover:border-warm-accent/50 hover:shadow-warm-accent/10'}`}>
       
     <div className="flex justify-between items-start pr-8">
-      <h3 className={`font-bold text-base md:text-lg transition-colors ${isDark ? 'text-white group-hover:text-neon-cyan' : 'text-gray-800 group-hover:text-neon-purple'}`}>{title}</h3>
-      <a href={link} target="_blank" rel="noopener noreferrer" className={`transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`} title="View Code">
+      <h3 className={`font-bold text-base md:text-lg transition-colors
+        ${isDark 
+          ? 'text-white group-hover:text-neon-cyan' 
+          : 'text-warm-text group-hover:text-warm-accent'}`}>
+        {title}
+      </h3>
+      <a 
+        href={link} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className={`transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-warm-subtle hover:text-warm-text'}`} 
+        title="View Code"
+      >
         <ExternalLink size={18} />
       </a>
     </div>
     
-    <p className={`text-xs md:text-sm mt-2 mb-3 leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{desc}</p>
+    <p className={`text-xs md:text-sm mt-2 mb-3 leading-relaxed ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
+      {desc}
+    </p>
     
     <div className="flex gap-3 mb-3">
-        {videoSrc && (
-            <button onClick={(e) => { e.preventDefault(); onPlay(); }} className={`flex items-center gap-2 px-3 py-1.5 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm
-              ${isDark 
-                ? 'bg-neon-purple/10 text-neon-purple border-neon-purple/30 hover:bg-neon-purple hover:text-white' 
-                : 'bg-purple-50 text-neon-purple border-purple-200 hover:bg-neon-purple hover:text-white'}`}>
-                <Play size={12} fill="currentColor" /> {watchText}
-            </button>
-        )}
-        <button onClick={(e) => { e.preventDefault(); onDetails(); }} className={`flex items-center gap-2 px-3 py-1.5 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm
+      {videoSrc && (
+        <button 
+          onClick={(e) => { e.preventDefault(); onPlay(); }} 
+          className={`flex items-center gap-2 px-3 py-1.5 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm
+            ${isDark 
+              ? 'bg-neon-purple/10 text-neon-purple border-neon-purple/30 hover:bg-neon-purple hover:text-white' 
+              : 'bg-warm-accentLight text-warm-accent border-purple-200 hover:bg-warm-accent hover:text-white'}`}
+        >
+          <Play size={12} fill="currentColor" /> {watchText}
+        </button>
+      )}
+      <button 
+        onClick={(e) => { e.preventDefault(); onDetails(); }} 
+        className={`flex items-center gap-2 px-3 py-1.5 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm
           ${isDark 
             ? 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan hover:text-black' 
-            : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:text-black'}`}>
-            <Layers size={12} /> {detailsText}
-        </button>
+            : 'bg-warm-hover text-warm-text border-warm-border hover:bg-warm-active hover:text-warm-text'}`}
+      >
+        <Layers size={12} /> {detailsText}
+      </button>
     </div>
     
     <div className="flex flex-wrap gap-1.5 mt-auto">
       {tags.map(t => (
-        <span key={t} className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border 
+        <span 
+          key={t} 
+          className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border 
             ${isDark 
-              ? (t === 'Team Lead' || t === 'Scrum' ? 'bg-neon-purple/20 text-white border-neon-purple/30' : 'bg-black/40 text-gray-400 border-white/10')
-              : (t === 'Team Lead' || t === 'Scrum' ? 'bg-purple-50 text-neon-purple border-purple-200' : 'bg-gray-100 text-gray-500 border-gray-200')}`}>{t}</span>
+              ? (t === 'Team Lead' || t === 'Scrum' 
+                  ? 'bg-neon-purple/20 text-white border-neon-purple/30' 
+                  : 'bg-black/40 text-gray-400 border-white/10')
+              : (t === 'Team Lead' || t === 'Scrum' 
+                  ? 'bg-warm-accentLight text-warm-accent border-purple-200' 
+                  : 'bg-warm-hover text-warm-muted border-warm-border')}`}
+        >
+          {t}
+        </span>
       ))}
     </div>
   </div>
