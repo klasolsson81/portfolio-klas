@@ -20,20 +20,74 @@ const ChatUI = ({ lang, isDark }) => {
     setMessages([{ role: 'assistant', content: welcomeText }]);
   }, [lang]);
 
-  const sendMessage = async (e) => { if (e) e.preventDefault(); const cleanInput = input.trim(); if (!cleanInput || loading) return; const userMsg = { role: 'user', content: cleanInput }; setMessages(prev => [...prev, userMsg]); setInput(''); if (textareaRef.current) { textareaRef.current.style.height = 'auto'; } setLoading(true); try { const res = await axios.post('/api/chat', { message: cleanInput.substring(0, MAX_LENGTH), lang: lang }, { timeout: 15000 }); setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]); } catch (err) { console.error('Chat error:', err); let errorMsg = lang === 'sv' ? "Något gick fel. Försök igen." : "Something went wrong. Please try again."; if (err.code === 'ECONNABORTED') { errorMsg = lang === 'sv' ? "Det tog för lång tid. Försök igen." : "Timeout - please try again."; } setMessages(prev => [...prev, { role: 'assistant', content: errorMsg }]); } finally { setLoading(false); } };
-  const handleKeyDown = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } };
-  const handleInput = (e) => { setInput(e.target.value); e.target.style.height = 'auto'; e.target.style.height = `${e.target.scrollHeight}px`; };
-  useEffect(() => { scrollRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+  const sendMessage = async (e) => {
+    if (e) e.preventDefault();
+    const cleanInput = input.trim();
+    if (!cleanInput || loading) return;
+
+    const userMsg = { role: 'user', content: cleanInput };
+    setMessages(prev => [...prev, userMsg]);
+    setInput('');
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await axios.post('/api/chat', {
+        message: cleanInput.substring(0, MAX_LENGTH),
+        lang: lang
+      }, { timeout: 15000 });
+
+      setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
+    } catch (err) {
+      console.error('Chat error:', err);
+      let errorMsg = lang === 'sv' 
+        ? "Något gick fel. Försök igen." 
+        : "Something went wrong. Please try again.";
+
+      if (err.code === 'ECONNABORTED') {
+        errorMsg = lang === 'sv' 
+          ? "Det tog för lång tid. Försök igen." 
+          : "Timeout - please try again.";
+      }
+
+      setMessages(prev => [...prev, { role: 'assistant', content: errorMsg }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const handleInput = (e) => {
+    setInput(e.target.value);
+    e.target.style.height = 'auto';
+    e.target.style.height = `${e.target.scrollHeight}px`;
+  };
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
-    // ÄNDRING: bg-[#fffbf5] (varmvit) och border-stone-200
-    <div className={`flex flex-col h-full w-full rounded-2xl overflow-hidden border shadow-inner relative transition-colors duration-300
-      ${isDark ? 'bg-black/40 border-white/5' : 'bg-[#fffbf5] border-stone-200'}`}>
+    // FIX: Använd flex-1 + min-h-0 + overflow-hidden för att containern ska begränsa höjden korrekt
+    <div className={`flex flex-col flex-1 min-h-0 w-full rounded-2xl overflow-hidden border shadow-inner relative transition-colors duration-300
+      ${isDark ? 'bg-black/40 border-white/5' : 'bg-warm-card border-warm-border'}`}>
        
-       <div className="absolute top-4 right-4 opacity-20 pointer-events-none">
-          <Sparkles size={40} className="text-neon-purple animate-pulse"/>
-       </div>
+      <div className={`absolute top-4 right-4 opacity-20 pointer-events-none
+        ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
+        <Sparkles size={40} className="animate-pulse"/>
+      </div>
 
+      {/* FIX: Meddelandeområdet - behöver explicit overflow-y-auto + min-h-0 för att scroll ska fungera */}
       <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start items-end'}`}>
@@ -42,24 +96,47 @@ const ChatUI = ({ lang, isDark }) => {
               <img 
                 src={aiKlasImage} 
                 alt="AI Klas"
-                className="w-14 h-14 rounded-full mr-3 shadow-sm shrink-0 object-cover border border-neon-purple/30"
+                className={`w-10 h-10 md:w-14 md:h-14 rounded-full mr-2 md:mr-3 shadow-sm shrink-0 object-cover border
+                  ${isDark ? 'border-neon-purple/30' : 'border-warm-accent/30'}`}
               />
             )}
 
-            {/* ÄNDRING: Varmare färger på bubblorna i ljust läge */}
-            <div className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed shadow-sm overflow-hidden transition-colors duration-300 ${
+            {/* Chattbubblor med mjuka färger */}
+            <div className={`max-w-[85%] p-3 md:p-4 rounded-2xl text-sm leading-relaxed shadow-sm overflow-hidden transition-colors duration-300 ${
               m.role === 'user' 
-                ? (isDark ? 'bg-neon-purple/20 text-white border border-neon-purple/30 rounded-tr-sm' : 'bg-purple-100 text-purple-900 border border-purple-200 rounded-tr-sm')
-                : (isDark ? 'bg-[#1a1b2e] text-gray-200 border border-white/5 rounded-tl-sm' : 'bg-[#f5eee6] text-stone-700 border border-stone-200 rounded-tl-sm')
+                ? (isDark 
+                    ? 'bg-neon-purple/20 text-white border border-neon-purple/30 rounded-tr-sm' 
+                    : 'bg-warm-accentLight text-warm-text border border-purple-200 rounded-tr-sm')
+                : (isDark 
+                    ? 'bg-[#1a1b2e] text-gray-200 border border-white/5 rounded-tl-sm' 
+                    : 'bg-warm-panel text-warm-text border border-warm-border rounded-tl-sm')
             }`}>
               <ReactMarkdown
                 components={{
-                  a: ({node, ...props}) => <a {...props} className="text-neon-purple underline hover:text-black dark:hover:text-white break-all" target="_blank" rel="noopener noreferrer" />,
+                  a: ({node, ...props}) => (
+                    <a 
+                      {...props} 
+                      className={`underline break-all ${isDark ? 'text-neon-cyan hover:text-white' : 'text-warm-accent hover:text-purple-700'}`}
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                    />
+                  ),
                   p: ({node, ...props}) => <p {...props} className="mb-2 last:mb-0" />,
                   ul: ({node, ...props}) => <ul {...props} className="list-disc pl-4 mb-2 space-y-1" />,
                   ol: ({node, ...props}) => <ol {...props} className="list-decimal pl-4 mb-2 space-y-1" />,
                   li: ({node, ...props}) => <li {...props} />,
-                  strong: ({node, ...props}) => <strong {...props} className="text-neon-purple font-bold" />
+                  strong: ({node, ...props}) => (
+                    <strong 
+                      {...props} 
+                      className={`font-bold ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}
+                    />
+                  ),
+                  code: ({node, ...props}) => (
+                    <code 
+                      {...props} 
+                      className={`px-1 py-0.5 rounded text-xs font-mono ${isDark ? 'bg-black/40 text-neon-cyan' : 'bg-warm-hover text-warm-accent'}`}
+                    />
+                  )
                 }}
               >
                 {m.content}
@@ -69,56 +146,60 @@ const ChatUI = ({ lang, isDark }) => {
         ))}
         
         {loading && (
-            <div className="flex justify-start items-end">
-                 <img 
-                    src={aiKlasImage} 
-                    alt="AI Klas Thinking"
-                    className="w-14 h-14 rounded-full mr-3 shrink-0 object-cover border border-neon-purple/30 opacity-80"
-                  />
-                {/* ÄNDRING: Varmare laddar-bubbla */}
-                <div className={`p-4 rounded-2xl rounded-tl-sm border flex items-center gap-2 text-sm transition-colors duration-300
-                  ${isDark ? 'bg-[#1a1b2e] border-white/5 text-gray-400' : 'bg-[#f5eee6] border-stone-200 text-stone-500'}`}>
-                    <Loader2 className="animate-spin text-neon-purple" size={16} />
-                    {lang === 'sv' ? "Tänker..." : "Thinking..."}
-                </div>
+          <div className="flex justify-start items-end">
+            <img 
+              src={aiKlasImage} 
+              alt="AI Klas Thinking"
+              className={`w-10 h-10 md:w-14 md:h-14 rounded-full mr-2 md:mr-3 shrink-0 object-cover border opacity-80
+                ${isDark ? 'border-neon-purple/30' : 'border-warm-accent/30'}`}
+            />
+            <div className={`p-3 md:p-4 rounded-2xl rounded-tl-sm border flex items-center gap-2 text-sm transition-colors duration-300
+              ${isDark 
+                ? 'bg-[#1a1b2e] border-white/5 text-gray-400' 
+                : 'bg-warm-panel border-warm-border text-warm-muted'}`}>
+              <Loader2 className={`animate-spin ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`} size={16} />
+              {lang === 'sv' ? "Tänker..." : "Thinking..."}
             </div>
+          </div>
         )}
         <div ref={scrollRef} />
       </div>
 
-      {/* ÄNDRING: Varmare Input-område */}
-      <form onSubmit={sendMessage} className={`p-3 md:p-4 border-t relative transition-colors duration-300
-        ${isDark ? 'bg-black/80 border-white/10' : 'bg-[#fbf7f2] border-stone-200'}`}>
+      {/* Input-område - shrink-0 så det inte krymper */}
+      <form onSubmit={sendMessage} className={`shrink-0 p-3 md:p-4 border-t relative transition-colors duration-300
+        ${isDark ? 'bg-black/80 border-white/10' : 'bg-warm-bg border-warm-border'}`}>
         <div className="flex gap-2 items-end">
-            <textarea 
-              ref={textareaRef}
-              rows={1}
-              value={input}
-              onChange={handleInput}
-              onKeyDown={handleKeyDown}
-              placeholder={lang === 'sv' ? "Skriv din fråga här..." : "Type your question..."}
-              // ÄNDRING: Varmare input-fält
-              className={`flex-1 rounded-xl px-4 py-3 outline-none text-sm transition-colors resize-none overflow-hidden min-h-[46px] max-h-[120px]
-                ${isDark 
-                  ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-neon-purple/50' 
-                  : 'bg-white border border-stone-300 text-stone-800 placeholder-stone-400 focus:border-neon-purple'}`}
-              maxLength={MAX_LENGTH} 
-              aria-label="Chat input"
-            />
-            
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="p-3 rounded-xl bg-neon-purple text-white hover:bg-neon-purple/80 transition-all disabled:opacity-50 shadow-md hover:shadow-lg shrink-0 mb-[1px]"
-            >
-              <Send size={18} />
-            </button>
+          <textarea 
+            ref={textareaRef}
+            rows={1}
+            value={input}
+            onChange={handleInput}
+            onKeyDown={handleKeyDown}
+            placeholder={lang === 'sv' ? "Skriv din fråga här..." : "Type your question..."}
+            className={`flex-1 rounded-xl px-4 py-3 outline-none text-sm transition-colors resize-none overflow-hidden min-h-[46px] max-h-[120px]
+              ${isDark 
+                ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-neon-purple/50' 
+                : 'bg-warm-card border border-warm-border text-warm-text placeholder-warm-subtle focus:border-warm-accent'}`}
+            maxLength={MAX_LENGTH} 
+            aria-label="Chat input"
+          />
+          
+          <button 
+            type="submit" 
+            disabled={loading}
+            className={`p-3 rounded-xl text-white transition-all disabled:opacity-50 shadow-md hover:shadow-lg shrink-0 mb-[1px]
+              ${isDark 
+                ? 'bg-neon-purple hover:bg-neon-purple/80' 
+                : 'bg-warm-accent hover:bg-purple-700'}`}
+          >
+            <Send size={18} />
+          </button>
         </div>
 
         {input.length > 400 && (
-            <div className="absolute bottom-1 left-6 text-[10px] text-gray-500">
-                {input.length} / {MAX_LENGTH}
-            </div>
+          <div className={`absolute bottom-1 left-6 text-[10px] ${isDark ? 'text-gray-500' : 'text-warm-subtle'}`}>
+            {input.length} / {MAX_LENGTH}
+          </div>
         )}
       </form>
     </div>

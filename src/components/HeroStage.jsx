@@ -342,7 +342,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         {/* HÖGER: Innehåll */}
         <motion.div 
           layout 
-          className={`flex-1 p-4 md:p-8 relative flex flex-col overflow-hidden h-full md:h-full transition-colors duration-500
+          className={`flex-1 min-h-0 p-4 md:p-8 relative flex flex-col overflow-hidden transition-colors duration-500
             ${isDark ? 'bg-black/30' : 'bg-warm-bg/60'}`}
         >
           <AnimatePresence mode="wait">
@@ -409,9 +409,9 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               <motion.div 
                 key="chat" 
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
-                className="h-full flex flex-col"
+                className="flex-1 min-h-0 flex flex-col overflow-hidden"
               >
-                <h2 className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
+                <h2 className={`shrink-0 text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
                   {t.titles.ai}
                 </h2>
                 <ChatUI lang={lang} isDark={isDark} />

@@ -160,6 +160,11 @@ body {
 /* ========================================
    UTILITY CLASSES
    ======================================== */
+.custom-scrollbar {
+  -webkit-overflow-scrolling: touch; /* Smooth scroll på iOS */
+  overscroll-behavior: contain; /* Förhindra "bounce" scroll */
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
