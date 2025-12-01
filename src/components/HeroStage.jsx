@@ -540,32 +540,28 @@ const NavButton = ({ label, icon, active, onClick, isDark }) => (
   </button>
 );
 
-// Speciell Anlita-knapp med skiftande färger
+// Anlita-knapp med shimmer-text (som Personligt/Tech Stack)
 const HireNavButton = ({ label, icon, active, onClick, isDark }) => (
   <button 
     onClick={onClick}
-    className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-bold transition-all duration-300 group relative overflow-hidden
+    className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium transition-all duration-300 group
       ${active 
         ? isDark 
-          ? 'bg-gradient-to-r from-neon-purple/30 to-neon-cyan/30 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-cyan' 
-          : 'bg-gradient-to-r from-purple-100 to-amber-100 text-warm-text border-b-2 md:border-b-0 md:border-l-2 border-warm-accent'
+          ? 'bg-neon-purple/20 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' 
+          : 'bg-warm-accentLight text-warm-text border-b-2 md:border-b-0 md:border-l-2 border-warm-accent'
         : isDark 
-          ? 'bg-gradient-to-r from-neon-purple/10 to-neon-cyan/10 text-gray-300 hover:from-neon-purple/20 hover:to-neon-cyan/20 hover:text-white border border-neon-purple/30 hover:border-neon-cyan/50' 
-          : 'bg-gradient-to-r from-purple-50 to-amber-50 text-warm-muted hover:from-purple-100 hover:to-amber-100 hover:text-warm-text border border-purple-200 hover:border-warm-accent'}
+          ? 'text-gray-400 hover:bg-white/5 hover:text-white' 
+          : 'text-warm-muted hover:bg-warm-hover hover:text-warm-text'}
     `}
   >
-    {/* Shimmer animation overlay */}
-    <span className={`absolute inset-0 opacity-30 pointer-events-none
-      ${isDark ? 'animate-shimmer-dark' : 'animate-shimmer-light'}`} 
-    />
-    
-    <span className={`relative transition-colors ${active 
+    <span className={`transition-colors ${active 
       ? isDark ? 'text-neon-cyan' : 'text-warm-accent' 
-      : isDark ? 'text-neon-purple group-hover:text-neon-cyan' : 'text-purple-500 group-hover:text-warm-accent'}`}>
+      : isDark ? 'group-hover:text-neon-purple' : 'group-hover:text-warm-accent'}`}>
       {React.cloneElement(icon, { size: window.innerWidth < 768 ? 18 : 16 })}
     </span>
-    <span className={`relative text-center md:text-left bg-clip-text
-      ${!active && (isDark ? 'animate-text-gradient-subtle' : '')}`}>
+    {/* Text med shimmer-effekt som Personligt/Tech Stack */}
+    <span className={`text-center md:text-left font-bold bg-clip-text text-transparent
+      ${isDark ? 'animate-subtitle-shimmer' : 'light-subtitle-shimmer'}`}>
       {label}
     </span>
   </button>
