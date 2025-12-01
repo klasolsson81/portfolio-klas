@@ -8,7 +8,7 @@ import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import ProjectSlideshow from './ProjectSlideshow';
 import HireMe from './HireMe';
-import FloatingCTA from './FloatingCTA';
+// FloatingCTA borttagen - Anlita-knappen har nu skiftande färger istället
 import DevTimeline from './DevTimeline';
 
 // VIDEO
@@ -203,13 +203,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
   return (
     <div className="min-h-screen flex items-center justify-center p-3 md:p-8 relative z-10">
       
-      {/* Floating CTA för "Anlita" */}
-      <FloatingCTA 
-        isDark={isDark} 
-        onNavigateToHire={() => setSection('hire')} 
-        currentSection={section}
-      />
-      
       <AnimatePresence>
         {activeVideo && (
           <motion.div 
@@ -364,7 +357,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             <NavButton label={t.nav.journey} icon={<TrendingUp />} active={section === 'journey'} onClick={() => setSection('journey')} isDark={isDark} />
             <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} isDark={isDark} />
             <NavButton label={t.nav.projects} icon={<Code />} active={section === 'projects'} onClick={() => setSection('projects')} isDark={isDark} />
-            <NavButton label={t.nav.hire} icon={<Briefcase />} active={section === 'hire'} onClick={() => setSection('hire')} isDark={isDark} />
+            <HireNavButton label={t.nav.hire} icon={<Briefcase />} active={section === 'hire'} onClick={() => setSection('hire')} isDark={isDark} />
           </nav>
         </motion.div>
 
@@ -544,6 +537,37 @@ const NavButton = ({ label, icon, active, onClick, isDark }) => (
       {React.cloneElement(icon, { size: window.innerWidth < 768 ? 18 : 16 })}
     </span>
     <span className="text-center md:text-left">{label}</span>
+  </button>
+);
+
+// Speciell Anlita-knapp med skiftande färger
+const HireNavButton = ({ label, icon, active, onClick, isDark }) => (
+  <button 
+    onClick={onClick}
+    className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-bold transition-all duration-300 group relative overflow-hidden
+      ${active 
+        ? isDark 
+          ? 'bg-gradient-to-r from-neon-purple/30 to-neon-cyan/30 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-cyan' 
+          : 'bg-gradient-to-r from-purple-100 to-amber-100 text-warm-text border-b-2 md:border-b-0 md:border-l-2 border-warm-accent'
+        : isDark 
+          ? 'bg-gradient-to-r from-neon-purple/10 to-neon-cyan/10 text-gray-300 hover:from-neon-purple/20 hover:to-neon-cyan/20 hover:text-white border border-neon-purple/30 hover:border-neon-cyan/50' 
+          : 'bg-gradient-to-r from-purple-50 to-amber-50 text-warm-muted hover:from-purple-100 hover:to-amber-100 hover:text-warm-text border border-purple-200 hover:border-warm-accent'}
+    `}
+  >
+    {/* Shimmer animation overlay */}
+    <span className={`absolute inset-0 opacity-30 pointer-events-none
+      ${isDark ? 'animate-shimmer-dark' : 'animate-shimmer-light'}`} 
+    />
+    
+    <span className={`relative transition-colors ${active 
+      ? isDark ? 'text-neon-cyan' : 'text-warm-accent' 
+      : isDark ? 'text-neon-purple group-hover:text-neon-cyan' : 'text-purple-500 group-hover:text-warm-accent'}`}>
+      {React.cloneElement(icon, { size: window.innerWidth < 768 ? 18 : 16 })}
+    </span>
+    <span className={`relative text-center md:text-left bg-clip-text
+      ${!active && (isDark ? 'animate-text-gradient-subtle' : '')}`}>
+      {label}
+    </span>
   </button>
 );
 

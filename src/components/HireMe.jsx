@@ -3,27 +3,217 @@ import { Loader2, CheckCircle, XCircle, Briefcase, Send, RefreshCw, User, Mail, 
 import axios from 'axios';
 import { toast } from 'sonner';
 
-// (Behåll TRANSLATIONS här - jag kortar ner dem i svaret för platsens skull)
 const TRANSLATIONS = {
-    // ... (Kopiera in dina översättningar här om du skriver över hela filen) ...
-    // För enkelhets skull, låt dem vara som i din tidigare version.
-    sv: { title: "Anlita mig", subtitle: "Fyll i formuläret så låter jag min AI göra en första bedömning av projektet.", disclaimer: "OBSERVERA: Jag tar mig an projekt vid sidan av mina heltidsstudier och familjeliv. Detta formulär ger en första AI-bedömning, men jag garanterar inte att jag kan ta uppdraget.", labels: { help: "VAD BEHÖVER DU HJÄLP MED?", payment: "ERSÄTTNING?", budget: "BUDGET (CA KR)", desc: "BESKRIVNING", name: "DITT NAMN", email: "DIN EMAIL", who: "VEM ÄR DU?", security: "SÄKERHETSKOLL: VAD ÄR 3 + 4?" }, placeholders: { budget: "t.ex. 5000", desc: "Vad behöver du hjälp med? Beskriv kort...", name: "Förnamn Efternamn", email: "namn@exempel.se", answer: "Svar" }, options: { types: ["Hemsida (Enkel)", "Hemsida (Avancerad)", "Systemutveckling / Backend", "AI Integration / Automation", "Annat"], payment: ["Betalt", "Pro Bono (Gratis/Erfarenhet)"], org: ["Privatperson", "Företag", "Rekryterare"] }, buttons: { analyze: "Analysera med AI", analyzing: "AI-agenten analyserar...", send: "Skicka förfrågan nu", sending: "Skickar...", new: "Gör ny förfrågan", change: "Ändra uppgifter" }, status: { approved: "Låter intressant!", rejected: "Kanske inte just nu...", time: "TIDSESTIMAT", hours: "h", successTitle: "Tack för ditt mail!", successMsg: "Jag har tagit emot din förfrågan. Eftersom jag studerar heltid och har familj, svarar jag och tar mig an projekt i mån av tid. Jag återkommer till dig på", soon: "så snart jag kan!" }, errors: { captcha: "Fel svar på säkerhetsfrågan.", ai: "Kunde inte nå AI-tjänsten.", mail: "Kunde inte skicka mailet. Försök igen senare." } },
-    en: { title: "Hire Me", subtitle: "Fill out the form and let my AI do an initial assessment of the project.", disclaimer: "NOTE: I take on projects alongside my full-time studies and family life. This form provides an initial AI assessment, but I do not guarantee that I can take the assignment.", labels: { help: "WHAT DO YOU NEED HELP WITH?", payment: "COMPENSATION?", budget: "BUDGET (APPROX SEK)", desc: "DESCRIPTION", name: "YOUR NAME", email: "YOUR EMAIL", who: "WHO ARE YOU?", security: "SECURITY CHECK: WHAT IS 3 + 4?" }, placeholders: { budget: "e.g. 5000", desc: "What do you need help with? Describe briefly...", name: "Firstname Lastname", email: "name@example.com", answer: "Answer" }, options: { types: ["Website (Simple)", "Website (Advanced)", "System Development / Backend", "AI Integration / Automation", "Other"], payment: ["Paid", "Pro Bono (Free/Experience)"], org: ["Individual", "Company", "Recruiter"] }, buttons: { analyze: "Analyze with AI", analyzing: "AI agent is analyzing...", send: "Send Request Now", sending: "Sending...", new: "Make New Request", change: "Change Details" }, status: { approved: "Sounds Interesting!", rejected: "Maybe not right now...", time: "ESTIMATED TIME", hours: "h", successTitle: "Thank you for your email!", successMsg: "I have received your request. Since I study full-time and have a family, I respond and take on projects as time allows. I will get back to you at", soon: "as soon as I can!" }, errors: { captcha: "Wrong answer to security question.", ai: "Could not reach AI service.", mail: "Could not send email. Try again later." } }
-  };
+    sv: { 
+      title: "Anlita mig", 
+      subtitle: "Fyll i formuläret så låter jag min AI göra en första bedömning av projektet.", 
+      disclaimer: "OBSERVERA: Jag tar mig an projekt vid sidan av mina heltidsstudier och familjeliv. Detta formulär ger en första AI-bedömning, men jag garanterar inte att jag kan ta uppdraget.", 
+      labels: { 
+        help: "VAD BEHÖVER DU HJÄLP MED?", 
+        payment: "ERSÄTTNING?", 
+        budget: "BUDGET (CA KR)", 
+        desc: "BESKRIVNING", 
+        name: "DITT NAMN", 
+        email: "DIN EMAIL", 
+        who: "VEM ÄR DU?", 
+        security: "SÄKERHETSKOLL: VAD ÄR 3 + 4?" 
+      }, 
+      placeholders: { 
+        budget: "t.ex. 5000", 
+        desc: "Vad behöver du hjälp med? Beskriv kort...", 
+        name: "Förnamn Efternamn", 
+        email: "namn@exempel.se", 
+        answer: "Svar" 
+      }, 
+      options: { 
+        types: ["Hemsida (Enkel)", "Hemsida (Avancerad)", "Systemutveckling / Backend", "AI Integration / Automation", "Annat"], 
+        payment: ["Betalt", "Pro Bono (Gratis/Erfarenhet)"], 
+        org: ["Privatperson", "Företag", "Rekryterare"] 
+      }, 
+      buttons: { 
+        analyze: "Analysera med AI", 
+        analyzing: "AI-agenten analyserar...", 
+        send: "Skicka förfrågan nu", 
+        sending: "Skickar...", 
+        new: "Gör ny förfrågan", 
+        change: "Ändra uppgifter" 
+      }, 
+      status: { 
+        approved: "Låter intressant!", 
+        rejected: "Kanske inte just nu...", 
+        time: "TIDSESTIMAT", 
+        hours: "h", 
+        successTitle: "Tack för ditt mail!", 
+        successMsg: "Jag har tagit emot din förfrågan. Eftersom jag studerar heltid och har familj, svarar jag och tar mig an projekt i mån av tid. Jag återkommer till dig på", 
+        soon: "så snart jag kan!" 
+      }, 
+      errors: { 
+        captcha: "Fel svar på säkerhetsfrågan.", 
+        ai: "Kunde inte nå AI-tjänsten.", 
+        mail: "Kunde inte skicka mailet. Försök igen senare." 
+      },
+      emailLabels: {
+        header: "NY FÖRFRÅGAN VIA PORTFOLION (SV)",
+        sender: "AVSÄNDARE",
+        name: "Namn",
+        email: "Email",
+        type: "Typ",
+        project: "PROJEKT",
+        projectType: "Typ",
+        payment: "Ersättning",
+        budget: "Budget",
+        description: "BESKRIVNING",
+        aiAssessment: "AI-BEDÖMNING",
+        time: "Tid",
+        hours: "timmar",
+        feedback: "Feedback"
+      }
+    },
+    en: { 
+      title: "Hire Me", 
+      subtitle: "Fill out the form and let my AI do an initial assessment of the project.", 
+      disclaimer: "NOTE: I take on projects alongside my full-time studies and family life. This form provides an initial AI assessment, but I do not guarantee that I can take the assignment.", 
+      labels: { 
+        help: "WHAT DO YOU NEED HELP WITH?", 
+        payment: "COMPENSATION?", 
+        budget: "BUDGET (APPROX SEK)", 
+        desc: "DESCRIPTION", 
+        name: "YOUR NAME", 
+        email: "YOUR EMAIL", 
+        who: "WHO ARE YOU?", 
+        security: "SECURITY CHECK: WHAT IS 3 + 4?" 
+      }, 
+      placeholders: { 
+        budget: "e.g. 5000", 
+        desc: "What do you need help with? Describe briefly...", 
+        name: "Firstname Lastname", 
+        email: "name@example.com", 
+        answer: "Answer" 
+      }, 
+      options: { 
+        types: ["Website (Simple)", "Website (Advanced)", "System Development / Backend", "AI Integration / Automation", "Other"], 
+        payment: ["Paid", "Pro Bono (Free/Experience)"], 
+        org: ["Individual", "Company", "Recruiter"] 
+      }, 
+      buttons: { 
+        analyze: "Analyze with AI", 
+        analyzing: "AI agent is analyzing...", 
+        send: "Send Request Now", 
+        sending: "Sending...", 
+        new: "Make New Request", 
+        change: "Change Details" 
+      }, 
+      status: { 
+        approved: "Sounds Interesting!", 
+        rejected: "Maybe not right now...", 
+        time: "ESTIMATED TIME", 
+        hours: "h", 
+        successTitle: "Thank you for your email!", 
+        successMsg: "I have received your request. Since I study full-time and have a family, I respond and take on projects as time allows. I will get back to you at", 
+        soon: "as soon as I can!" 
+      }, 
+      errors: { 
+        captcha: "Wrong answer to security question.", 
+        ai: "Could not reach AI service.", 
+        mail: "Could not send email. Try again later." 
+      },
+      emailLabels: {
+        header: "NEW REQUEST VIA PORTFOLIO (EN)",
+        sender: "SENDER",
+        name: "Name",
+        email: "Email",
+        type: "Type",
+        project: "PROJECT",
+        projectType: "Type",
+        payment: "Compensation",
+        budget: "Budget",
+        description: "DESCRIPTION",
+        aiAssessment: "AI ASSESSMENT",
+        time: "Time",
+        hours: "hours",
+        feedback: "Feedback"
+      }
+    }
+};
 
 const HireMe = ({ lang = 'sv', isDark }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.sv;
 
-  const [formData, setFormData] = useState({ name: '', email: '', orgType: 'Privatperson', projectType: 'Hemsida (Enkel)', paymentType: 'Betalt', amount: '', description: '', captcha: '' });
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    email: '', 
+    orgType: t.options.org[0], 
+    projectType: t.options.types[0], 
+    paymentType: t.options.payment[0], 
+    amount: '', 
+    description: '', 
+    captcha: '' 
+  });
   const [status, setStatus] = useState('idle'); 
   const [analysis, setAnalysis] = useState(null);
   const [isSending, setIsSending] = useState(false);
   const [mathQuestion] = useState({ q: "3 + 4", a: "7" });
 
-  const handleSubmit = async (e) => { e.preventDefault(); if (formData.captcha.trim() !== mathQuestion.a) { toast.error(t.errors.captcha); return; } setStatus('analyzing'); try { const res = await axios.post('/api/analyze', formData); setAnalysis(res.data); setStatus(res.data.approved ? 'approved' : 'rejected'); } catch (err) { setStatus('idle'); toast.error(t.errors.ai); } };
-  const sendRealEmail = async () => { setIsSending(true); const subject = `Ny förfrågan: ${formData.projectType}`; const emailBody = `...`; try { await axios.post('/api/email', { subject, body: emailBody, replyTo: formData.email, senderName: formData.name }); toast.success(t.status.successTitle); setStatus('sent'); setIsSending(false); } catch (err) { toast.error(t.errors.mail); setIsSending(false); } };
+  const handleSubmit = async (e) => { 
+    e.preventDefault(); 
+    if (formData.captcha.trim() !== mathQuestion.a) { 
+      toast.error(t.errors.captcha); 
+      return; 
+    } 
+    setStatus('analyzing'); 
+    try { 
+      const res = await axios.post('/api/analyze', formData); 
+      setAnalysis(res.data); 
+      setStatus(res.data.approved ? 'approved' : 'rejected'); 
+    } catch (err) { 
+      setStatus('idle'); 
+      toast.error(t.errors.ai); 
+    } 
+  };
 
-  // ÄNDRING: Varmare inputs (bg-white, border-stone-300, text-stone-900)
+  const sendRealEmail = async () => { 
+    setIsSending(true); 
+    
+    const el = t.emailLabels;
+    const subject = `Ny förfrågan från ${formData.name}: ${formData.projectType}`;
+    
+    // FIXAD: Bygger upp komplett emailBody med all data
+    const emailBody = `${el.header}
+
+${el.sender}:
+${el.name}: ${formData.name}
+${el.email}: ${formData.email}
+${el.type}: ${formData.orgType}
+
+${el.project}:
+${el.projectType}: ${formData.projectType}
+${el.payment}: ${formData.paymentType}${formData.amount ? `\n${el.budget}: ${formData.amount} kr` : ''}
+
+${el.description}:
+${formData.description}
+
+---
+
+${el.aiAssessment}:
+${el.time}: ${analysis?.estimatedHours || '?'} ${el.hours}
+${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
+
+    try { 
+      await axios.post('/api/email', { 
+        subject, 
+        body: emailBody, 
+        replyTo: formData.email, 
+        senderName: formData.name 
+      }); 
+      toast.success(t.status.successTitle); 
+      setStatus('sent'); 
+      setIsSending(false); 
+    } catch (err) { 
+      toast.error(t.errors.mail); 
+      setIsSending(false); 
+    } 
+  };
+
   const inputClass = `w-full rounded-lg p-3 outline-none transition-colors text-sm border appearance-none
     ${isDark 
       ? 'bg-[#1a1b2e] border-white/10 text-white placeholder-gray-600 focus:border-neon-purple' 
@@ -43,11 +233,19 @@ const HireMe = ({ lang = 'sv', isDark }) => {
           {t.status.successMsg} <strong>{formData.email}</strong> {t.status.soon}
         </p>
         
-        {/* FIX: Snyggare knapp för ny förfrågan */}
         <button 
           onClick={() => {
             setStatus('idle'); 
-            setFormData({ ...formData, name: '', email: '', description: '', captcha: '' });
+            setFormData({ 
+              name: '', 
+              email: '', 
+              orgType: t.options.org[0], 
+              projectType: t.options.types[0], 
+              paymentType: t.options.payment[0], 
+              amount: '', 
+              description: '', 
+              captcha: '' 
+            });
           }} 
           className="px-8 py-3 bg-transparent border border-green-500/30 text-green-500 hover:bg-green-500/10 hover:border-green-500 hover:text-green-600 rounded-full font-medium transition-all"
         >
@@ -90,9 +288,16 @@ const HireMe = ({ lang = 'sv', isDark }) => {
           <div>
              <label className={labelClass}>{t.labels.who}</label>
              <div className="flex gap-4 flex-wrap">
-               {t.options.org.map(type => (
+               {t.options.org.map((type, index) => (
                  <label key={type} className={`flex items-center gap-2 cursor-pointer text-sm transition-colors ${isDark ? 'text-gray-300' : 'text-stone-700'}`}>
-                    <input type="radio" name="orgType" value={type} checked={formData.orgType === type} onChange={e => setFormData({...formData, orgType: type})} className="accent-neon-purple" />
+                    <input 
+                      type="radio" 
+                      name="orgType" 
+                      value={type} 
+                      checked={formData.orgType === type} 
+                      onChange={e => setFormData({...formData, orgType: type})} 
+                      className="accent-neon-purple" 
+                    />
                     {type}
                  </label>
                ))}
@@ -118,7 +323,7 @@ const HireMe = ({ lang = 'sv', isDark }) => {
               <div className={`absolute right-3 top-[32px] pointer-events-none text-xs ${isDark ? 'text-gray-500' : 'text-stone-400'}`}>▼</div>
             </div>
             
-            {formData.paymentType !== t.options.payment[1] && (
+            {formData.paymentType === t.options.payment[0] && (
               <div className="flex-1">
                 <label className={labelClass}>{t.labels.budget}</label>
                 <input type="number" className={inputClass} placeholder={t.placeholders.budget} value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} />
@@ -145,7 +350,6 @@ const HireMe = ({ lang = 'sv', isDark }) => {
         </form>
       )}
 
-      {/* STATUS VYER (Anpassade) */}
       {status === 'analyzing' && (
         <div className="flex flex-col items-center justify-center h-64 text-center space-y-4">
           <Loader2 size={48} className="text-neon-cyan animate-spin" />
