@@ -182,7 +182,6 @@ function calculateAge(birthday) {
 
 const HeroStage = ({ isDark, toggleTheme }) => {
   const [section, setSection] = useState('about');
-  const [reduceMotion, setReduceMotion] = useState(false);
   const [lang, setLang] = useState('sv');
   const [activeVideo, setActiveVideo] = useState(null);
   const [activeSlideshow, setActiveSlideshow] = useState(null);
@@ -242,41 +241,41 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         <div className={`md:hidden p-3 border-b ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
           {/* Rad 1: Foto + Namn + Settings */}
           <div className="flex items-center gap-3 mb-3">
-            {/* Profilfoto - litet */}
-            <div className={`w-11 h-11 rounded-full overflow-hidden border-2 shrink-0
+            {/* Profilfoto - större för synlighet */}
+            <div className={`w-14 h-14 rounded-full overflow-hidden border-2 shrink-0
               ${isDark ? 'border-neon-purple/50' : 'border-warm-accent/30'}`}>
               <ProfilePhoto disableMotion={true} isDark={isDark} />
             </div>
 
             {/* Namn + Titel */}
             <div className="flex-1 min-w-0">
-              <h1 className={`text-base font-bold truncate bg-clip-text text-transparent
+              <h1 className={`text-lg font-bold truncate bg-clip-text text-transparent
                 ${isDark ? 'animate-text-gradient' : 'light-mode-gradient'}`}>
                 Klas Olsson
               </h1>
-              <p className={`font-mono text-[9px] uppercase tracking-wider truncate
+              <p className={`font-mono text-[10px] uppercase tracking-wider truncate
                 ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>
                 {t.role}
               </p>
             </div>
 
             {/* Settings-knappar */}
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="flex items-center gap-2 shrink-0">
               <button 
                 onClick={toggleTheme} 
-                className={`w-7 h-7 rounded-full border flex items-center justify-center
+                className={`w-8 h-8 rounded-full border flex items-center justify-center
                   ${isDark 
                     ? 'text-gray-400 bg-black/40 border-white/10' 
                     : 'text-warm-muted bg-warm-card border-warm-border'}`}
               >
-                {isDark ? <Sun size={13} /> : <Moon size={13} />}
+                {isDark ? <Sun size={14} /> : <Moon size={14} />}
               </button>
               <button 
                 onClick={toggleLang} 
-                className={`w-7 h-7 rounded-full border flex items-center justify-center overflow-hidden
+                className={`w-8 h-8 rounded-full border flex items-center justify-center overflow-hidden
                   ${isDark ? 'bg-black/40 border-white/10' : 'bg-warm-card border-warm-border'}`}
               >
-                <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-xs`}></span>
+                <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-sm`}></span>
               </button>
             </div>
           </div>
@@ -350,16 +349,6 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             >
               <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-lg`}></span>
             </button>
-            
-            <button 
-              onClick={() => setReduceMotion(!reduceMotion)} 
-              className={`text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border transition-colors shadow-sm
-                ${isDark 
-                  ? 'text-gray-600 hover:text-white bg-black/40 border-white/10' 
-                  : 'text-warm-subtle hover:text-warm-text bg-warm-card border-warm-border'}`}
-            >
-              {reduceMotion ? "Motion: OFF" : "Motion: ON"}
-            </button>
           </div>
 
           <div className={`absolute inset-0 pointer-events-none
@@ -368,7 +357,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               : 'bg-gradient-to-br from-purple-100/30 via-transparent to-amber-50/20'}`}
           ></div>
           
-          <ProfilePhoto disableMotion={reduceMotion} isDark={isDark} />
+          <ProfilePhoto isDark={isDark} />
           
           <motion.div layout className="mt-4 text-left z-10">
             <h1 className={`text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight bg-clip-text text-transparent pb-1 whitespace-nowrap
