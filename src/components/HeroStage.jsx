@@ -201,7 +201,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
   const toggleLang = () => setLang(l => l === 'sv' ? 'en' : 'sv');
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-3 md:p-8 relative z-10">
+    <div className="min-h-screen md:flex md:items-center md:justify-center p-3 md:p-8 relative z-10">
       
       <AnimatePresence>
         {activeVideo && (
@@ -232,19 +232,102 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        className={`w-full max-w-7xl backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
+        className={`w-full max-w-7xl backdrop-blur-xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
           ${isDark 
             ? 'bg-neon-darkbg/80 border border-white/10 shadow-2xl' 
             : 'bg-warm-card/90 border border-warm-border shadow-warm-border/20'}`}
         style={{ borderRadius: 24 }}
       >
-        {/* VÄNSTER: Profil & Kontakt */}
+        {/* MOBIL HEADER - Kompakt */}
+        <div className={`md:hidden p-4 border-b ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
+          {/* Rad 1: Settings + Foto + Namn + Ikoner */}
+          <div className="flex items-center gap-3">
+            {/* Settings-knappar */}
+            <div className="flex gap-2 shrink-0">
+              <button 
+                onClick={toggleTheme} 
+                className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors
+                  ${isDark 
+                    ? 'text-gray-400 hover:text-neon-cyan bg-black/40 border-white/10' 
+                    : 'text-warm-muted hover:text-warm-accent bg-warm-card border-warm-border'}`}
+              >
+                {isDark ? <Sun size={14} /> : <Moon size={14} />}
+              </button>
+              <button 
+                onClick={toggleLang} 
+                className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors overflow-hidden
+                  ${isDark ? 'bg-black/40 border-white/10' : 'bg-warm-card border-warm-border'}`}
+              >
+                <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-sm`}></span>
+              </button>
+            </div>
+
+            {/* Profilfoto - litet */}
+            <div className={`w-12 h-12 rounded-full overflow-hidden border-2 shrink-0
+              ${isDark ? 'border-neon-purple/50' : 'border-warm-accent/30'}`}>
+              <ProfilePhoto disableMotion={true} isDark={isDark} />
+            </div>
+
+            {/* Namn + Titel */}
+            <div className="flex-1 min-w-0">
+              <h1 className={`text-lg font-bold truncate bg-clip-text text-transparent
+                ${isDark ? 'animate-text-gradient' : 'light-mode-gradient'}`}>
+                Klas Olsson
+              </h1>
+              <p className={`font-mono text-[10px] uppercase tracking-wider truncate
+                ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>
+                {t.role}
+              </p>
+            </div>
+
+            {/* Sociala ikoner + CV */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button 
+                onClick={() => {navigator.clipboard.writeText('klasolsson81@gmail.com'); toast.success('Email kopierad!');}} 
+                className={`p-1.5 ${isDark ? 'text-gray-400 hover:text-neon-cyan' : 'text-warm-muted hover:text-warm-accent'}`}
+              >
+                <Mail size={18} />
+              </button>
+              <a href="https://github.com/klasolsson81" target="_blank" rel="noreferrer" 
+                className={`p-1.5 ${isDark ? 'text-gray-400 hover:text-white' : 'text-warm-muted hover:text-warm-text'}`}>
+                <Github size={18} />
+              </a>
+              <a href="https://www.linkedin.com/in/klasolsson81/" target="_blank" rel="noreferrer" 
+                className={`p-1.5 ${isDark ? 'text-gray-400 hover:text-[#0077b5]' : 'text-warm-muted hover:text-[#0077b5]'}`}>
+                <Linkedin size={18} />
+              </a>
+              <a 
+                href="/CV_Klas_Olsson.pdf" 
+                download="CV_Klas_Olsson.pdf"
+                onClick={() => {confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } }); toast.success('CV laddas ner!');}}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-bold
+                  ${isDark 
+                    ? 'bg-neon-purple/20 border border-neon-purple/30 text-neon-cyan' 
+                    : 'bg-warm-accentLight border border-purple-200 text-warm-accent'}`}
+              >
+                <Download size={12} />
+                CV
+              </a>
+            </div>
+          </div>
+
+          {/* Rad 2: Navigation */}
+          <nav className="flex gap-1 mt-3 overflow-x-auto pb-1">
+            <MobileNavButton label={t.nav.about} icon={<User size={16} />} active={section === 'about'} onClick={() => setSection('about')} isDark={isDark} />
+            <MobileNavButton label={t.nav.journey} icon={<TrendingUp size={16} />} active={section === 'journey'} onClick={() => setSection('journey')} isDark={isDark} />
+            <MobileNavButton label={t.nav.chat} icon={<Terminal size={16} />} active={section === 'chat'} onClick={() => setSection('chat')} isDark={isDark} />
+            <MobileNavButton label={t.nav.projects} icon={<Code size={16} />} active={section === 'projects'} onClick={() => setSection('projects')} isDark={isDark} />
+            <MobileNavButton label={t.nav.hire} icon={<Briefcase size={16} />} active={section === 'hire'} onClick={() => setSection('hire')} isDark={isDark} isHire={true} />
+          </nav>
+        </div>
+
+        {/* DESKTOP: Vänster sidopanel (dold på mobil) */}
         <motion.div 
           layout 
-          className={`p-4 md:p-6 md:w-1/3 border-b md:border-b-0 md:border-r flex flex-col items-center md:items-start relative overflow-y-auto custom-scrollbar shrink-0
+          className={`hidden md:flex p-6 md:w-1/3 border-r flex-col items-start relative overflow-y-auto custom-scrollbar shrink-0
             ${isDark ? 'border-white/10' : 'border-warm-border'}`}
         >          
-          <div className="flex w-full justify-between md:justify-end gap-3 mb-2 relative z-20">
+          <div className="flex w-full justify-end gap-3 mb-2 relative z-20">
             <button 
               onClick={toggleTheme} 
               className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm
@@ -285,8 +368,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
           
           <ProfilePhoto disableMotion={reduceMotion} isDark={isDark} />
           
-          <motion.div layout className="mt-4 text-center md:text-left z-10">
-            <h1 className={`text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight bg-clip-text text-transparent pb-1 whitespace-nowrap
+          <motion.div layout className="mt-4 text-left z-10">
+            <h1 className={`text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight bg-clip-text text-transparent pb-1 whitespace-nowrap
               ${isDark ? 'animate-text-gradient' : 'light-mode-gradient'}`}>
               Klas Olsson
             </h1>
@@ -296,7 +379,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             </p>
           </motion.div>
 
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 my-4 z-10 w-full">
+          <div className="flex flex-wrap items-center justify-start gap-4 my-4 z-10 w-full">
             <div className="flex gap-3">
               <button 
                 onClick={() => {navigator.clipboard.writeText('klasolsson81@gmail.com'); toast.success('Email kopierad!');}} 
@@ -334,13 +417,13 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               </a>
             </div>
 
-            <div className={`hidden md:block w-px h-5 ${isDark ? 'bg-white/20' : 'bg-warm-border'}`}></div>
+            <div className={`w-px h-5 ${isDark ? 'bg-white/20' : 'bg-warm-border'}`}></div>
 
             <a 
               href="/CV_Klas_Olsson.pdf" 
               download="CV_Klas_Olsson.pdf"
               onClick={() => {confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#00f3ff', '#bd00ff', '#ffffff'] }); toast.success('Tack för visat intresse! CV laddas ner.');}}
-              className={`relative group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 rounded-full transition-all duration-300 shadow-sm
+              className={`relative group flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 shadow-sm
                 ${isDark 
                   ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20 hover:border-neon-purple' 
                   : 'bg-warm-accentLight border border-purple-200 text-warm-accent hover:bg-purple-100 hover:border-warm-accent'}`}
@@ -351,8 +434,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             </a>
           </div>
 
-          {/* Navigation - UPPDATERAD med "Min resa" */}
-          <nav className="w-full z-10 pb-2 flex flex-row md:flex-col gap-1 md:space-y-1.5 md:gap-0 justify-between md:justify-start overflow-x-auto">
+          {/* Desktop Navigation */}
+          <nav className="w-full z-10 pb-2 flex flex-col space-y-1.5">
             <NavButton label={t.nav.about} icon={<User />} active={section === 'about'} onClick={() => setSection('about')} isDark={isDark} />
             <NavButton label={t.nav.journey} icon={<TrendingUp />} active={section === 'journey'} onClick={() => setSection('journey')} isDark={isDark} />
             <NavButton label={t.nav.chat} icon={<Terminal />} active={section === 'chat'} onClick={() => setSection('chat')} isDark={isDark} />
@@ -361,10 +444,10 @@ const HeroStage = ({ isDark, toggleTheme }) => {
           </nav>
         </motion.div>
 
-        {/* HÖGER: Innehåll */}
+        {/* INNEHÅLL - Scrollar på mobil, fixed på desktop */}
         <motion.div 
           layout 
-          className={`flex-1 min-h-0 p-4 md:p-8 relative flex flex-col overflow-hidden transition-colors duration-500
+          className={`flex-1 min-h-0 p-4 md:p-8 relative flex flex-col md:overflow-hidden transition-colors duration-500
             ${isDark ? 'bg-black/30' : 'bg-warm-bg/60'}`}
         >
           <AnimatePresence mode="wait">
@@ -373,7 +456,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               <motion.div 
                 key="about" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-6 overflow-y-auto pr-2 custom-scrollbar h-full"
+                className="space-y-6 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full"
               >
                 <h2 className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
                   {t.titles.whoami}
@@ -432,7 +515,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               <motion.div 
                 key="journey" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="flex-1 min-h-0 flex flex-col overflow-hidden"
+                className="flex-1 min-h-0 flex flex-col md:overflow-hidden"
               >
                 <DevTimeline lang={lang} isDark={isDark} />
               </motion.div>
@@ -442,7 +525,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               <motion.div 
                 key="chat" 
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
-                className="flex-1 min-h-0 flex flex-col overflow-hidden"
+                className="flex-1 min-h-0 flex flex-col md:overflow-hidden"
               >
                 <h2 className={`shrink-0 text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
                   {t.titles.ai}
@@ -455,7 +538,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               <motion.div 
                 key="projects" 
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-                className="space-y-4 overflow-y-auto pr-2 custom-scrollbar h-full"
+                className="space-y-4 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full"
               >
                 <h2 className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
                   {t.titles.projects}
@@ -505,7 +588,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               <motion.div 
                 key="hire" 
                 initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
-                className="h-full flex flex-col overflow-y-auto custom-scrollbar"
+                className="md:h-full flex flex-col md:overflow-y-auto custom-scrollbar"
               >
                 <HireMe lang={lang} isDark={isDark} />
               </motion.div>
@@ -518,14 +601,15 @@ const HeroStage = ({ isDark, toggleTheme }) => {
   );
 };
 
+// Desktop NavButton
 const NavButton = ({ label, icon, active, onClick, isDark }) => (
   <button 
     onClick={onClick}
-    className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium transition-all duration-300 group
+    className={`w-full flex flex-row items-center justify-start gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group
       ${active 
         ? isDark 
-          ? 'bg-neon-purple/20 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' 
-          : 'bg-warm-accentLight text-warm-text border-b-2 md:border-b-0 md:border-l-2 border-warm-accent'
+          ? 'bg-neon-purple/20 text-white border-l-2 border-neon-purple' 
+          : 'bg-warm-accentLight text-warm-text border-l-2 border-warm-accent'
         : isDark 
           ? 'text-gray-400 hover:bg-white/5 hover:text-white' 
           : 'text-warm-muted hover:bg-warm-hover hover:text-warm-text'}
@@ -534,21 +618,48 @@ const NavButton = ({ label, icon, active, onClick, isDark }) => (
     <span className={`transition-colors ${active 
       ? isDark ? 'text-neon-cyan' : 'text-warm-accent' 
       : isDark ? 'group-hover:text-neon-purple' : 'group-hover:text-warm-accent'}`}>
-      {React.cloneElement(icon, { size: window.innerWidth < 768 ? 18 : 16 })}
+      {React.cloneElement(icon, { size: 16 })}
     </span>
-    <span className="text-center md:text-left">{label}</span>
+    <span>{label}</span>
   </button>
 );
 
-// Anlita-knapp med shimmer-text (som Personligt/Tech Stack)
+// Mobil NavButton - kompakt
+const MobileNavButton = ({ label, icon, active, onClick, isDark, isHire }) => (
+  <button 
+    onClick={onClick}
+    className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-1 px-2 py-2 rounded-lg text-[10px] font-medium transition-all duration-200
+      ${active 
+        ? isDark 
+          ? 'bg-neon-purple/20 text-white' 
+          : 'bg-warm-accentLight text-warm-text'
+        : isDark 
+          ? 'text-gray-400 hover:bg-white/5' 
+          : 'text-warm-muted hover:bg-warm-hover'}
+    `}
+  >
+    <span className={`transition-colors ${active 
+      ? isDark ? 'text-neon-cyan' : 'text-warm-accent' 
+      : ''}`}>
+      {icon}
+    </span>
+    <span className={`truncate w-full text-center ${isHire && !active 
+      ? isDark ? 'animate-subtitle-shimmer bg-clip-text text-transparent font-bold' : 'light-subtitle-shimmer bg-clip-text text-transparent font-bold'
+      : ''}`}>
+      {label}
+    </span>
+  </button>
+);
+
+// Desktop Anlita-knapp med shimmer-text
 const HireNavButton = ({ label, icon, active, onClick, isDark }) => (
   <button 
     onClick={onClick}
-    className={`flex-1 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-2 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium transition-all duration-300 group
+    className={`w-full flex flex-row items-center justify-start gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group
       ${active 
         ? isDark 
-          ? 'bg-neon-purple/20 text-white border-b-2 md:border-b-0 md:border-l-2 border-neon-purple' 
-          : 'bg-warm-accentLight text-warm-text border-b-2 md:border-b-0 md:border-l-2 border-warm-accent'
+          ? 'bg-neon-purple/20 text-white border-l-2 border-neon-purple' 
+          : 'bg-warm-accentLight text-warm-text border-l-2 border-warm-accent'
         : isDark 
           ? 'text-gray-400 hover:bg-white/5 hover:text-white' 
           : 'text-warm-muted hover:bg-warm-hover hover:text-warm-text'}
@@ -557,10 +668,10 @@ const HireNavButton = ({ label, icon, active, onClick, isDark }) => (
     <span className={`transition-colors ${active 
       ? isDark ? 'text-neon-cyan' : 'text-warm-accent' 
       : isDark ? 'group-hover:text-neon-purple' : 'group-hover:text-warm-accent'}`}>
-      {React.cloneElement(icon, { size: window.innerWidth < 768 ? 18 : 16 })}
+      {React.cloneElement(icon, { size: 16 })}
     </span>
-    {/* Text med shimmer-effekt som Personligt/Tech Stack */}
-    <span className={`text-center md:text-left font-bold bg-clip-text text-transparent
+    {/* Text med shimmer-effekt */}
+    <span className={`font-bold bg-clip-text text-transparent
       ${isDark ? 'animate-subtitle-shimmer' : 'light-subtitle-shimmer'}`}>
       {label}
     </span>

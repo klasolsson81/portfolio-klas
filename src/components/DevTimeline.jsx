@@ -484,7 +484,7 @@ const DevTimeline = ({ lang, isDark }) => {
   };
 
   return (
-    <div className="flex-1 min-h-0 flex flex-col">
+    <div className="md:flex-1 md:min-h-0 flex flex-col">
       {/* Header */}
       <div className="shrink-0 mb-4">
         <h2 className={`text-xl md:text-2xl font-bold mb-1 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
@@ -563,7 +563,7 @@ const DevTimeline = ({ lang, isDark }) => {
       </AnimatePresence>
 
       {/* Tidslinje */}
-      <div className="flex-1 min-h-0 overflow-y-auto pr-2 custom-scrollbar">
+      <div className="md:flex-1 md:min-h-0 md:overflow-y-auto md:pr-2 custom-scrollbar">
         {displayedEvents.length > 0 ? (
           <>
             <AnimatePresence mode="popLayout">
