@@ -238,86 +238,88 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             : 'bg-warm-card/90 border border-warm-border shadow-warm-border/20'}`}
         style={{ borderRadius: 24 }}
       >
-        {/* MOBIL HEADER - Kompakt */}
-        <div className={`md:hidden p-4 border-b ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
-          {/* Rad 1: Settings + Foto + Namn + Ikoner */}
-          <div className="flex items-center gap-3">
-            {/* Settings-knappar */}
-            <div className="flex gap-2 shrink-0">
-              <button 
-                onClick={toggleTheme} 
-                className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors
-                  ${isDark 
-                    ? 'text-gray-400 hover:text-neon-cyan bg-black/40 border-white/10' 
-                    : 'text-warm-muted hover:text-warm-accent bg-warm-card border-warm-border'}`}
-              >
-                {isDark ? <Sun size={14} /> : <Moon size={14} />}
-              </button>
-              <button 
-                onClick={toggleLang} 
-                className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors overflow-hidden
-                  ${isDark ? 'bg-black/40 border-white/10' : 'bg-warm-card border-warm-border'}`}
-              >
-                <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-sm`}></span>
-              </button>
-            </div>
-
+        {/* MOBIL HEADER - Kompakt och ren */}
+        <div className={`md:hidden p-3 border-b ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
+          {/* Rad 1: Foto + Namn + Settings */}
+          <div className="flex items-center gap-3 mb-3">
             {/* Profilfoto - litet */}
-            <div className={`w-12 h-12 rounded-full overflow-hidden border-2 shrink-0
+            <div className={`w-11 h-11 rounded-full overflow-hidden border-2 shrink-0
               ${isDark ? 'border-neon-purple/50' : 'border-warm-accent/30'}`}>
               <ProfilePhoto disableMotion={true} isDark={isDark} />
             </div>
 
             {/* Namn + Titel */}
             <div className="flex-1 min-w-0">
-              <h1 className={`text-lg font-bold truncate bg-clip-text text-transparent
+              <h1 className={`text-base font-bold truncate bg-clip-text text-transparent
                 ${isDark ? 'animate-text-gradient' : 'light-mode-gradient'}`}>
                 Klas Olsson
               </h1>
-              <p className={`font-mono text-[10px] uppercase tracking-wider truncate
+              <p className={`font-mono text-[9px] uppercase tracking-wider truncate
                 ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>
                 {t.role}
               </p>
             </div>
 
-            {/* Sociala ikoner + CV */}
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Settings-knappar */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button 
+                onClick={toggleTheme} 
+                className={`w-7 h-7 rounded-full border flex items-center justify-center
+                  ${isDark 
+                    ? 'text-gray-400 bg-black/40 border-white/10' 
+                    : 'text-warm-muted bg-warm-card border-warm-border'}`}
+              >
+                {isDark ? <Sun size={13} /> : <Moon size={13} />}
+              </button>
+              <button 
+                onClick={toggleLang} 
+                className={`w-7 h-7 rounded-full border flex items-center justify-center overflow-hidden
+                  ${isDark ? 'bg-black/40 border-white/10' : 'bg-warm-card border-warm-border'}`}
+              >
+                <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-xs`}></span>
+              </button>
+            </div>
+          </div>
+
+          {/* Rad 2: Sociala + CV */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
               <button 
                 onClick={() => {navigator.clipboard.writeText('klasolsson81@gmail.com'); toast.success('Email kopierad!');}} 
-                className={`p-1.5 ${isDark ? 'text-gray-400 hover:text-neon-cyan' : 'text-warm-muted hover:text-warm-accent'}`}
+                className={`${isDark ? 'text-gray-400 hover:text-neon-cyan' : 'text-warm-muted hover:text-warm-accent'}`}
               >
                 <Mail size={18} />
               </button>
               <a href="https://github.com/klasolsson81" target="_blank" rel="noreferrer" 
-                className={`p-1.5 ${isDark ? 'text-gray-400 hover:text-white' : 'text-warm-muted hover:text-warm-text'}`}>
+                className={`${isDark ? 'text-gray-400 hover:text-white' : 'text-warm-muted hover:text-warm-text'}`}>
                 <Github size={18} />
               </a>
               <a href="https://www.linkedin.com/in/klasolsson81/" target="_blank" rel="noreferrer" 
-                className={`p-1.5 ${isDark ? 'text-gray-400 hover:text-[#0077b5]' : 'text-warm-muted hover:text-[#0077b5]'}`}>
+                className={`${isDark ? 'text-gray-400 hover:text-[#0077b5]' : 'text-warm-muted hover:text-[#0077b5]'}`}>
                 <Linkedin size={18} />
               </a>
-              <a 
-                href="/CV_Klas_Olsson.pdf" 
-                download="CV_Klas_Olsson.pdf"
-                onClick={() => {confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } }); toast.success('CV laddas ner!');}}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-bold
-                  ${isDark 
-                    ? 'bg-neon-purple/20 border border-neon-purple/30 text-neon-cyan' 
-                    : 'bg-warm-accentLight border border-purple-200 text-warm-accent'}`}
-              >
-                <Download size={12} />
-                CV
-              </a>
             </div>
+            <a 
+              href="/CV_Klas_Olsson.pdf" 
+              download="CV_Klas_Olsson.pdf"
+              onClick={() => {confetti({ particleCount: 60, spread: 50, origin: { y: 0.7 } }); toast.success('CV laddas ner!');}}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold
+                ${isDark 
+                  ? 'bg-neon-purple/20 border border-neon-purple/30 text-neon-cyan' 
+                  : 'bg-warm-accentLight border border-purple-200 text-warm-accent'}`}
+            >
+              <Download size={13} />
+              Ladda ner CV
+            </a>
           </div>
 
-          {/* Rad 2: Navigation */}
-          <nav className="flex gap-1 mt-3 overflow-x-auto pb-1">
-            <MobileNavButton label={t.nav.about} icon={<User size={16} />} active={section === 'about'} onClick={() => setSection('about')} isDark={isDark} />
-            <MobileNavButton label={t.nav.journey} icon={<TrendingUp size={16} />} active={section === 'journey'} onClick={() => setSection('journey')} isDark={isDark} />
-            <MobileNavButton label={t.nav.chat} icon={<Terminal size={16} />} active={section === 'chat'} onClick={() => setSection('chat')} isDark={isDark} />
-            <MobileNavButton label={t.nav.projects} icon={<Code size={16} />} active={section === 'projects'} onClick={() => setSection('projects')} isDark={isDark} />
-            <MobileNavButton label={t.nav.hire} icon={<Briefcase size={16} />} active={section === 'hire'} onClick={() => setSection('hire')} isDark={isDark} isHire={true} />
+          {/* Rad 3: Navigation */}
+          <nav className="flex gap-1">
+            <MobileNavButton label={t.nav.about} icon={<User size={15} />} active={section === 'about'} onClick={() => setSection('about')} isDark={isDark} />
+            <MobileNavButton label={t.nav.journey} icon={<TrendingUp size={15} />} active={section === 'journey'} onClick={() => setSection('journey')} isDark={isDark} />
+            <MobileNavButton label={t.nav.chat} icon={<Terminal size={15} />} active={section === 'chat'} onClick={() => setSection('chat')} isDark={isDark} />
+            <MobileNavButton label={t.nav.projects} icon={<Code size={15} />} active={section === 'projects'} onClick={() => setSection('projects')} isDark={isDark} />
+            <MobileNavButton label={t.nav.hire} icon={<Briefcase size={15} />} active={section === 'hire'} onClick={() => setSection('hire')} isDark={isDark} isHire={true} />
           </nav>
         </div>
 
