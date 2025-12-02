@@ -2,120 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ========================================
-   LIGHT MODE (Default) - Warm & Soft
-   ======================================== */
 :root {
-  color-scheme: light;
-  --bg-primary: #faf7f2;
-  --bg-card: #fffcf8;
-  --bg-panel: #f5f0e8;
-  --text-primary: #4a4036;
-  --text-muted: #7a6f63;
-  --text-subtle: #a39889;
-  --border-color: #e8dfd3;
-  --hover-color: #f0e9df;
-  --active-color: #ebe3d6;
-  --accent: #9333ea;
-  --accent-light: #f3e8ff;
-}
-
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  transition: background-color 0.5s ease, color 0.3s ease;
-}
-
-/* ========================================
-   DARK MODE - Neon Cyberpunk
-   ======================================== */
-.dark {
   color-scheme: dark;
-  --bg-primary: #0a0b1e;
-  --bg-card: rgba(255, 255, 255, 0.05);
-  --bg-panel: rgba(0, 0, 0, 0.3);
-  --text-primary: #e5e7eb;
-  --text-muted: #9ca3af;
-  --text-subtle: #6b7280;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --hover-color: rgba(255, 255, 255, 0.05);
-  --active-color: rgba(189, 0, 255, 0.2);
-  --accent: #bd00ff;
-  --accent-light: rgba(189, 0, 255, 0.1);
 }
 
+/* ===== MÖRKT TEMA (Behåll som det är) ===== */
 .dark body {
   background-color: #0a0b1e;
   color: #e5e7eb;
 }
 
-/* ========================================
-   SCROLLBAR STYLES
-   ======================================== */
-/* Light mode scrollbar */
-::-webkit-scrollbar { 
-  width: 6px; 
-}
-::-webkit-scrollbar-track { 
-  background: var(--bg-primary); 
-}
-::-webkit-scrollbar-thumb { 
-  background: #d4c5b0; 
-  border-radius: 3px; 
-}
-::-webkit-scrollbar-thumb:hover { 
-  background: #9333ea; 
+/* ===== LJUST TEMA - SOLAR TECH ===== */
+body {
+  /* Varm gradient-bakgrund */
+  background: linear-gradient(135deg, #FBF7F0 0%, #FFF5EB 40%, #FEF3E2 70%, #FFF8F0 100%);
+  background-attachment: fixed;
+  color: #1A1E29;
+  transition: background 0.5s ease, color 0.3s ease;
+  min-height: 100vh;
 }
 
-/* Dark mode scrollbar */
-.dark ::-webkit-scrollbar { 
-  width: 6px; 
-}
-.dark ::-webkit-scrollbar-track { 
-  background: #0a0b1e; 
-}
-.dark ::-webkit-scrollbar-thumb { 
-  background: #bd00ff; 
-  border-radius: 3px; 
-}
-.dark ::-webkit-scrollbar-thumb:hover { 
-  background: #00f3ff; 
+/* ===== SCROLLBARS ===== */
+/* Mörkt tema */
+.dark ::-webkit-scrollbar { width: 6px; }
+.dark ::-webkit-scrollbar-track { background: #0a0b1e; }
+.dark ::-webkit-scrollbar-thumb { background: #bd00ff; border-radius: 3px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
+
+/* Ljust tema - Varm */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #FBF7F0; }
+::-webkit-scrollbar-thumb { background: #C9B8A8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #8B5CF6; }
+
+/* ===== GLASSMORPHISM FÖR LJUST LÄGE ===== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-/* ========================================
-   ANIMATIONS
-   ======================================== */
-
-/* Respect user's motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+.glass-card-warm {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 248, 242, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(232, 224, 213, 0.6);
 }
 
+/* ===== ANIMATIONER ===== */
 @keyframes organic-pulse {
-  0% { 
-    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; 
-    opacity: 0.6; 
-    transform: scale(1); 
-    filter: blur(10px); 
-  }
-  50% { 
-    border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; 
-    opacity: 0.9; 
-    transform: scale(1.05); 
-    filter: blur(15px); 
-  }
-  100% { 
-    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; 
-    opacity: 0.6; 
-    transform: scale(1); 
-    filter: blur(10px); 
-  }
+  0% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
+  50% { border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; opacity: 0.9; transform: scale(1.05); filter: blur(15px); }
+  100% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
 }
 
 .organic-border {
@@ -124,13 +63,14 @@ body {
   background-size: 200% 200%;
 }
 
+/* Text shimmer animation */
 @keyframes text-shimmer {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Dark mode text gradient */
+/* MÖRKT LÄGE - Namn gradient (Cyan/Lila/Vit) */
 .animate-text-gradient {
   background: linear-gradient(to right, #ffffff 20%, #00f3ff 30%, #bd00ff 70%, #ffffff 80%);
   -webkit-background-clip: text;
@@ -140,9 +80,9 @@ body {
   animation: text-shimmer 5s linear infinite;
 }
 
-/* Light mode text gradient - softer, warmer */
+/* LJUST LÄGE - Namn gradient (Lila/Cyan som poppar mot varm bakgrund) */
 .light-mode-gradient {
-  background: linear-gradient(to right, #7c3aed 20%, #0891b2 50%, #7c3aed 80%);
+  background: linear-gradient(to right, #6D28D9 0%, #8B5CF6 25%, #06B6D4 50%, #8B5CF6 75%, #6D28D9 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -150,6 +90,7 @@ body {
   animation: text-shimmer 5s linear infinite;
 }
 
+/* MÖRKT LÄGE - Subtitle shimmer (Cyan/Lila) */
 .animate-subtitle-shimmer {
   background: linear-gradient(to right, #00f3ff 0%, #bd00ff 50%, #00f3ff 100%);
   -webkit-background-clip: text;
@@ -159,9 +100,9 @@ body {
   animation: text-shimmer 6s linear infinite;
 }
 
-/* Light mode subtitle shimmer - softer */
+/* LJUST LÄGE - Subtitle shimmer (Lila/Teal som syns mot varm bakgrund) */
 .light-subtitle-shimmer {
-  background: linear-gradient(to right, #0891b2 0%, #7c3aed 50%, #0891b2 100%);
+  background: linear-gradient(to right, #7C3AED 0%, #14B8A6 50%, #7C3AED 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -169,75 +110,78 @@ body {
   animation: text-shimmer 6s linear infinite;
 }
 
-/* ========================================
-   UTILITY CLASSES
-   ======================================== */
-.custom-scrollbar {
-  -webkit-overflow-scrolling: touch; /* Smooth scroll på iOS */
-  overscroll-behavior: contain; /* Förhindra "bounce" scroll */
-}
-
+/* ===== CUSTOM SCROLLBAR FÖR KOMPONENTER ===== */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
-
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: rgba(139, 92, 246, 0.3);
   border-radius: 2px;
 }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
 
+/* Mörkt läge scrollbar */
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(189, 0, 255, 0.3);
 }
-
-/* ========================================
-   HIRE BUTTON SHIMMER ANIMATIONS
-   ======================================== */
-
-/* Shimmer animation för Hire-knappen (dark mode) */
-@keyframes shimmer-dark {
-  0% {
-    background: linear-gradient(90deg, transparent 0%, rgba(189, 0, 255, 0.3) 50%, transparent 100%);
-    background-position: -200% 0;
-  }
-  100% {
-    background: linear-gradient(90deg, transparent 0%, rgba(189, 0, 255, 0.3) 50%, transparent 100%);
-    background-position: 200% 0;
-  }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 243, 255, 0.5);
 }
 
-.animate-shimmer-dark {
-  background: linear-gradient(90deg, transparent 0%, rgba(0, 243, 255, 0.2) 25%, rgba(189, 0, 255, 0.2) 50%, rgba(0, 243, 255, 0.2) 75%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer-move 3s ease-in-out infinite;
+/* ===== LJUST LÄGE - SPECIFIKA KOMPONENTER ===== */
+/* Varm skugga för kort */
+.warm-shadow {
+  box-shadow: 
+    0 4px 6px -1px rgba(139, 92, 246, 0.05),
+    0 10px 20px -5px rgba(245, 230, 211, 0.4),
+    0 0 0 1px rgba(232, 224, 213, 0.5);
 }
 
-/* Shimmer animation för Hire-knappen (light mode) */
-.animate-shimmer-light {
-  background: linear-gradient(90deg, transparent 0%, rgba(147, 51, 234, 0.15) 25%, rgba(245, 158, 11, 0.15) 50%, rgba(147, 51, 234, 0.15) 75%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer-move 3s ease-in-out infinite;
+/* Tech-border för ljust läge */
+.tech-border-light {
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.05);
 }
 
-@keyframes shimmer-move {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+/* Hover-glow för ljust läge */
+.hover-glow-light:hover {
+  box-shadow: 
+    0 0 20px rgba(139, 92, 246, 0.15),
+    0 0 40px rgba(139, 92, 246, 0.05);
 }
 
-/* Subtil text gradient animation */
-.animate-text-gradient-subtle {
-  background: linear-gradient(90deg, #e5e7eb 0%, #00f3ff 50%, #e5e7eb 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  background-size: 200% auto;
-  animation: text-shimmer 4s linear infinite;
+/* ===== BUTTONS & TAGS - LJUST LÄGE ===== */
+/* Tag-styling för tech-stack i ljust läge */
+.tech-tag-light {
+  background: linear-gradient(135deg, #EDE9FE 0%, #FEF3E2 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #6D28D9;
+}
+
+.tech-tag-light:hover {
+  background: linear-gradient(135deg, #DDD6FE 0%, #FEE4C8 100%);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+/* ===== GITHUB STATS - LJUST LÄGE ===== */
+/* Anpassade färger för contribution-grafen */
+.github-light .ContributionCalendar-day[data-level="0"] {
+  fill: #F3EDE4 !important;
+}
+.github-light .ContributionCalendar-day[data-level="1"] {
+  fill: #DDD6FE !important;
+}
+.github-light .ContributionCalendar-day[data-level="2"] {
+  fill: #C4B5FD !important;
+}
+.github-light .ContributionCalendar-day[data-level="3"] {
+  fill: #A78BFA !important;
+}
+.github-light .ContributionCalendar-day[data-level="4"] {
+  fill: #8B5CF6 !important;
 }

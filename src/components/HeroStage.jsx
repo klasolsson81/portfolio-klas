@@ -231,10 +231,10 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
       <motion.div 
         layout
-        className={`w-full max-w-7xl backdrop-blur-xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
+        className={`w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
           ${isDark 
-            ? 'bg-neon-darkbg/80 border border-white/10 shadow-2xl' 
-            : 'bg-warm-card/90 border border-warm-border shadow-warm-border/20'}`}
+            ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl' 
+            : 'bg-white/70 backdrop-blur-xl border border-warm-border shadow-lg shadow-warm-glow/30'}`}
         style={{ borderRadius: 24 }}
       >
         {/* MOBIL HEADER - Kompakt och ren */}
@@ -439,7 +439,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         <motion.div 
           layout 
           className={`flex-1 min-h-0 p-4 md:p-8 relative flex flex-col md:overflow-hidden transition-colors duration-500
-            ${isDark ? 'bg-black/30' : 'bg-warm-bg/60'}`}
+            ${isDark ? 'bg-black/30' : 'bg-gradient-to-br from-warm-bg/80 via-warm-cardAlt/40 to-warm-bg/60'}`}
         >
           <AnimatePresence mode="wait">
             

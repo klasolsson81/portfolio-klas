@@ -50,16 +50,16 @@ const ProfilePhoto = ({ disableMotion, isDark, small }) => {
         <div className={`absolute -inset-6 blur-3xl animate-pulse-slow rounded-full z-0 transition-opacity duration-300
           ${isDark 
             ? 'bg-gradient-to-br from-neon-purple via-neon-cyan to-neon-purple opacity-50' 
-            : 'bg-gradient-to-br from-neon-purple/40 via-neon-cyan/40 to-neon-purple/40 opacity-30'}`}></div>
+            : 'bg-gradient-to-br from-warm-accent/30 via-amber-300/20 to-warm-accent/30 opacity-40'}`}></div>
       )}
       {disableMotion && !small && (
         <div className={`absolute -inset-2 blur-xl rounded-full z-0 transition-colors
-          ${isDark ? 'bg-neon-purple/20' : 'bg-neon-purple/10'}`}></div>
+          ${isDark ? 'bg-neon-purple/20' : 'bg-warm-accent/15'}`}></div>
       )}
 
       {/* BILDCONTAINER */}
-      <div className={`relative w-full h-full rounded-full overflow-hidden z-10 border transition-colors duration-300
-        ${isDark ? 'bg-[#0a0b1e] border-white/5' : 'bg-white border-gray-200'}`}>
+      <div className={`relative w-full h-full rounded-full overflow-hidden z-10 border-2 transition-colors duration-300
+        ${isDark ? 'bg-[#0a0b1e] border-white/10' : 'bg-white border-warm-accent/20'}`}>
         
         <motion.img
           src={profileImg}
@@ -76,13 +76,13 @@ const ProfilePhoto = ({ disableMotion, isDark, small }) => {
           <div className={`absolute inset-0 pointer-events-none transition-colors duration-300
             ${isDark 
               ? 'bg-[radial-gradient(circle_at_center,transparent_45%,#0a0b1e_95%)]' 
-              : 'bg-[radial-gradient(circle_at_center,transparent_55%,#ffffff_95%)] opacity-60'}`}></div>
+              : 'bg-[radial-gradient(circle_at_center,transparent_60%,#FBF7F0_95%)] opacity-50'}`}></div>
         )}
         
         {/* LILA TINT - Dölj på small */}
         {!small && (
           <div className={`absolute inset-0 pointer-events-none rounded-full mix-blend-overlay transition-opacity
-            ${isDark ? 'bg-neon-purple/10 opacity-100' : 'bg-neon-purple/5 opacity-50'}`}></div>
+            ${isDark ? 'bg-neon-purple/10 opacity-100' : 'bg-warm-accent/5 opacity-30'}`}></div>
         )}
       </div>
     </motion.div>
