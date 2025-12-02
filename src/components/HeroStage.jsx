@@ -240,23 +240,19 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         {/* MOBIL HEADER - Kompakt och ren */}
         <div className={`md:hidden p-3 border-b ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
           {/* Rad 1: Foto + Namn + Settings */}
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-3">
             {/* Profilfoto - centrerat */}
-            <div className={`w-14 h-14 rounded-full overflow-hidden border-2 shrink-0
+            <div className={`w-12 h-12 rounded-full overflow-hidden border-2 shrink-0
               ${isDark ? 'border-neon-purple/50' : 'border-warm-accent/30'}`}>
               <ProfilePhoto disableMotion={true} isDark={isDark} small={true} />
             </div>
 
-            {/* Namn + Titel */}
+            {/* Namn */}
             <div className="flex-1 min-w-0">
-              <h1 className={`text-lg font-bold truncate bg-clip-text text-transparent
+              <h1 className={`text-lg font-bold bg-clip-text text-transparent
                 ${isDark ? 'animate-text-gradient' : 'light-mode-gradient'}`}>
                 Klas Olsson
               </h1>
-              <p className={`font-mono text-[10px] uppercase tracking-wider truncate
-                ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>
-                {t.role}
-              </p>
             </div>
 
             {/* Settings-knappar */}
@@ -280,8 +276,12 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             </div>
           </div>
 
-          {/* Rad 2: Sociala + CV */}
-          <div className="flex items-center justify-between mb-3">
+          {/* Rad 2: Titel + Sociala + CV */}
+          <div className="flex items-center justify-between mt-2">
+            <p className={`font-mono text-[10px] uppercase tracking-wider
+              ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>
+              {t.role}
+            </p>
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => {navigator.clipboard.writeText('klasolsson81@gmail.com'); toast.success('Email kopierad!');}} 
@@ -297,28 +297,28 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 className={`${isDark ? 'text-gray-400 hover:text-[#0077b5]' : 'text-warm-muted hover:text-[#0077b5]'}`}>
                 <Linkedin size={18} />
               </a>
+              <a 
+                href="/CV_Klas_Olsson.pdf" 
+                download="CV_Klas_Olsson.pdf"
+                onClick={() => {confetti({ particleCount: 60, spread: 50, origin: { y: 0.7 } }); toast.success('CV laddas ner!');}}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold
+                  ${isDark 
+                    ? 'bg-neon-purple/20 border border-neon-purple/30 text-neon-cyan' 
+                    : 'bg-warm-accentLight border border-purple-200 text-warm-accent'}`}
+              >
+                <Download size={13} />
+                CV
+              </a>
             </div>
-            <a 
-              href="/CV_Klas_Olsson.pdf" 
-              download="CV_Klas_Olsson.pdf"
-              onClick={() => {confetti({ particleCount: 60, spread: 50, origin: { y: 0.7 } }); toast.success('CV laddas ner!');}}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold
-                ${isDark 
-                  ? 'bg-neon-purple/20 border border-neon-purple/30 text-neon-cyan' 
-                  : 'bg-warm-accentLight border border-purple-200 text-warm-accent'}`}
-            >
-              <Download size={13} />
-              Ladda ner CV
-            </a>
           </div>
 
           {/* Rad 3: Navigation */}
-          <nav className="flex gap-1">
-            <MobileNavButton label={t.nav.about} icon={<User size={15} />} active={section === 'about'} onClick={() => setSection('about')} isDark={isDark} />
-            <MobileNavButton label={t.nav.journey} icon={<TrendingUp size={15} />} active={section === 'journey'} onClick={() => setSection('journey')} isDark={isDark} />
-            <MobileNavButton label={t.nav.chat} icon={<Terminal size={15} />} active={section === 'chat'} onClick={() => setSection('chat')} isDark={isDark} />
-            <MobileNavButton label={t.nav.projects} icon={<Code size={15} />} active={section === 'projects'} onClick={() => setSection('projects')} isDark={isDark} />
-            <MobileNavButton label={t.nav.hire} icon={<Briefcase size={15} />} active={section === 'hire'} onClick={() => setSection('hire')} isDark={isDark} isHire={true} />
+          <nav className="flex mt-3">
+            <MobileNavButton label={t.nav.about} icon={<User size={15} />} active={section === 'about'} onClick={() => { setSection('about'); window.scrollTo(0, 0); }} isDark={isDark} />
+            <MobileNavButton label={t.nav.journey} icon={<TrendingUp size={15} />} active={section === 'journey'} onClick={() => { setSection('journey'); window.scrollTo(0, 0); }} isDark={isDark} />
+            <MobileNavButton label={t.nav.chat} icon={<Terminal size={15} />} active={section === 'chat'} onClick={() => { setSection('chat'); window.scrollTo(0, 0); }} isDark={isDark} />
+            <MobileNavButton label={t.nav.projects} icon={<Code size={15} />} active={section === 'projects'} onClick={() => { setSection('projects'); window.scrollTo(0, 0); }} isDark={isDark} />
+            <MobileNavButton label={t.nav.hire} icon={<Briefcase size={15} />} active={section === 'hire'} onClick={() => { setSection('hire'); window.scrollTo(0, 0); }} isDark={isDark} isHire={true} />
           </nav>
         </div>
 
@@ -615,11 +615,11 @@ const NavButton = ({ label, icon, active, onClick, isDark }) => (
   </button>
 );
 
-// Mobil NavButton - kompakt
+// Mobil NavButton - kompakt utan truncate
 const MobileNavButton = ({ label, icon, active, onClick, isDark, isHire }) => (
   <button 
     onClick={onClick}
-    className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-1 px-2 py-2 rounded-lg text-[10px] font-medium transition-all duration-200
+    className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2 rounded-lg text-[9px] font-medium transition-all duration-200
       ${active 
         ? isDark 
           ? 'bg-neon-purple/20 text-white' 
@@ -634,7 +634,7 @@ const MobileNavButton = ({ label, icon, active, onClick, isDark, isHire }) => (
       : ''}`}>
       {icon}
     </span>
-    <span className={`truncate w-full text-center ${isHire && !active 
+    <span className={`text-center whitespace-nowrap ${isHire && !active 
       ? isDark ? 'animate-subtitle-shimmer bg-clip-text text-transparent font-bold' : 'light-subtitle-shimmer bg-clip-text text-transparent font-bold'
       : ''}`}>
       {label}
