@@ -241,8 +241,8 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         <div className={`md:hidden p-3 border-b ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
           {/* Rad 1: Foto + Namn + Settings */}
           <div className="flex items-center gap-3 mb-3">
-            {/* Profilfoto - större för synlighet */}
-            <div className={`w-14 h-14 rounded-full overflow-hidden border-2 shrink-0
+            {/* Profilfoto - centrerat */}
+            <div className={`w-14 h-14 rounded-full overflow-hidden border-2 shrink-0 [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:object-center
               ${isDark ? 'border-neon-purple/50' : 'border-warm-accent/30'}`}>
               <ProfilePhoto disableMotion={true} isDark={isDark} />
             </div>
