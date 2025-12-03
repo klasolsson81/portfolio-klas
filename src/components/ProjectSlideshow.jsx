@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Terminal, Lightbulb, AlertTriangle, BookOpen } from 'lucide-react';
 
-// NYTT: Tar emot isDark
 const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -28,8 +27,8 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
     switch(type) {
       case 'problem': return <AlertTriangle className="text-red-500" size={28} />;
       case 'solution': return <Lightbulb className="text-yellow-500" size={28} />;
-      case 'code': return <Terminal className="text-neon-cyan" size={28} />;
-      case 'learning': return <BookOpen className="text-neon-purple" size={28} />;
+      case 'code': return <Terminal className={isDark ? 'text-neon-cyan' : 'text-purple-600'} size={28} />;
+      case 'learning': return <BookOpen className={isDark ? 'text-neon-purple' : 'text-purple-700'} size={28} />;
       default: return null;
     }
   };
@@ -40,24 +39,23 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
         initial={{ opacity: 0, scale: 0.95 }} 
         animate={{ opacity: 1, scale: 1 }} 
         exit={{ opacity: 0, scale: 0.95 }}
-        // ÄNDRING: Dynamiska färger för bakgrund och border
         className={`relative w-full max-w-6xl xl:max-w-7xl rounded-xl md:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[95vh] md:h-[90vh] border transition-colors duration-300
           ${isDark 
             ? 'bg-[#0a0b1e] border-white/10' 
-            : 'bg-[#fffbf5] border-stone-200 text-stone-800'}`}
+            : 'bg-white/80 backdrop-blur-xl border-purple-200/50'}`}
         onClick={e => e.stopPropagation()}
       >
         
         {/* Header */}
         <div className={`p-4 md:p-6 border-b flex justify-between items-center transition-colors
-          ${isDark ? 'bg-black/30 border-white/10' : 'bg-stone-100/50 border-stone-200'}`}>
+          ${isDark ? 'bg-black/30 border-white/10' : 'bg-white/50 border-purple-200/50'}`}>
           <div>
-            <h2 className={`text-lg md:text-2xl font-bold tracking-tight truncate max-w-[250px] md:max-w-none ${isDark ? 'text-white' : 'text-stone-900'}`}>{title}</h2>
-            <p className={`text-xs uppercase tracking-wider mt-1 font-mono ${isDark ? 'text-gray-400' : 'text-stone-500'}`}>
+            <h2 className={`text-lg md:text-2xl font-bold tracking-tight truncate max-w-[250px] md:max-w-none ${isDark ? 'text-white' : 'text-purple-900'}`}>{title}</h2>
+            <p className={`text-xs uppercase tracking-wider mt-1 font-mono ${isDark ? 'text-gray-400' : 'text-purple-500'}`}>
               Sida {currentIndex + 1} / {slides.length}
             </p>
           </div>
-          <button onClick={onClose} className={`p-2 rounded-full transition-colors ${isDark ? 'hover:bg-white/10 text-gray-400 hover:text-white' : 'hover:bg-stone-200 text-stone-500 hover:text-stone-900'}`}>
+          <button onClick={onClose} className={`p-2 rounded-full transition-colors ${isDark ? 'hover:bg-white/10 text-gray-400 hover:text-white' : 'hover:bg-purple-100 text-purple-500 hover:text-purple-900'}`}>
             <X size={24} />
           </button>
         </div>
@@ -76,20 +74,24 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
               
               {/* Text & Kod */}
               <div className="flex flex-col gap-4 w-full">
-                <div className={`flex items-center gap-3 border-b pb-3 md:pb-4 ${isDark ? 'border-white/10' : 'border-stone-200'}`}>
+                <div className={`flex items-center gap-3 border-b pb-3 md:pb-4 ${isDark ? 'border-white/10' : 'border-purple-200/50'}`}>
                   {getIcon(currentSlide.type)}
-                  <h3 className={`text-xl md:text-3xl font-bold ${currentSlide.type === 'problem' ? 'text-red-500' : currentSlide.type === 'solution' ? 'text-yellow-500' : 'text-neon-cyan'}`}>
+                  <h3 className={`text-xl md:text-3xl font-bold ${
+                    currentSlide.type === 'problem' ? 'text-red-500' : 
+                    currentSlide.type === 'solution' ? 'text-yellow-500' : 
+                    (isDark ? 'text-neon-cyan' : 'text-purple-700')
+                  }`}>
                     {currentSlide.title}
                   </h3>
                 </div>
 
-                <div className={`text-sm md:text-lg leading-relaxed space-y-4 ${isDark ? 'text-gray-300' : 'text-stone-700'}`}>
+                <div className={`text-sm md:text-lg leading-relaxed space-y-4 ${isDark ? 'text-gray-300' : 'text-purple-800'}`}>
                   {currentSlide.content}
                 </div>
 
                 {currentSlide.code && (
                   <div className={`rounded-xl p-3 md:p-4 font-mono text-xs md:text-sm overflow-x-auto custom-scrollbar shadow-inner border
-                    ${isDark ? 'bg-black/60 border-white/10 text-gray-300' : 'bg-stone-100 border-stone-200 text-stone-800'}`}>
+                    ${isDark ? 'bg-black/60 border-white/10 text-gray-300' : 'bg-purple-50/50 border-purple-200/50 text-purple-900'}`}>
                     <pre>{currentSlide.code}</pre>
                   </div>
                 )}
@@ -98,7 +100,7 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
               {/* Bild */}
               {currentSlide.image && (
                 <div className={`w-full flex justify-center rounded-xl border p-2 md:p-4 mt-2
-                  ${isDark ? 'bg-black/20 border-white/5' : 'bg-white border-stone-200 shadow-sm'}`}>
+                  ${isDark ? 'bg-black/20 border-white/5' : 'bg-white/40 border-purple-200/50 shadow-sm'}`}>
                   <img 
                     src={currentSlide.image} 
                     alt="Project Screenshot" 
@@ -113,7 +115,7 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
 
         {/* Footer Controls */}
         <div className={`p-4 md:p-6 border-t flex justify-between items-center gap-4
-          ${isDark ? 'bg-black/30 border-white/10' : 'bg-stone-100/50 border-stone-200'}`}>
+          ${isDark ? 'bg-black/30 border-white/10' : 'bg-white/50 border-purple-200/50'}`}>
           
           <button 
             onClick={prevSlide} 
@@ -121,7 +123,7 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
             className={`flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all
               ${isDark 
                 ? 'bg-white/10 md:bg-transparent hover:bg-white/20 text-gray-300' 
-                : 'bg-stone-200 md:bg-transparent hover:bg-stone-200 text-stone-600'}`}
+                : 'bg-purple-100/50 md:bg-transparent hover:bg-purple-100 text-purple-600'}`}
           >
             <ChevronLeft className="w-8 h-8 md:w-5 md:h-5" />
             <span className="hidden md:inline font-medium">Föregående</span>
@@ -133,8 +135,8 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
                 key={idx} 
                 className={`h-1.5 md:h-2 rounded-full transition-all duration-300 
                   ${idx === currentIndex 
-                    ? 'bg-neon-cyan w-6 md:w-8' 
-                    : (isDark ? 'bg-white/20 w-1.5 md:w-2' : 'bg-stone-300 w-1.5 md:w-2')}`}
+                    ? (isDark ? 'bg-neon-cyan' : 'bg-purple-600') + ' w-6 md:w-8' 
+                    : (isDark ? 'bg-white/20' : 'bg-purple-200') + ' w-1.5 md:w-2'}`}
               />
             ))}
           </div>
@@ -142,7 +144,10 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
           <button 
             onClick={nextSlide} 
             disabled={currentIndex === slides.length - 1}
-            className="flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg bg-neon-purple text-white shadow-lg shadow-neon-purple/30 hover:bg-neon-cyan hover:text-black hover:shadow-neon-cyan/30 disabled:opacity-30 disabled:cursor-not-allowed disabled:bg-transparent disabled:border-transparent disabled:text-gray-500 transition-all"
+            className={`flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg shadow-lg disabled:opacity-30 disabled:cursor-not-allowed disabled:bg-transparent disabled:border-transparent disabled:text-gray-500 transition-all
+              ${isDark 
+                ? 'bg-neon-purple text-white shadow-neon-purple/30 hover:bg-neon-cyan hover:text-black hover:shadow-neon-cyan/30' 
+                : 'bg-purple-600 text-white shadow-purple-500/30 hover:bg-purple-700 hover:shadow-purple-600/30'}`}
           >
             <span className="hidden md:inline font-bold">Nästa</span>
             <ChevronRight className="w-8 h-8 md:w-5 md:h-5" />

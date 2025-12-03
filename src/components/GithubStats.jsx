@@ -5,24 +5,23 @@ const GithubStats = ({ isDark }) => {
   const [imageError, setImageError] = useState(false);
 
   // Olika färger för grafen beroende på tema
-  // Mörkt: Lila (#bd00ff), Ljust: Violet (#8B5CF6)
   const chartColor = isDark ? 'bd00ff' : '8B5CF6';
 
   return (
     <div className={`mt-8 p-6 rounded-xl transition-all duration-300 border
       ${isDark 
         ? 'bg-black/20 border-white/10 hover:border-neon-cyan/30' 
-        : 'bg-white/60 backdrop-blur-sm border-warm-border hover:border-warm-accent/40 shadow-sm'}`}>
+        : 'bg-white/30 backdrop-blur-sm border-purple-200/50 hover:border-purple-400/50'}`}>
         
       <h3 className={`text-xs mb-4 uppercase tracking-wider flex items-center gap-2
-        ${isDark ? 'text-gray-500' : 'text-warm-muted'}`}>
-        <span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>⚡</span> 
+        ${isDark ? 'text-gray-500' : 'text-purple-600'}`}>
+        <span className={isDark ? 'text-neon-purple' : 'text-purple-500'}>⚡</span> 
         Coding Activity (GitHub)
       </h3>
       
       {!imageError ? (
         <div className={`flex justify-center overflow-x-auto custom-scrollbar pb-2 rounded-lg p-3
-          ${isDark ? '' : 'bg-warm-bg/50'}`}>
+          ${isDark ? '' : 'bg-white/20'}`}>
           <img 
             src={`https://ghchart.rshah.org/${chartColor}/klasolsson81`}
             alt="Klas GitHub Activity Graph"
@@ -34,13 +33,13 @@ const GithubStats = ({ isDark }) => {
           />
         </div>
       ) : (
-        <div className={`text-center py-8 ${isDark ? 'text-gray-500' : 'text-warm-subtle'}`}>
+        <div className={`text-center py-8 ${isDark ? 'text-gray-500' : 'text-purple-600'}`}>
           <p>Kunde inte ladda GitHub-statistik</p>
           <a 
             href="https://github.com/klasolsson81" 
             target="_blank" 
             rel="noreferrer" 
-            className={`transition-colors ${isDark ? 'text-neon-purple hover:text-neon-cyan' : 'text-warm-accent hover:text-warm-accentDark'} hover:underline`}
+            className={`transition-colors ${isDark ? 'text-neon-purple hover:text-neon-cyan' : 'text-purple-700 hover:text-purple-900'} hover:underline`}
           >
             Besök min GitHub-profil →
           </a>
@@ -56,7 +55,7 @@ const GithubStats = ({ isDark }) => {
             className={`text-[10px] transition-colors
               ${isDark 
                 ? 'text-gray-500 hover:text-neon-purple' 
-                : 'text-warm-subtle hover:text-warm-accent'}`}
+                : 'text-purple-500 hover:text-purple-700'}`}
           >
             Visa hela profilen på GitHub →
           </a>

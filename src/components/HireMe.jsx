@@ -98,19 +98,19 @@ const TRANSLATIONS = {
       buttons: { 
         analyze: "Analyze with AI", 
         analyzing: "AI agent is analyzing...", 
-        send: "Send Request Now", 
+        send: "Send inquiry now", 
         sending: "Sending...", 
-        new: "Make New Request", 
-        change: "Change Details" 
+        new: "New inquiry", 
+        change: "Edit details" 
       }, 
       status: { 
-        approved: "Sounds Interesting!", 
+        approved: "Sounds interesting!", 
         rejected: "Maybe not right now...", 
-        time: "ESTIMATED TIME", 
+        time: "TIME ESTIMATE", 
         hours: "h", 
-        successTitle: "Thank you for your email!", 
-        successMsg: "I have received your request. Since I study full-time and have a family, I respond and take on projects as time allows. I will get back to you at", 
-        soon: "as soon as I can!" 
+        successTitle: "Thank you!", 
+        successMsg: "I've received your inquiry. Since I study full-time and have a family, I respond and take on projects as time allows. I'll get back to you at", 
+        soon: "as soon as possible!" 
       }, 
       errors: { 
         captcha: "Wrong answer to security question.", 
@@ -118,14 +118,14 @@ const TRANSLATIONS = {
         mail: "Could not send email. Try again later." 
       },
       emailLabels: {
-        header: "NEW REQUEST VIA PORTFOLIO (EN)",
+        header: "NEW INQUIRY VIA PORTFOLIO (EN)",
         sender: "SENDER",
         name: "Name",
         email: "Email",
         type: "Type",
         project: "PROJECT",
         projectType: "Type",
-        payment: "Compensation",
+        payment: "Payment",
         budget: "Budget",
         description: "DESCRIPTION",
         aiAssessment: "AI ASSESSMENT",
@@ -136,7 +136,7 @@ const TRANSLATIONS = {
     }
 };
 
-const HireMe = ({ lang = 'sv', isDark }) => {
+const HireMe = ({ lang, isDark }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.sv;
 
   const [formData, setFormData] = useState({ 
@@ -177,7 +177,6 @@ const HireMe = ({ lang = 'sv', isDark }) => {
     const el = t.emailLabels;
     const subject = `Ny förfrågan från ${formData.name}: ${formData.projectType}`;
     
-    // FIXAD: Bygger upp komplett emailBody med all data
     const emailBody = `${el.header}
 
 ${el.sender}:
@@ -214,13 +213,15 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
     } 
   };
 
+  // Transparenta inputs för ljust läge
   const inputClass = `w-full rounded-lg p-3 outline-none transition-colors text-sm border appearance-none
     ${isDark 
       ? 'bg-[#1a1b2e] border-white/10 text-white placeholder-gray-600 focus:border-neon-purple' 
-      : 'bg-white border-stone-300 text-stone-900 placeholder-stone-400 focus:border-neon-purple'}`;
+      : 'bg-white/50 backdrop-blur-sm border-purple-200/50 text-purple-900 placeholder-purple-400 focus:border-purple-500'}`;
       
+  // Lila labels för ljust läge
   const labelClass = `block text-[10px] uppercase mb-1 font-bold tracking-wider transition-colors
-    ${isDark ? 'text-gray-400' : 'text-stone-500'}`;
+    ${isDark ? 'text-gray-400' : 'text-purple-600'}`;
 
   if (status === 'sent') {
     return (
@@ -228,8 +229,8 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
         <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(34,197,94,0.3)]">
           <CheckCircle size={48} className="text-green-400" />
         </div>
-        <h2 className={`text-3xl font-bold mb-2 transition-colors ${isDark ? 'text-white' : 'text-stone-800'}`}>{t.status.successTitle}</h2>
-        <p className={`max-w-md mb-8 leading-relaxed transition-colors ${isDark ? 'text-gray-400' : 'text-stone-600'}`}>
+        <h2 className={`text-3xl font-bold mb-2 transition-colors ${isDark ? 'text-white' : 'text-purple-900'}`}>{t.status.successTitle}</h2>
+        <p className={`max-w-md mb-8 leading-relaxed transition-colors ${isDark ? 'text-gray-400' : 'text-purple-700'}`}>
           {t.status.successMsg} <strong>{formData.email}</strong> {t.status.soon}
         </p>
         
@@ -257,10 +258,13 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
 
   return (
     <div className="w-full flex flex-col p-1 pb-10"> 
-      <h2 className="text-2xl font-bold text-neon-purple mb-2">{t.title}</h2>
+      <h2 className={`text-2xl font-bold mb-2 ${isDark ? 'text-neon-purple' : 'text-purple-700'}`}>{t.title}</h2>
       
+      {/* Transparent disclaimer box */}
       <div className={`border p-4 rounded-lg mb-6 text-xs leading-relaxed flex gap-3 items-start shadow-sm transition-colors
-        ${isDark ? 'bg-amber-500/10 border-amber-500/30 text-amber-100/90' : 'bg-amber-50 border-amber-200 text-amber-800'}`}>
+        ${isDark 
+          ? 'bg-amber-500/10 border-amber-500/30 text-amber-100/90' 
+          : 'bg-amber-100/40 backdrop-blur-sm border-amber-300/50 text-amber-800'}`}>
          <Briefcase className="text-amber-500 shrink-0 mt-0.5" size={18} />
          <p>{t.disclaimer}</p>
       </div>
@@ -272,14 +276,14 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
             <div>
               <label className={labelClass}>{t.labels.name}</label>
               <div className="relative">
-                <User className={`absolute left-3 top-3 ${isDark ? 'text-gray-500' : 'text-stone-400'}`} size={16} />
+                <User className={`absolute left-3 top-3 ${isDark ? 'text-gray-500' : 'text-purple-400'}`} size={16} />
                 <input type="text" required className={`${inputClass} pl-10`} placeholder={t.placeholders.name} value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
               </div>
             </div>
             <div>
               <label className={labelClass}>{t.labels.email}</label>
               <div className="relative">
-                <Mail className={`absolute left-3 top-3 ${isDark ? 'text-gray-500' : 'text-stone-400'}`} size={16} />
+                <Mail className={`absolute left-3 top-3 ${isDark ? 'text-gray-500' : 'text-purple-400'}`} size={16} />
                 <input type="email" required className={`${inputClass} pl-10`} placeholder={t.placeholders.email} value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
               </div>
             </div>
@@ -289,14 +293,14 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
              <label className={labelClass}>{t.labels.who}</label>
              <div className="flex gap-4 flex-wrap">
                {t.options.org.map((type, index) => (
-                 <label key={type} className={`flex items-center gap-2 cursor-pointer text-sm transition-colors ${isDark ? 'text-gray-300' : 'text-stone-700'}`}>
+                 <label key={type} className={`flex items-center gap-2 cursor-pointer text-sm transition-colors ${isDark ? 'text-gray-300' : 'text-purple-800'}`}>
                     <input 
                       type="radio" 
                       name="orgType" 
                       value={type} 
                       checked={formData.orgType === type} 
                       onChange={e => setFormData({...formData, orgType: type})} 
-                      className="accent-neon-purple" 
+                      className="accent-purple-600" 
                     />
                     {type}
                  </label>
@@ -304,14 +308,14 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
              </div>
           </div>
 
-          <div className={`border-t my-4 transition-colors ${isDark ? 'border-white/10' : 'border-stone-200'}`}></div>
+          <div className={`border-t my-4 transition-colors ${isDark ? 'border-white/10' : 'border-purple-200/50'}`}></div>
 
           <div className="relative">
             <label className={labelClass}>{t.labels.help}</label>
             <select className={inputClass} value={formData.projectType} onChange={e => setFormData({...formData, projectType: e.target.value})}>
               {t.options.types.map(opt => <option key={opt} value={opt}>{opt}</option>)}
             </select>
-            <div className={`absolute right-3 top-[32px] pointer-events-none text-xs ${isDark ? 'text-gray-500' : 'text-stone-400'}`}>▼</div>
+            <div className={`absolute right-3 top-[32px] pointer-events-none text-xs ${isDark ? 'text-gray-500' : 'text-purple-400'}`}>▼</div>
           </div>
 
           <div className="flex gap-4">
@@ -320,7 +324,7 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
               <select className={inputClass} value={formData.paymentType} onChange={e => setFormData({...formData, paymentType: e.target.value})}>
                 {t.options.payment.map(opt => <option key={opt} value={opt}>{opt}</option>)}
               </select>
-              <div className={`absolute right-3 top-[32px] pointer-events-none text-xs ${isDark ? 'text-gray-500' : 'text-stone-400'}`}>▼</div>
+              <div className={`absolute right-3 top-[32px] pointer-events-none text-xs ${isDark ? 'text-gray-500' : 'text-purple-400'}`}>▼</div>
             </div>
             
             {formData.paymentType === t.options.payment[0] && (
@@ -339,12 +343,12 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
           <div>
              <label className={labelClass}>{t.labels.security}</label>
              <div className="relative">
-                <ShieldCheck className={`absolute left-3 top-3 ${isDark ? 'text-gray-500' : 'text-stone-400'}`} size={16} />
+                <ShieldCheck className={`absolute left-3 top-3 ${isDark ? 'text-gray-500' : 'text-purple-400'}`} size={16} />
                 <input type="text" required className={`${inputClass} pl-10 w-1/3`} placeholder={t.placeholders.answer} value={formData.captcha} onChange={e => setFormData({...formData, captcha: e.target.value})} />
              </div>
           </div>
 
-          <button type="submit" className="w-full bg-gradient-to-r from-neon-purple to-neon-cyan text-white py-3 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(189,0,255,0.4)] transition-all flex items-center justify-center gap-2 transform hover:scale-[1.01]">
+          <button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-purple-500 text-white py-3 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all flex items-center justify-center gap-2 transform hover:scale-[1.01]">
             <Briefcase size={20} /> {t.buttons.analyze}
           </button>
         </form>
@@ -352,30 +356,30 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
 
       {status === 'analyzing' && (
         <div className="flex flex-col items-center justify-center h-64 text-center space-y-4">
-          <Loader2 size={48} className="text-neon-cyan animate-spin" />
-          <p className={`animate-pulse transition-colors ${isDark ? 'text-gray-300' : 'text-stone-600'}`}>{t.buttons.analyzing}</p>
+          <Loader2 size={48} className={`animate-spin ${isDark ? 'text-neon-cyan' : 'text-purple-600'}`} />
+          <p className={`animate-pulse transition-colors ${isDark ? 'text-gray-300' : 'text-purple-600'}`}>{t.buttons.analyzing}</p>
         </div>
       )}
 
       {status === 'approved' && (
         <div className="bg-green-500/10 border border-green-500/30 p-6 rounded-2xl text-center space-y-4 animate-fade-in">
           <div className="flex justify-center"><CheckCircle size={48} className="text-green-500" /></div>
-          <h3 className={`text-xl font-bold transition-colors ${isDark ? 'text-white' : 'text-stone-800'}`}>{t.status.approved}</h3>
-          <p className={`text-sm leading-relaxed p-4 rounded-lg border transition-colors ${isDark ? 'bg-[#0a0b1e] border-white/5 text-gray-300' : 'bg-[#f5eee6] border-stone-200 text-stone-700'}`}>"{analysis?.feedback}"</p>
-          <div className="text-xs uppercase tracking-wider transition-colors text-stone-500">{t.status.time}: <span className="text-green-500 font-bold">{analysis?.estimatedHours}{t.status.hours}</span></div>
+          <h3 className={`text-xl font-bold transition-colors ${isDark ? 'text-white' : 'text-purple-900'}`}>{t.status.approved}</h3>
+          <p className={`text-sm leading-relaxed p-4 rounded-lg border transition-colors ${isDark ? 'bg-[#0a0b1e] border-white/5 text-gray-300' : 'bg-white/30 backdrop-blur-sm border-purple-200/50 text-purple-800'}`}>"{analysis?.feedback}"</p>
+          <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-purple-500'}`}>{t.status.time}: <span className="text-green-500 font-bold">{analysis?.estimatedHours}{t.status.hours}</span></div>
           <button onClick={sendRealEmail} disabled={isSending} className="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-500 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-green-500/20">
             {isSending ? <Loader2 className="animate-spin" /> : <Send size={18} />} {isSending ? t.buttons.sending : t.buttons.send}
           </button>
-          <button onClick={() => setStatus('idle')} className="text-xs text-stone-500 hover:text-green-600 underline pt-2 transition-colors">{t.buttons.change}</button>
+          <button onClick={() => setStatus('idle')} className={`text-xs hover:underline pt-2 transition-colors ${isDark ? 'text-gray-500 hover:text-green-600' : 'text-purple-500 hover:text-green-600'}`}>{t.buttons.change}</button>
         </div>
       )}
 
       {status === 'rejected' && (
         <div className="bg-red-500/10 border border-red-500/30 p-6 rounded-2xl text-center space-y-4 animate-fade-in">
           <div className="flex justify-center"><XCircle size={48} className="text-red-500" /></div>
-          <h3 className={`text-xl font-bold transition-colors ${isDark ? 'text-white' : 'text-stone-800'}`}>{t.status.rejected}</h3>
-          <p className={`text-sm leading-relaxed p-4 rounded-lg border transition-colors ${isDark ? 'bg-[#0a0b1e] border-white/5 text-gray-300' : 'bg-[#f5eee6] border-stone-200 text-stone-700'}`}>"{analysis?.feedback}"</p>
-          <button onClick={() => setStatus('idle')} className={`w-full py-3 rounded-xl font-bold transition-all border ${isDark ? 'bg-white/10 text-white border-white/10 hover:bg-white/20' : 'bg-white text-stone-800 border-stone-300 hover:bg-stone-50'}`}>{t.buttons.change}</button>
+          <h3 className={`text-xl font-bold transition-colors ${isDark ? 'text-white' : 'text-purple-900'}`}>{t.status.rejected}</h3>
+          <p className={`text-sm leading-relaxed p-4 rounded-lg border transition-colors ${isDark ? 'bg-[#0a0b1e] border-white/5 text-gray-300' : 'bg-white/30 backdrop-blur-sm border-purple-200/50 text-purple-800'}`}>"{analysis?.feedback}"</p>
+          <button onClick={() => setStatus('idle')} className={`w-full py-3 rounded-xl font-bold transition-all border ${isDark ? 'bg-white/10 text-white border-white/10 hover:bg-white/20' : 'bg-white/30 backdrop-blur-sm text-purple-800 border-purple-200/50 hover:bg-white/50'}`}>{t.buttons.change}</button>
         </div>
       )}
 
