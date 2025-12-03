@@ -6,23 +6,47 @@
   color-scheme: dark;
 }
 
-/* ===== MÖRKT TEMA ===== */
+/* ===== MÖRKT TEMA - ANIMERAD CYBER GRADIENT ===== */
 .dark body {
-  background-color: #0a0b1e;
-  color: #e5e7eb;
-}
-
-/* ===== LJUST TEMA - SOLAR TECH (Animerad Gradient) ===== */
-body {
-  /* Varm, levande gradient med starkare persika/guld toner */
   background: linear-gradient(
     135deg,
-    #FFECD2 0%,      /* Varm persika */
-    #FFF6E5 20%,     /* Ljus guld */
-    #FFDFC4 40%,     /* Djupare persika */
-    #FFF1C1 60%,     /* Soft gold */
-    #FFE4C4 80%,     /* Bisque/cream */
-    #FFECD2 100%     /* Tillbaka till persika */
+    #0a0b1e 0%,        /* Mörk marinblå */
+    #0d0a1f 20%,       /* Mörk lila-blå */
+    #150a24 40%,       /* Djup lila */
+    #0a0b1e 60%,       /* Tillbaka till marinblå */
+    #0f0a20 80%,       /* Mörk violett */
+    #0a0b1e 100%       /* Slut marinblå */
+  );
+  background-size: 400% 400%;
+  background-attachment: fixed;
+  animation: dark-gradient-shift 25s ease infinite;
+  color: #e5e7eb;
+  min-height: 100vh;
+}
+
+@keyframes dark-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===== LJUST TEMA - SOLAR TECH (Varmare & mörkare start) ===== */
+body {
+  background: linear-gradient(
+    135deg,
+    #F5E6D3 0%,        /* Varm sand/beige (mörkare) */
+    #FFECD2 15%,       /* Persika */
+    #FFD9B3 30%,       /* Djupare persika/aprikos */
+    #FFCC99 50%,       /* Orange-persika */
+    #FFE0B2 70%,       /* Ljusare aprikos */
+    #FFECD2 85%,       /* Tillbaka till persika */
+    #F5E6D3 100%       /* Slut med sand */
   );
   background-size: 400% 400%;
   background-attachment: fixed;
@@ -32,7 +56,6 @@ body {
   transition: color 0.3s ease;
 }
 
-/* Animerad gradient - "andas" sakta */
 @keyframes gradient-shift {
   0% {
     background-position: 0% 50%;
@@ -52,11 +75,11 @@ body {
 .dark ::-webkit-scrollbar-thumb { background: #bd00ff; border-radius: 3px; }
 .dark ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
 
-/* Ljust tema - Lila accent */
+/* Ljust tema */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.4); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(124, 58, 237, 0.6); }
+::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.5); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(124, 58, 237, 0.7); }
 
 /* ===== GLASSMORPHISM ===== */
 .glass-card {
@@ -110,9 +133,9 @@ body {
   animation: text-shimmer 5s linear infinite;
 }
 
-/* LJUST LÄGE - Namn gradient (Stark lila/teal som poppar mot varm bakgrund) */
+/* LJUST LÄGE - Namn gradient (Starkare kontrast mot varm bakgrund) */
 .light-mode-gradient {
-  background: linear-gradient(to right, #5B21B6 0%, #7C3AED 25%, #0D9488 50%, #7C3AED 75%, #5B21B6 100%);
+  background: linear-gradient(to right, #4C1D95 0%, #7C3AED 25%, #0F766E 50%, #7C3AED 75%, #4C1D95 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -130,9 +153,9 @@ body {
   animation: text-shimmer 6s linear infinite;
 }
 
-/* LJUST LÄGE - Subtitle shimmer (Stark lila/teal) */
+/* LJUST LÄGE - Subtitle shimmer (Starkare) */
 .light-subtitle-shimmer {
-  background: linear-gradient(to right, #7C3AED 0%, #0D9488 50%, #7C3AED 100%);
+  background: linear-gradient(to right, #5B21B6 0%, #0D9488 50%, #5B21B6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

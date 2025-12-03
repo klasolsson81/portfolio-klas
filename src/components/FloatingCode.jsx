@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const FloatingCode = () => {
+// Tar emot isDark prop för tema-anpassning
+const FloatingCode = ({ isDark }) => {
   const [show, setShow] = useState(false);
-  const [position, setPosition] = useState(10); // Startposition Y (höjd)
+  const [position, setPosition] = useState(10);
 
   useEffect(() => {
     // Starta en loop som visar texten var 12:e sekund
@@ -15,7 +16,7 @@ const FloatingCode = () => {
 
       // Dölj den efter animationen är klar (ca 8 sek)
       setTimeout(() => setShow(false), 8000);
-    }, 12000); // Intervall: Hur ofta den dyker upp
+    }, 12000);
 
     return () => clearInterval(interval);
   }, []);
@@ -26,10 +27,18 @@ const FloatingCode = () => {
         {show && (
           <motion.div
             initial={{ x: "100vw", opacity: 0 }}
-            animate={{ x: "-100%", opacity: [0, 1, 1, 0] }} // Tona in och ut
-            transition={{ duration: 10, ease: "linear" }} // Långsam svepning
-            className="absolute font-mono text-4xl font-bold text-neon-cyan/10 whitespace-nowrap"
-            style={{ top: `${position}%` }}
+            animate={{ x: "-100%", opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 10, ease: "linear" }}
+            className={`absolute font-mono text-4xl font-bold whitespace-nowrap
+              ${isDark 
+                ? 'text-neon-cyan/20' 
+                : 'text-purple-700/25'}`}
+            style={{ 
+              top: `${position}%`,
+              textShadow: isDark 
+                ? '0 0 20px rgba(0, 243, 255, 0.3)' 
+                : '0 0 15px rgba(124, 58, 237, 0.2)'
+            }}
           >
             Console.WriteLine("Hello World");
           </motion.div>

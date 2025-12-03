@@ -18,10 +18,10 @@ function App() {
   const toggleTheme = () => setIsDark(!isDark);
 
   return (
-    // ÄNDRING: bg-transparent i light mode - låter body CSS visa gradient-bakgrunden
+    // BG-TRANSPARENT för BÅDA teman - låter body CSS visa gradient-bakgrunden
     <main className={`relative w-full min-h-screen overflow-hidden font-sans transition-colors duration-700 
       ${isDark 
-        ? 'bg-neon-darkbg selection:bg-neon-cyan selection:text-black' 
+        ? 'bg-transparent selection:bg-neon-cyan selection:text-black' 
         : 'bg-transparent selection:bg-purple-200 selection:text-purple-900'}`}>
       
       <Suspense fallback={<div className="fixed inset-0" />}>
