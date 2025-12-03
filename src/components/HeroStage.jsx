@@ -234,7 +234,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         className={`w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
           ${isDark 
             ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl' 
-            : 'bg-white/80 backdrop-blur-2xl border border-white/70 shadow-xl shadow-purple-500/10'}`}
+            : 'bg-white/50 backdrop-blur-2xl border border-white/50 shadow-xl shadow-purple-500/10'}`}
         style={{ borderRadius: 24 }}
       >
         {/* MOBIL HEADER - Kompakt och ren */}
@@ -262,14 +262,14 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 className={`w-8 h-8 rounded-full border flex items-center justify-center
                   ${isDark 
                     ? 'text-gray-400 bg-black/40 border-white/10' 
-                    : 'text-warm-muted bg-warm-card border-warm-border'}`}
+                    : 'text-warm-muted bg-white/60 border-warm-border'}`}
               >
                 {isDark ? <Sun size={14} /> : <Moon size={14} />}
               </button>
               <button 
                 onClick={toggleLang} 
                 className={`w-8 h-8 rounded-full border flex items-center justify-center overflow-hidden
-                  ${isDark ? 'bg-black/40 border-white/10' : 'bg-warm-card border-warm-border'}`}
+                  ${isDark ? 'bg-black/40 border-white/10' : 'bg-white/60 border-warm-border'}`}
               >
                 <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-sm`}></span>
               </button>
@@ -304,7 +304,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold
                   ${isDark 
                     ? 'bg-neon-purple/20 border border-neon-purple/30 text-neon-cyan' 
-                    : 'bg-warm-accentLight border border-purple-200 text-warm-accent'}`}
+                    : 'bg-purple-100/70 border border-purple-200 text-warm-accent'}`}
               >
                 <Download size={13} />
                 CV
@@ -326,7 +326,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         <motion.div 
           layout 
           className={`hidden md:flex p-6 md:w-1/3 border-r flex-col items-start relative overflow-y-auto custom-scrollbar shrink-0
-            ${isDark ? 'border-white/10' : 'border-warm-border'}`}
+            ${isDark ? 'border-white/10 bg-black/20' : 'border-white/30 bg-white/20'}`}
         >          
           <div className="flex w-full justify-end gap-3 mb-2 relative z-20">
             <button 
@@ -334,7 +334,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm
                 ${isDark 
                   ? 'text-gray-400 hover:text-neon-cyan bg-black/40 border-white/10' 
-                  : 'text-warm-muted hover:text-warm-accent bg-warm-card border-warm-border hover:border-warm-accent/30'}`}
+                  : 'text-warm-muted hover:text-warm-accent bg-white/60 border-warm-border hover:border-warm-accent/30'}`}
             >
               {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
@@ -344,7 +344,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm hover:scale-105 active:scale-95 overflow-hidden
                 ${isDark 
                   ? 'bg-black/40 border-white/10' 
-                  : 'bg-warm-card border-warm-border'}`}
+                  : 'bg-white/60 border-warm-border'}`}
               title="Change Language"
             >
               <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-lg`}></span>
@@ -417,7 +417,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
               className={`relative group flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 shadow-sm
                 ${isDark 
                   ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20 hover:border-neon-purple' 
-                  : 'bg-warm-accentLight border border-purple-200 text-warm-accent hover:bg-purple-100 hover:border-warm-accent'}`}
+                  : 'bg-purple-100/70 border border-purple-200 text-warm-accent hover:bg-purple-100 hover:border-warm-accent'}`}
               title={t.nav.cv}
             >
               <Download size={18} className="relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300"/>
@@ -439,7 +439,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
         <motion.div 
           layout 
           className={`flex-1 min-h-0 p-4 md:p-8 relative flex flex-col md:overflow-hidden transition-colors duration-500
-            ${isDark ? 'bg-black/30' : 'bg-white/30'}`}
+            ${isDark ? 'bg-black/30' : 'bg-white/20'}`}
         >
           <AnimatePresence mode="wait">
             
@@ -488,7 +488,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                           className={`px-2 py-1 rounded text-[10px] md:text-xs font-mono cursor-default transition-colors
                             ${isDark 
                               ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20' 
-                              : 'bg-warm-accentLight border border-purple-200 text-warm-accent hover:bg-purple-100'}`}
+                              : 'bg-purple-100/70 border border-purple-200 text-warm-accent hover:bg-purple-100'}`}
                         >
                           {tag}
                         </span>
@@ -600,7 +600,7 @@ const NavButton = ({ label, icon, active, onClick, isDark }) => (
       ${active 
         ? isDark 
           ? 'bg-neon-purple/20 text-white border-l-2 border-neon-purple' 
-          : 'bg-warm-accentLight text-warm-text border-l-2 border-warm-accent'
+          : 'bg-purple-100/70 text-warm-text border-l-2 border-warm-accent'
         : isDark 
           ? 'text-gray-400 hover:bg-white/5 hover:text-white' 
           : 'text-warm-muted hover:bg-warm-hover hover:text-warm-text'}
@@ -623,7 +623,7 @@ const MobileNavButton = ({ label, icon, active, onClick, isDark, isHire }) => (
       ${active 
         ? isDark 
           ? 'bg-neon-purple/20 text-white' 
-          : 'bg-warm-accentLight text-warm-text'
+          : 'bg-purple-100/70 text-warm-text'
         : isDark 
           ? 'text-gray-400 hover:bg-white/5' 
           : 'text-warm-muted hover:bg-warm-hover'}
@@ -650,7 +650,7 @@ const HireNavButton = ({ label, icon, active, onClick, isDark }) => (
       ${active 
         ? isDark 
           ? 'bg-neon-purple/20 text-white border-l-2 border-neon-purple' 
-          : 'bg-warm-accentLight text-warm-text border-l-2 border-warm-accent'
+          : 'bg-purple-100/70 text-warm-text border-l-2 border-warm-accent'
         : isDark 
           ? 'text-gray-400 hover:bg-white/5 hover:text-white' 
           : 'text-warm-muted hover:bg-warm-hover hover:text-warm-text'}
@@ -673,7 +673,7 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
   <div className={`p-5 rounded-xl border transition-all group relative shadow-lg
     ${isDark 
       ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 hover:shadow-neon-cyan/20' 
-      : 'bg-warm-card border-warm-border hover:border-warm-accent/50 hover:shadow-warm-accent/10'}`}>
+      : 'bg-white/60 border-warm-border hover:border-warm-accent/50 hover:shadow-warm-accent/10'}`}>
       
     <div className="flex justify-between items-start pr-8">
       <h3 className={`font-bold text-base md:text-lg transition-colors
@@ -704,7 +704,7 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
           className={`flex items-center gap-2 px-3 py-1.5 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm
             ${isDark 
               ? 'bg-neon-purple/10 text-neon-purple border-neon-purple/30 hover:bg-neon-purple hover:text-white' 
-              : 'bg-warm-accentLight text-warm-accent border-purple-200 hover:bg-warm-accent hover:text-white'}`}
+              : 'bg-purple-100/70 text-warm-accent border-purple-200 hover:bg-warm-accent hover:text-white'}`}
         >
           <Play size={12} fill="currentColor" /> {watchText}
         </button>
@@ -730,7 +730,7 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
                   ? 'bg-neon-purple/20 text-white border-neon-purple/30' 
                   : 'bg-black/40 text-gray-400 border-white/10')
               : (t === 'Team Lead' || t === 'Scrum' 
-                  ? 'bg-warm-accentLight text-warm-accent border-purple-200' 
+                  ? 'bg-purple-100/70 text-warm-accent border-purple-200' 
                   : 'bg-warm-hover text-warm-muted border-warm-border')}`}
         >
           {t}
