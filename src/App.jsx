@@ -18,11 +18,11 @@ function App() {
   const toggleTheme = () => setIsDark(!isDark);
 
   return (
-    // bg-warm-bg för light mode, neon-darkbg för dark mode
+    // ÄNDRING: bg-transparent i light mode - låter body CSS visa gradient-bakgrunden
     <main className={`relative w-full min-h-screen overflow-hidden font-sans transition-colors duration-700 
       ${isDark 
         ? 'bg-neon-darkbg selection:bg-neon-cyan selection:text-black' 
-        : 'bg-warm-bg selection:bg-purple-200 selection:text-purple-900'}`}>
+        : 'bg-transparent selection:bg-purple-200 selection:text-purple-900'}`}>
       
       <Suspense fallback={<div className="fixed inset-0" />}>
         <NodeNetwork isDark={isDark} />
@@ -33,7 +33,7 @@ function App() {
       <HeroStage isDark={isDark} toggleTheme={toggleTheme} />
 
       <div className={`fixed bottom-2 w-full text-center text-[10px] pointer-events-none z-20 transition-colors duration-300 
-        ${isDark ? 'text-gray-600' : 'text-warm-subtle'}`}>
+        ${isDark ? 'text-gray-600' : 'text-warm-text/40'}`}>
         &copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI
       </div>
 
@@ -42,9 +42,10 @@ function App() {
         position="bottom-center"
         toastOptions={{
           style: isDark ? {} : {
-            background: '#fffcf8',
-            border: '1px solid #e8dfd3',
-            color: '#4a4036',
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(139, 92, 246, 0.2)',
+            color: '#1A1E29',
           }
         }}
       />
