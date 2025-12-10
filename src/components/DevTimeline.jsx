@@ -13,7 +13,8 @@ import {
   Briefcase,
   Users,
   Sparkles,
-  ArrowUpDown
+  ArrowUpDown,
+  ExternalLink
 } from 'lucide-react';
 
 // =====================================================
@@ -147,6 +148,21 @@ const EVENT_TYPES = {
 // DATA: Lägg till nya händelser här! (nyast först)
 // =====================================================
 const TIMELINE_EVENTS = [
+  {
+    date: "2025-12-10",
+    type: "project",
+    title: { 
+      sv: "Sky High Adventures", 
+      en: "Sky High Adventures" 
+    },
+    description: { 
+      sv: "Ett hjärteprojekt skapat för min 5-årige son Alexander. Ett webbaserat flygplansspel byggt med React och Phaser där familjen är piloter. Fokus på spelglädje, responsivitet och att skapa något kul tillsammans.",
+      en: "A passion project created for my 5-year-old son Alexander. A web-based airplane game built with React and Phaser where the family acts as pilots. Focus on fun, responsiveness, and creating something together."
+    },
+    tags: ["React", "Phaser", "Game Dev", "Family"],
+    link: "https://skyadventuregame.klasolsson.se" // Länken till spelet
+  },
+
   {
     date: "2025-11-29",
     type: "skill",
@@ -398,9 +414,27 @@ const TimelineEvent = ({ event, lang, isDark, index }) => {
                 <p className={`text-sm leading-relaxed pt-4 ${isDark ? 'text-gray-300' : 'text-purple-700'}`}>
                   {event.description[lang]}
                 </p>
-              </div>
-            </motion.div>
-          )}
+{/* NY KOD FÖR LÄNK HÄR: */}
+        {event.link && (
+          <div className="pt-4">
+            <a 
+              href={event.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-all
+                ${isDark 
+                  ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20' 
+                  : 'bg-cyan-100 text-cyan-700 border border-cyan-200 hover:bg-cyan-200'}`}
+              onClick={(e) => e.stopPropagation()} 
+            >
+              <ExternalLink size={14} />
+              {lang === 'sv' ? 'Spela spelet' : 'Play Game'}
+            </a>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  )}
         </AnimatePresence>
       </div>
     </motion.div>
