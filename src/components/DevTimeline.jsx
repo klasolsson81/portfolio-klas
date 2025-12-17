@@ -160,7 +160,11 @@ const TIMELINE_EVENTS = [
       en: "AI-powered B2B tool that analyzes companies in real-time and generates sales insights. Comprehensive code review, 70% faster searches, multi-provider architecture with automatic fallback. Workshop with InFiNetCode AB."
     },
     tags: ["AI", "Next.js", "TypeScript", "OpenAI", "B2B", "Tavily"],
-    link: "https://recon.klasolsson.se"
+    link: "https://recon.klasolsson.se",
+    linkText: {
+      sv: "Besök RECON",
+      en: "Visit RECON"
+    }
   },
 
   {
@@ -175,7 +179,11 @@ const TIMELINE_EVENTS = [
       en: "A passion project created for my 5-year-old son Alexander. A web-based airplane game built with React and Phaser where the family acts as pilots. Focus on fun, responsiveness, and creating something together."
     },
     tags: ["React", "Phaser", "Game Dev", "Family"],
-    link: "https://skyadventuregame.klasolsson.se" // Länken till spelet
+    link: "https://skyadventuregame.klasolsson.se",
+    linkText: {
+      sv: "Spela spelet",
+      en: "Play Game"
+    }
   },
 
   {
@@ -443,7 +451,7 @@ const TimelineEvent = ({ event, lang, isDark, index }) => {
               onClick={(e) => e.stopPropagation()} 
             >
               <ExternalLink size={14} />
-              {lang === 'sv' ? 'Spela spelet' : 'Play Game'}
+              {event.linkText ? event.linkText[lang] : (lang === 'sv' ? 'Se projektet' : 'View Project')}
             </a>
           </div>
         )}
