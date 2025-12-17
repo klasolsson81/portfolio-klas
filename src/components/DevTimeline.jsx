@@ -159,7 +159,8 @@ const TIMELINE_EVENTS = [
       sv: "AI-driven B2B-verktyg som analyserar företag i realtid och genererar säljinsikter. Omfattande kod-review, 70% snabbare sökningar, multi-provider arkitektur med automatisk fallback. Workshop med InFiNetCode AB.",
       en: "AI-powered B2B tool that analyzes companies in real-time and generates sales insights. Comprehensive code review, 70% faster searches, multi-provider architecture with automatic fallback. Workshop with InFiNetCode AB."
     },
-    tags: ["AI", "Next.js", "TypeScript", "OpenAI", "B2B", "Tavily"]
+    tags: ["AI", "Next.js", "TypeScript", "OpenAI", "B2B", "Tavily"],
+    link: "https://recon.klasolsson.se"
   },
 
   {

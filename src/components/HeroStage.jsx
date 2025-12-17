@@ -571,7 +571,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   title="RECON - B2B Sales Intelligence"
                   desc={lang === 'sv' ? "AI-driven B2B-analys som genererar säljinsikter i realtid. 70% snabbare, omfattande kod-review, multi-provider arkitektur." : "AI-powered B2B analysis generating sales insights in real-time. 70% faster, comprehensive code review, multi-provider architecture."}
                   tags={['Next.js', 'TypeScript', 'OpenAI', 'Tavily', 'Vercel']}
-                  link="https://github.com/klasolsson81/CheatSheet"
+                  link="https://recon.klasolsson.se"
                   onDetails={() => setActiveSlideshow({ title: "RECON - B2B Sales Intelligence", slides: PROJECT_SLIDES.recon })}
                   detailsText={t.projects.details}
                   isDark={isDark}
