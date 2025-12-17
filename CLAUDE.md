@@ -756,6 +756,31 @@ git push origin main
    - Files: `lib/api/client.js` (created), `src/components/ChatUI.jsx`, `src/components/HireMe.jsx`
    - Commit: `bfa61ff`
 
+14. **Refactor HeroStage - Phase 1: Extract Data** ✅ (Issue #13 - MEDIUM Priority)
+   - HeroStage.jsx was 783 lines and difficult to maintain
+   - Created data directory structure:
+     - `src/components/data/` folder for data files
+     - `src/components/sections/` folder for future section components
+   - Extracted data to separate files:
+     - `projectSlides.js`: PROJECT_SLIDES object with all project data (detective, fitness, portfolio, recon)
+     - `projectSlides.js`: All image imports (detective, fitness images)
+     - `translations.js`: TRANSLATIONS object (Swedish/English)
+     - `translations.js`: calculateAge helper function
+   - Updated HeroStage.jsx to import from data files
+   - File size reduction:
+     - Before: 783 lines
+     - After: 585 lines
+     - Reduction: 198 lines (25% smaller)
+   - Benefits:
+     - Better code organization (separation of concerns)
+     - Data separated from presentation logic
+     - Easier to maintain and update project data
+     - Easier to add new projects or translations
+     - Improved readability
+   - Files: `src/components/data/projectSlides.js`, `src/components/data/translations.js`, `src/components/HeroStage.jsx`
+   - Commit: `0d7717e`
+   - Note: Phase 2 (extract JSX sections to components) could reduce file further to ~100-150 lines
+
 **Impact:**
 - Faster API responses (no 340-line prompt sent on every request)
 - Lower OpenAI costs (50-70% token reduction = significant savings)
@@ -767,8 +792,7 @@ git push origin main
 **CODE_REVIEW.md Progress:**
 - ✅ Critical (3/3): Issues #1, #2, #3 (done in previous session)
 - ✅ High (5/5): Issues #4, #5, #6, #7, #11 (ALL HIGH PRIORITY DONE! 🎉)
-- ✅ Medium (4/5): Issues #8, #9, #10, #12 (done this session)
-- ⏳ Medium (1/5): Issue #13 (remaining)
+- ✅ Medium (5/5): Issues #8, #9, #10, #12, #13 (ALL MEDIUM PRIORITY DONE! 🎉)
 - ⏳ Low (4/4): Issues #14, #15, #16, #17 (remaining)
 
 ---
