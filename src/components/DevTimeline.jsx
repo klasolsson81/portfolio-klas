@@ -149,13 +149,27 @@ const EVENT_TYPES = {
 // =====================================================
 const TIMELINE_EVENTS = [
   {
+    date: "2025-12-14",
+    type: "project",
+    title: {
+      sv: "RECON - B2B Sales Intelligence",
+      en: "RECON - B2B Sales Intelligence"
+    },
+    description: {
+      sv: "AI-driven B2B-verktyg som analyserar företag i realtid och genererar säljinsikter. Omfattande kod-review, 70% snabbare sökningar, multi-provider arkitektur med automatisk fallback. Workshop med InFiNetCode AB.",
+      en: "AI-powered B2B tool that analyzes companies in real-time and generates sales insights. Comprehensive code review, 70% faster searches, multi-provider architecture with automatic fallback. Workshop with InFiNetCode AB."
+    },
+    tags: ["AI", "Next.js", "TypeScript", "OpenAI", "B2B", "Tavily"]
+  },
+
+  {
     date: "2025-12-10",
     type: "project",
-    title: { 
-      sv: "Sky High Adventures", 
-      en: "Sky High Adventures" 
+    title: {
+      sv: "Sky High Adventures",
+      en: "Sky High Adventures"
     },
-    description: { 
+    description: {
       sv: "Ett hjärteprojekt skapat för min 5-årige son Alexander. Ett webbaserat flygplansspel byggt med React och Phaser där familjen är piloter. Fokus på spelglädje, responsivitet och att skapa något kul tillsammans.",
       en: "A passion project created for my 5-year-old son Alexander. A web-based airplane game built with React and Phaser where the family acts as pilots. Focus on fun, responsiveness, and creating something together."
     },

@@ -113,6 +113,38 @@ const PROJECT_SLIDES = {
       type: "code",
       content: <p>Jag byggde en funktion där kunder kan skicka uppdragsförfrågningar. En AI-agent analyserar förfrågan i realtid, bedömer om den passar min tidsplan (8h gräns för pro bono) och ger direkt feedback innan mailet ens skickas.</p>
     }
+  ],
+  recon: [
+    {
+      title: "Projektöversikt",
+      type: "intro",
+      content: <p><strong>RECON</strong> är ett AI-drivet B2B-verktyg som analyserar företag i realtid. Genom att aggregera data från webbplatser, sociala medier, nyheter och finansiella rapporter genererar det actionable säljinsikter: ice breakers, pain points, sales hooks och finansiella signaler. Byggt under en 2-dagars workshop med InFiNetCode AB (13-14 dec 2024).</p>
+    },
+    {
+      title: "Utmaning: Hastighet & Tillförlitlighet",
+      type: "problem",
+      content: <p>Den största utmaningen var att balansera <strong>hastighet</strong> och <strong>datakvalitet</strong>. Initialt tog sökningar 15-25 sekunder och förbrukade onödigt mycket API-kvot på health checks. Dessutom fanns risken för hallucineringar om AI:n inte hittade tillräckligt med data.</p>
+    },
+    {
+      title: "Lösning: Multi-Provider Arkitektur",
+      type: "solution",
+      content: <p>Jag byggde en <strong>search orchestrator</strong> med automatisk fallback över 4 providers (Tavily, Serper, Brave, SerpAPI). Om en provider når sin gräns eller misslyckas, växlar systemet automatiskt till nästa. Detta gav oss 5750+ gratis sökningar/månad och 100% uptime.</p>
+    },
+    {
+      title: "Kod: Modulär Arkitektur",
+      type: "code",
+      content: <p>Projektet följer <strong>Clean Architecture</strong> med tydlig separation: <code>/lib/types/</code> (TypeScript), <code>/lib/schemas/</code> (Zod validation), <code>/lib/validators/</code> (säkerhet), <code>/lib/services/</code> (business logic), <code>/lib/utils/</code> (helpers). Detta gjorde koden testbar och maintainable. Refaktorerade <code>actions.ts</code> från 720 rader till 157 rader (78% minskning!).</p>
+    },
+    {
+      title: "Prestanda: 70% Snabbare",
+      type: "learning",
+      content: <p>Genom att implementera <strong>LRU-cache med TTL</strong>, eliminera onödiga health checks och optimera GPT-prompts fick jag ner söktiden från 15-25s till 5-8s. Det är en <strong>70% prestandaförbättring</strong> och 50% mindre API-användning. Även implementerade rate limiting, input validation och omfattande unit tests (34 tests, 100% coverage på säkerhetsfunktioner).</p>
+    },
+    {
+      title: "Kodgranskning: 15/15 Issues Fixed",
+      type: "learning",
+      content: <p>Efter att projektet var klart körde jag en <strong>omfattande code review</strong> över 5 sessioner. Identifierade 15 issues (4 critical, 4 high, 4 medium, 3 low) och fixade alla systematiskt. Det lärde mig vikten av strukturerad kodgranskning, säkerhetsvalidering och att prioritera efter severity. Resultatet: ⭐⭐⭐⭐⭐ (5/5) kodkvalitet.</p>
+    }
   ]
 };
 
@@ -534,13 +566,22 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                 <h2 className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
                   {t.titles.projects}
                 </h2>
-                
-                <ProjectCard 
-                  title="Console Detective AI" 
+
+                <ProjectCard
+                  title="RECON - B2B Sales Intelligence"
+                  desc={lang === 'sv' ? "AI-driven B2B-analys som genererar säljinsikter i realtid. 70% snabbare, omfattande kod-review, multi-provider arkitektur." : "AI-powered B2B analysis generating sales insights in real-time. 70% faster, comprehensive code review, multi-provider architecture."}
+                  tags={['Next.js', 'TypeScript', 'OpenAI', 'Tavily', 'Vercel']}
+                  link="https://github.com/klasolsson81/CheatSheet"
+                  onDetails={() => setActiveSlideshow({ title: "RECON - B2B Sales Intelligence", slides: PROJECT_SLIDES.recon })}
+                  detailsText={t.projects.details}
+                  isDark={isDark}
+                />
+                <ProjectCard
+                  title="Console Detective AI"
                   desc={lang === 'sv' ? "Ett textbaserat noir-detektivspel..." : "A text-based noir detective game..."}
                   tags={['C#', '.NET 8', 'OpenAI API', 'Spectre.Console']}
                   link="https://github.com/klasolsson81/Console_Detective"
-                  videoSrc={detectiveVideo} 
+                  videoSrc={detectiveVideo}
                   onPlay={() => setActiveVideo(detectiveVideo)}
                   watchText={t.projects.watch}
                   onDetails={() => setActiveSlideshow({ title: "Console Detective AI", slides: PROJECT_SLIDES.detective })}
