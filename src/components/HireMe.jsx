@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2, CheckCircle, XCircle, Briefcase, Send, RefreshCw, User, Mail, ShieldCheck } from 'lucide-react';
-import axios from 'axios';
+import apiClient from '../../lib/api/client';
 import { toast } from 'sonner';
 import { generateCaptcha, verifyCaptcha } from '../../lib/utils/captcha';
 
@@ -174,14 +174,15 @@ const HireMe = ({ lang, isDark }) => {
       return;
     }
 
-    setStatus('analyzing'); 
-    try { 
-      const res = await axios.post('/api/analyze', formData); 
-      setAnalysis(res.data); 
-      setStatus(res.data.approved ? 'approved' : 'rejected'); 
-    } catch (err) { 
-      setStatus('idle'); 
-      toast.error(t.errors.ai); 
+    setStatus('analyzing');
+    try {
+      const res = await apiClient.post('/api/analyze', formData);
+      setAnalysis(res.data);
+      setStatus(res.data.approved ? 'approved' : 'rejected');
+    } catch (err) {
+      setStatus('idle');
+      // Specific error message for AI analysis failure (overrides interceptor toast)
+      toast.error(t.errors.ai);
     } 
   };
 
@@ -211,19 +212,20 @@ ${el.aiAssessment}:
 ${el.time}: ${analysis?.estimatedHours || '?'} ${el.hours}
 ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
 
-    try { 
-      await axios.post('/api/email', { 
-        subject, 
-        body: emailBody, 
-        replyTo: formData.email, 
-        senderName: formData.name 
-      }); 
-      toast.success(t.status.successTitle); 
-      setStatus('sent'); 
-      setIsSending(false); 
-    } catch (err) { 
-      toast.error(t.errors.mail); 
-      setIsSending(false); 
+    try {
+      await apiClient.post('/api/email', {
+        subject,
+        body: emailBody,
+        replyTo: formData.email,
+        senderName: formData.name
+      });
+      toast.success(t.status.successTitle);
+      setStatus('sent');
+      setIsSending(false);
+    } catch (err) {
+      // Specific error message for email failure (overrides interceptor toast)
+      toast.error(t.errors.mail);
+      setIsSending(false);
     } 
   };
 

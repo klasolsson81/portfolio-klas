@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../../lib/api/client';
 import { Send, Loader2, Sparkles, Trash2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import aiKlasImage from '../assets/aiklas.png';
@@ -92,11 +92,11 @@ const ChatUI = ({ lang, isDark }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post('/api/chat', {
+      const res = await apiClient.post('/api/chat', {
         message: sanitized,
         lang: lang,
         threadId: threadId  // Send existing threadId to continue conversation
-      }, { timeout: CHAT_CONFIG.REQUEST_TIMEOUT_MS });
+      });
 
       setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
 
@@ -105,16 +105,11 @@ const ChatUI = ({ lang, isDark }) => {
         setThreadId(res.data.threadId);
       }
     } catch (err) {
-      console.error('Chat error:', err);
-      let errorMsg = lang === 'sv' 
-        ? "Något gick fel. Försök igen." 
+      // Error already handled by apiClient interceptor (toast shown)
+      // Just add a fallback message to chat if response failed
+      const errorMsg = lang === 'sv'
+        ? "Något gick fel. Försök igen."
         : "Something went wrong. Please try again.";
-
-      if (err.code === 'ECONNABORTED') {
-        errorMsg = lang === 'sv' 
-          ? "Det tog för lång tid. Försök igen." 
-          : "Timeout - please try again.";
-      }
 
       setMessages(prev => [...prev, { role: 'assistant', content: errorMsg }]);
     } finally {
