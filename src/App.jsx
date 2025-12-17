@@ -25,17 +25,17 @@ function App() {
         ? 'bg-transparent selection:bg-neon-cyan selection:text-black'
         : 'bg-transparent selection:bg-purple-200 selection:text-purple-900'}`}>
 
-      <ErrorBoundary componentName="NodeNetwork">
+      <ErrorBoundary componentName="NodeNetwork" isDark={isDark}>
         <Suspense fallback={<div className="fixed inset-0" />}>
           <NodeNetwork isDark={isDark} />
         </Suspense>
       </ErrorBoundary>
 
-      <ErrorBoundary componentName="FloatingCode">
+      <ErrorBoundary componentName="FloatingCode" isDark={isDark}>
         <FloatingCode isDark={isDark} />
       </ErrorBoundary>
 
-      <ErrorBoundary componentName="HeroStage" showHomeButton>
+      <ErrorBoundary componentName="HeroStage" isDark={isDark} showHomeButton>
         <HeroStage isDark={isDark} toggleTheme={toggleTheme} />
       </ErrorBoundary>
 
