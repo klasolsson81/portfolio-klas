@@ -24,6 +24,16 @@ const ChatUI = ({ lang, isDark }) => {
     return [];
   });
 
+  // Initialize threadId from localStorage (for OpenAI Assistants API thread persistence)
+  const [threadId, setThreadId] = useState(() => {
+    try {
+      return localStorage.getItem(`${CHAT_CONFIG.STORAGE_KEY}_threadId`) || null;
+    } catch (e) {
+      console.error('Failed to load thread ID:', e);
+      return null;
+    }
+  });
+
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
@@ -51,6 +61,17 @@ const ChatUI = ({ lang, isDark }) => {
     }
   }, [messages]);
 
+  // Save threadId to localStorage whenever it changes
+  useEffect(() => {
+    if (threadId) {
+      try {
+        localStorage.setItem(`${CHAT_CONFIG.STORAGE_KEY}_threadId`, threadId);
+      } catch (e) {
+        console.error('Failed to save thread ID:', e);
+      }
+    }
+  }, [threadId]);
+
   const sendMessage = async (e) => {
     if (e) e.preventDefault();
     const cleanInput = input.trim();
@@ -73,10 +94,16 @@ const ChatUI = ({ lang, isDark }) => {
     try {
       const res = await axios.post('/api/chat', {
         message: sanitized,
-        lang: lang
+        lang: lang,
+        threadId: threadId  // Send existing threadId to continue conversation
       }, { timeout: CHAT_CONFIG.REQUEST_TIMEOUT_MS });
 
       setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
+
+      // Save threadId from response for future requests
+      if (res.data.threadId && res.data.threadId !== threadId) {
+        setThreadId(res.data.threadId);
+      }
     } catch (err) {
       console.error('Chat error:', err);
       let errorMsg = lang === 'sv' 
@@ -111,7 +138,9 @@ const ChatUI = ({ lang, isDark }) => {
   // Clear conversation history
   const clearHistory = () => {
     setMessages([]);
+    setThreadId(null);
     localStorage.removeItem(CHAT_CONFIG.STORAGE_KEY);
+    localStorage.removeItem(`${CHAT_CONFIG.STORAGE_KEY}_threadId`);
     // Welcome message will be shown by the useEffect above
   };
 
