@@ -728,6 +728,34 @@ git push origin main
    - Files: `src/components/ChatUI.jsx`, `src/components/ProjectSlideshow.jsx`, `src/components/GithubStats.jsx`
    - Commit: `fc8e3f8`
 
+13. **Axios Interceptors for Centralized Error Handling** ✅ (Issue #12 - MEDIUM Priority)
+   - Created `lib/api/client.js` with axios instance and interceptors
+   - Eliminated duplicated error handling across all components using axios
+   - Request interceptor:
+     - Logs all outgoing API requests in development mode
+     - Ready for future auth token injection
+   - Response interceptor:
+     - Automatic timeout handling (ECONNABORTED)
+     - Rate limit detection (429)
+     - Server error handling (500+)
+     - Bad request handling (400)
+     - Network error detection
+     - Bilingual error messages (Swedish/English)
+     - Toast notifications for all errors
+     - Structured logging with logger utility
+   - Updated components to use apiClient:
+     - ChatUI.jsx: /api/chat endpoint
+     - HireMe.jsx: /api/analyze and /api/email endpoints
+   - Simplified component error handling (interceptor shows toast, components handle specific cases)
+   - Benefits:
+     - DRY principle: no duplicated error handling
+     - Consistent UX: all errors shown via toast
+     - Easier maintenance: error logic centralized
+     - Better observability: all API calls logged
+     - Future-ready: auth token support ready
+   - Files: `lib/api/client.js` (created), `src/components/ChatUI.jsx`, `src/components/HireMe.jsx`
+   - Commit: `bfa61ff`
+
 **Impact:**
 - Faster API responses (no 340-line prompt sent on every request)
 - Lower OpenAI costs (50-70% token reduction = significant savings)
@@ -739,8 +767,8 @@ git push origin main
 **CODE_REVIEW.md Progress:**
 - ✅ Critical (3/3): Issues #1, #2, #3 (done in previous session)
 - ✅ High (5/5): Issues #4, #5, #6, #7, #11 (ALL HIGH PRIORITY DONE! 🎉)
-- ✅ Medium (3/5): Issues #8, #9, #10 (done this session)
-- ⏳ Medium (2/5): Issues #12, #13 (remaining)
+- ✅ Medium (4/5): Issues #8, #9, #10, #12 (done this session)
+- ⏳ Medium (1/5): Issue #13 (remaining)
 - ⏳ Low (4/4): Issues #14, #15, #16, #17 (remaining)
 
 ---
