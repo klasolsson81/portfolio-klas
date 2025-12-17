@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: migrate to OpenAI Assistants API and add structured logging (#4, #11)\n\nBREAKING CHANGE: Migrated from Chat Completions API to Assistants API\n\nIssue #4 - Optimize system prompt (HIGH priority):\n- Migrated api/chat.js to use OpenAI Assistants API\n- System prompt (KLAS_INSTRUCTIONS) now stored on OpenAI''s servers\n- Reduced api/chat.js from ~470 lines to ~146 lines (69% reduction)\n- 50-70% token cost reduction per request\n- Thread-based conversation history management\n- Removed duplicate KLAS_CONTEXT from api/chat.js\n\nIssue #11 - Structured logging (MEDIUM priority):\n- Created lib/utils/logger.js with JSON-formatted logs\n- Log levels: info, warn, error, debug\n- Includes timestamps, context, and error stack traces\n- Production-ready monitoring support\n\nOther improvements:\n- Created lib/utils/assistantManager.js for assistant management\n- Added REQUEST_TIMEOUT: 408 to HTTP_STATUS constants\n- Enhanced error handling with specific timeout detection\n- In-memory thread storage (TODO: migrate to Redis/KV for production)\n\nBenefits:\n- Faster API responses (no 340-line prompt on every request)\n- Lower OpenAI API costs (50-70% token reduction)\n- Better conversation context (thread-based)\n- Improved debugging with structured logs\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)",
+      "Bash(npm test:*)"
+    ]
+  }
+}
