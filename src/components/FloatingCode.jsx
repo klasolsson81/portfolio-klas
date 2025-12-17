@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { UI } from '../../lib/config/constants';
 
 // Tar emot isDark prop för tema-anpassning
 const FloatingCode = ({ isDark }) => {
   const [show, setShow] = useState(false);
-  const [position, setPosition] = useState(10);
+  const [position, setPosition] = useState(UI.FLOATING_CODE.MIN_TOP_POSITION);
 
   useEffect(() => {
-    // Starta en loop som visar texten var 12:e sekund
+    // Starta en loop som visar texten med konfigurerat intervall
     const interval = setInterval(() => {
-      // Slumpa en höjd (mellan 10% och 80% av skärmen)
-      const randomTop = Math.floor(Math.random() * 70) + 10;
+      // Slumpa en höjd baserat på konfigurerade constraints
+      const randomTop = Math.floor(Math.random() * UI.FLOATING_CODE.MAX_TOP_RANGE) + UI.FLOATING_CODE.MIN_TOP_POSITION;
       setPosition(randomTop);
       setShow(true);
 
-      // Dölj den efter animationen är klar (ca 8 sek)
-      setTimeout(() => setShow(false), 8000);
-    }, 12000);
+      // Dölj den efter konfigurerad display-tid
+      setTimeout(() => setShow(false), UI.ANIMATION.FLOATING_CODE_DISPLAY);
+    }, UI.ANIMATION.FLOATING_CODE_INTERVAL);
 
     return () => clearInterval(interval);
   }, []);
@@ -28,7 +29,7 @@ const FloatingCode = ({ isDark }) => {
           <motion.div
             initial={{ x: "100vw", opacity: 0 }}
             animate={{ x: "-100%", opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 10, ease: "linear" }}
+            transition={{ duration: UI.ANIMATION.FLOATING_CODE_DURATION, ease: "linear" }}
             className={`absolute font-mono text-4xl font-bold whitespace-nowrap
               ${isDark 
                 ? 'text-neon-cyan/20' 
