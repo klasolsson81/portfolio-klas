@@ -1,14 +1,19 @@
 import OpenAI from 'openai';
 import { checkRateLimit, getClientIP } from '../lib/utils/rateLimit.js';
+import { GPT_CONFIG, CHAT_CONFIG, VALIDATION, HTTP_STATUS, RATE_LIMIT } from '../lib/config/constants.js';
+import { config, validateEnv } from '../lib/config/env.js';
+
+// Validate environment variables on startup
+validateEnv(true);
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: config.openaiKey,
 });
 
 /**
  * Sanitize text input on server side (defense in depth)
  */
-function sanitizeTextInput(input, maxLength = 1000) {
+function sanitizeTextInput(input, maxLength = VALIDATION.MAX_API_MESSAGE_LENGTH) {
   if (!input || typeof input !== 'string') {
     return '';
   }
@@ -364,24 +369,24 @@ kan du byta språk med knappen uppe till vänster."
 export default async function handler(req, res) {
   // Endast POST tillåten
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return res.status(HTTP_STATUS.METHOD_NOT_ALLOWED).json({ error: 'Method Not Allowed' });
   }
 
-  // Rate limiting: 10 requests per minute per IP
+  // Rate limiting
   const clientIP = getClientIP(req);
-  const rateLimitResult = checkRateLimit(clientIP, 10, 60000);
+  const rateLimitResult = checkRateLimit(clientIP, RATE_LIMIT.MAX_REQUESTS, RATE_LIMIT.WINDOW_MS);
 
   if (!rateLimitResult.allowed) {
     const retryAfterMinutes = Math.ceil(rateLimitResult.retryAfter / 60);
-    return res.status(429).json({
+    return res.status(HTTP_STATUS.TOO_MANY_REQUESTS).json({
       error: 'Rate limit exceeded',
-      reply: `För många förfrågningar. Försök igen om ${retryAfterMinutes} minut${reteLimitResult.retryAfter > 60 ? 'er' : ''}.`,
+      reply: `För många förfrågningar. Försök igen om ${retryAfterMinutes} minut${rateLimitResult.retryAfter > 60 ? 'er' : ''}.`,
       retryAfter: rateLimitResult.retryAfter
     });
   }
 
   // Add rate limit headers for transparency
-  res.setHeader('X-RateLimit-Limit', '10');
+  res.setHeader('X-RateLimit-Limit', String(RATE_LIMIT.MAX_REQUESTS));
   res.setHeader('X-RateLimit-Remaining', String(rateLimitResult.remaining));
   res.setHeader('X-RateLimit-Reset', String(rateLimitResult.resetAt));
 
@@ -389,22 +394,22 @@ export default async function handler(req, res) {
 
   // Validera meddelande
   if (!message || message.trim().length === 0) {
-    return res.status(400).json({ error: 'Message required' });
+    return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Message required' });
   }
 
   // Begränsa meddelandelängd (förhindra abuse)
-  if (message.length > 1000) {
-    return res.status(400).json({
+  if (message.length > VALIDATION.MAX_API_MESSAGE_LENGTH) {
+    return res.status(HTTP_STATUS.BAD_REQUEST).json({
       error: 'Message too long',
-      message: 'Håll meddelandet under 1000 tecken.'
+      message: `Håll meddelandet under ${VALIDATION.MAX_API_MESSAGE_LENGTH} tecken.`
     });
   }
 
   // Sanitize input to prevent XSS and injection attacks (server-side validation)
-  const sanitizedMessage = sanitizeTextInput(message, 1000);
+  const sanitizedMessage = sanitizeTextInput(message, VALIDATION.MAX_API_MESSAGE_LENGTH);
 
   if (!sanitizedMessage) {
-    return res.status(400).json({
+    return res.status(HTTP_STATUS.BAD_REQUEST).json({
       error: 'Invalid input',
       reply: 'Meddelandet innehöll ogiltiga tecken. Försök igen.'
     });
@@ -413,9 +418,8 @@ export default async function handler(req, res) {
   const currentLang = lang === 'en' ? 'Engelska' : 'Svenska';
 
   // Bygg upp konversationshistorik för kontext
-  // Begränsa till de senaste 10 meddelandena för att spara tokens
-  const recentHistory = conversationHistory.slice(-10);
-  
+  const recentHistory = conversationHistory.slice(-CHAT_CONFIG.MAX_CONVERSATION_HISTORY);
+
   const messages = [
     { role: 'system', content: KLAS_CONTEXT + currentLang },
     ...recentHistory,
@@ -425,11 +429,11 @@ export default async function handler(req, res) {
   try {
     const completion = await openai.chat.completions.create({
       messages,
-      model: 'gpt-4o',
-      temperature: 0.7,
-      max_tokens: 500,
-      presence_penalty: 0.1,
-      frequency_penalty: 0.1
+      model: GPT_CONFIG.MODEL,
+      temperature: GPT_CONFIG.TEMPERATURE,
+      max_tokens: GPT_CONFIG.MAX_TOKENS,
+      presence_penalty: GPT_CONFIG.PRESENCE_PENALTY,
+      frequency_penalty: GPT_CONFIG.FREQUENCY_PENALTY
     });
 
     const reply = completion.choices[0].message.content;
@@ -443,7 +447,7 @@ export default async function handler(req, res) {
       historyLength: recentHistory.length
     });
 
-    res.status(200).json({ 
+    res.status(HTTP_STATUS.OK).json({
       reply,
       conversationUpdate: {
         user: message,
@@ -453,15 +457,15 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Chat API Error:', error);
-    
+
     if (error.code === 'rate_limit_exceeded') {
-      return res.status(429).json({ 
+      return res.status(HTTP_STATUS.TOO_MANY_REQUESTS).json({
         error: 'Rate limit',
         reply: 'Oj, det var många frågor på kort tid! Vänta en liten stund och försök igen.'
       });
     }
 
-    res.status(500).json({ 
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({
       error: 'AI service unavailable',
       reply: 'Hmm, något gick fel på min sida. Försök gärna igen, eller kontakta mig direkt via mail-länken under profilbilden!'
     });

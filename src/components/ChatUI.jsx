@@ -1,25 +1,55 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { Send, Loader2, Sparkles } from 'lucide-react';
+import { Send, Loader2, Sparkles, Trash2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import aiKlasImage from '../assets/aiklas.png';
 import { sanitizeTextInput } from '../../lib/validators/inputValidator';
+import { CHAT_CONFIG, UI } from '../../lib/config/constants';
 
 const ChatUI = ({ lang, isDark }) => {
-  const [messages, setMessages] = useState([]);
+  // Initialize messages from localStorage or empty array
+  const [messages, setMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem(CHAT_CONFIG.STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Validate that it's an array with valid message objects
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load chat history:', e);
+    }
+    return [];
+  });
+
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
   const textareaRef = useRef(null);
-  const MAX_LENGTH = 500;
 
+  // Show welcome message if no history exists or language changes
   useEffect(() => {
-    const welcomeText = lang === 'sv' 
-      ? "Hej! Det är jag som är Klas (i AI-form). Fråga mig gärna om min kod, mina projekt eller varför jag sadlade om till systemutvecklare!"
-      : "Hi! I'm Klas (AI version). Feel free to ask me about my code, my projects, or why I switched careers to system development!";
-    
-    setMessages([{ role: 'assistant', content: welcomeText }]);
-  }, [lang]);
+    if (messages.length === 0) {
+      const welcomeText = lang === 'sv'
+        ? "Hej! Det är jag som är Klas (i AI-form). Fråga mig gärna om min kod, mina projekt eller varför jag sadlade om till systemutvecklare!"
+        : "Hi! I'm Klas (AI version). Feel free to ask me about my code, my projects, or why I switched careers to system development!";
+
+      setMessages([{ role: 'assistant', content: welcomeText }]);
+    }
+  }, [lang, messages.length]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    if (messages.length > 0) {
+      try {
+        localStorage.setItem(CHAT_CONFIG.STORAGE_KEY, JSON.stringify(messages));
+      } catch (e) {
+        console.error('Failed to save chat history:', e);
+      }
+    }
+  }, [messages]);
 
   const sendMessage = async (e) => {
     if (e) e.preventDefault();
@@ -27,7 +57,7 @@ const ChatUI = ({ lang, isDark }) => {
     if (!cleanInput || loading) return;
 
     // Sanitize input to prevent XSS and injection attacks
-    const sanitized = sanitizeTextInput(cleanInput, MAX_LENGTH);
+    const sanitized = sanitizeTextInput(cleanInput, CHAT_CONFIG.MAX_MESSAGE_LENGTH);
     if (!sanitized) return;  // Don't send if sanitization removed everything
 
     const userMsg = { role: 'user', content: sanitized };
@@ -44,7 +74,7 @@ const ChatUI = ({ lang, isDark }) => {
       const res = await axios.post('/api/chat', {
         message: sanitized,
         lang: lang
-      }, { timeout: 15000 });
+      }, { timeout: CHAT_CONFIG.REQUEST_TIMEOUT_MS });
 
       setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
     } catch (err) {
@@ -78,20 +108,43 @@ const ChatUI = ({ lang, isDark }) => {
     e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
+  // Clear conversation history
+  const clearHistory = () => {
+    setMessages([]);
+    localStorage.removeItem(CHAT_CONFIG.STORAGE_KEY);
+    // Welcome message will be shown by the useEffect above
+  };
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   return (
     <div className={`flex flex-col flex-1 min-h-0 w-full rounded-2xl overflow-hidden border shadow-inner relative transition-colors duration-300
-      ${isDark 
-        ? 'bg-black/40 border-white/5' 
+      ${isDark
+        ? 'bg-black/40 border-white/5'
         : 'bg-white/30 backdrop-blur-sm border-purple-200/50'}`}>
-       
-      <div className={`absolute top-4 right-4 opacity-20 pointer-events-none
+
+      {/* Decorative sparkles */}
+      <div className={`absolute top-4 right-14 opacity-20 pointer-events-none
         ${isDark ? 'text-neon-purple' : 'text-purple-500'}`}>
-        <Sparkles size={40} className="animate-pulse"/>
+        <Sparkles size={32} className="animate-pulse"/>
       </div>
+
+      {/* Clear history button */}
+      {messages.length > 1 && (
+        <button
+          onClick={clearHistory}
+          className={`absolute top-4 right-4 z-10 p-2 rounded-lg transition-all hover:scale-110 group
+            ${isDark
+              ? 'bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300'
+              : 'bg-red-500/10 hover:bg-red-500/20 text-red-600 hover:text-red-700'}`}
+          title={lang === 'sv' ? 'Rensa historik' : 'Clear history'}
+          aria-label={lang === 'sv' ? 'Rensa chatthistorik' : 'Clear chat history'}
+        >
+          <Trash2 size={18} />
+        </button>
+      )}
 
       {/* Meddelandeområdet */}
       <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
@@ -185,28 +238,28 @@ const ChatUI = ({ lang, isDark }) => {
             onKeyDown={handleKeyDown}
             placeholder={lang === 'sv' ? "Skriv din fråga här..." : "Type your question..."}
             className={`flex-1 rounded-xl px-4 py-3 outline-none text-sm transition-colors resize-none overflow-hidden min-h-[46px] max-h-[120px]
-              ${isDark 
-                ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-neon-purple/50' 
+              ${isDark
+                ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-neon-purple/50'
                 : 'bg-white/50 border border-purple-200/50 text-purple-900 placeholder-purple-400 focus:border-purple-400'}`}
-            maxLength={MAX_LENGTH} 
+            maxLength={CHAT_CONFIG.MAX_MESSAGE_LENGTH}
             aria-label="Chat input"
           />
-          
-          <button 
-            type="submit" 
+
+          <button
+            type="submit"
             disabled={loading}
             className={`p-3 rounded-xl text-white transition-all disabled:opacity-50 shadow-md hover:shadow-lg shrink-0 mb-[1px]
-              ${isDark 
-                ? 'bg-neon-purple hover:bg-neon-purple/80' 
+              ${isDark
+                ? 'bg-neon-purple hover:bg-neon-purple/80'
                 : 'bg-purple-600 hover:bg-purple-700'}`}
           >
             <Send size={18} />
           </button>
         </div>
 
-        {input.length > 400 && (
+        {input.length > UI.CHAR_COUNTER_THRESHOLD && (
           <div className={`absolute bottom-1 left-6 text-[10px] ${isDark ? 'text-gray-500' : 'text-purple-500'}`}>
-            {input.length} / {MAX_LENGTH}
+            {input.length} / {CHAT_CONFIG.MAX_MESSAGE_LENGTH}
           </div>
         )}
       </form>
