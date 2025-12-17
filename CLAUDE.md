@@ -690,6 +690,15 @@ git push origin main
    - File: `lib/config/constants.js`
    - Commit: `194ba4a`
 
+10. **Extract Magic Numbers to Constants** ✅ (Issue #8 - MEDIUM Priority)
+   - Most magic numbers were already in constants.js, completed remaining ones
+   - Added floating code animation timing constants (8s display, 12s interval, 10s duration)
+   - Added floating code position constraints (10% min, 70% range)
+   - Updated FloatingCode.jsx to use constants instead of hardcoded values
+   - Files: `lib/config/constants.js`, `src/components/FloatingCode.jsx`
+   - Commit: `bf483d7`
+   - Note: Major magic numbers already extracted in previous work (chat, GPT, rate limiting)
+
 **Impact:**
 - Faster API responses (no 340-line prompt sent on every request)
 - Lower OpenAI costs (50-70% token reduction = significant savings)
@@ -701,7 +710,8 @@ git push origin main
 **CODE_REVIEW.md Progress:**
 - ✅ Critical (3/3): Issues #1, #2, #3 (done in previous session)
 - ✅ High (5/5): Issues #4, #5, #6, #7, #11 (ALL HIGH PRIORITY DONE! 🎉)
-- ⏳ Medium (5/5): Issues #8, #9, #10, #12, #13 (remaining)
+- ✅ Medium (1/5): Issue #8 (done this session)
+- ⏳ Medium (4/5): Issues #9, #10, #12, #13 (remaining)
 - ⏳ Low (4/4): Issues #14, #15, #16, #17 (remaining)
 
 ---
