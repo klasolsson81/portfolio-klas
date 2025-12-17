@@ -22,12 +22,14 @@ const GithubStats = ({ isDark }) => {
       {!imageError ? (
         <div className={`flex justify-center overflow-x-auto custom-scrollbar pb-2 rounded-lg p-3
           ${isDark ? '' : 'bg-white/20'}`}>
-          <img 
+          <img
             src={`https://ghchart.rshah.org/${chartColor}/klasolsson81`}
             alt="Klas GitHub Activity Graph"
+            loading="lazy"
+            decoding="async"
             className={`min-w-[600px] md:min-w-full transition-all
-              ${isDark 
-                ? 'opacity-90 hover:opacity-100 invert hue-rotate-180 brightness-110' 
+              ${isDark
+                ? 'opacity-90 hover:opacity-100 invert hue-rotate-180 brightness-110'
                 : 'opacity-90 hover:opacity-100'}`}
             onError={() => setImageError(true)}
           />

@@ -101,10 +101,12 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
               {currentSlide.image && (
                 <div className={`w-full flex justify-center rounded-xl border p-2 md:p-4 mt-2
                   ${isDark ? 'bg-black/20 border-white/5' : 'bg-white/40 border-purple-200/50 shadow-sm'}`}>
-                  <img 
-                    src={currentSlide.image} 
-                    alt="Project Screenshot" 
-                    className="w-full max-w-4xl h-auto object-contain rounded-lg shadow-lg" 
+                  <img
+                    src={currentSlide.image}
+                    alt="Project Screenshot"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full max-w-4xl h-auto object-contain rounded-lg shadow-lg"
                   />
                 </div>
               )}

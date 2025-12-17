@@ -181,9 +181,11 @@ const ChatUI = ({ lang, isDark }) => {
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start items-end'}`}>
             
             {m.role === 'assistant' && (
-              <img 
-                src={aiKlasImage} 
+              <img
+                src={aiKlasImage}
                 alt="AI Klas"
+                loading="lazy"
+                decoding="async"
                 className={`w-10 h-10 md:w-14 md:h-14 rounded-full mr-2 md:mr-3 shadow-sm shrink-0 object-cover border
                   ${isDark ? 'border-neon-purple/30' : 'border-purple-300'}`}
               />
@@ -235,9 +237,11 @@ const ChatUI = ({ lang, isDark }) => {
         
         {loading && (
           <div className="flex justify-start items-end">
-            <img 
-              src={aiKlasImage} 
+            <img
+              src={aiKlasImage}
               alt="AI Klas Thinking"
+              loading="lazy"
+              decoding="async"
               className={`w-10 h-10 md:w-14 md:h-14 rounded-full mr-2 md:mr-3 shrink-0 object-cover border opacity-80
                 ${isDark ? 'border-neon-purple/30' : 'border-purple-300'}`}
             />
