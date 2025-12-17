@@ -630,7 +630,17 @@ git push origin main
 
 **Completed Updates:**
 
-4. **Migrate to OpenAI Assistants API** ✅ (Issue #4 - HIGH Priority)
+4. **Add threadId Persistence** ✅ (Issue #5 - HIGH Priority)
+   - Extended existing localStorage persistence to include OpenAI Assistant threadId
+   - ThreadId now persists across page refreshes for conversation continuity
+   - Sends threadId to API to resume same conversation thread
+   - Clears threadId when user clears chat history
+   - localStorage keys: `klasPortfolio_chatHistory` (messages), `klasPortfolio_chatHistory_threadId` (thread)
+   - File: `src/components/ChatUI.jsx`
+   - Commit: `a0966a3`
+   - Note: Chat message persistence was already implemented, this completes it for Assistants API
+
+5. **Migrate to OpenAI Assistants API** ✅ (Issue #4 - HIGH Priority)
    - Migrated `api/chat.js` from Chat Completions API to Assistants API
    - Reduced file size from ~470 lines to ~146 lines (69% reduction)
    - Created `lib/utils/assistantManager.js` for assistant management
@@ -641,7 +651,7 @@ git push origin main
    - Files: `api/chat.js`, `lib/utils/assistantManager.js`
    - Commit: `194ba4a`
 
-5. **Add Structured Logging** ✅ (Issue #11 - MEDIUM Priority)
+6. **Add Structured Logging** ✅ (Issue #11 - MEDIUM Priority)
    - Created `lib/utils/logger.js` with JSON-formatted logs
    - Log levels: info, warn, error, debug
    - Includes timestamps, context, and error details
@@ -649,7 +659,7 @@ git push origin main
    - File: `lib/utils/logger.js`
    - Commit: `194ba4a`
 
-6. **Update HTTP Status Constants** ✅
+7. **Update HTTP Status Constants** ✅
    - Added `REQUEST_TIMEOUT: 408` to `HTTP_STATUS`
    - File: `lib/config/constants.js`
    - Commit: `194ba4a`
@@ -662,8 +672,8 @@ git push origin main
 
 **CODE_REVIEW.md Progress:**
 - ✅ Critical (3/3): Issues #1, #2, #3 (done in previous session)
-- ✅ High (2/5): Issues #4, #11 (done this session)
-- ⏳ High (3/5): Issues #5, #6, #7 (remaining)
+- ✅ High (3/5): Issues #4, #5, #11 (done this session)
+- ⏳ High (2/5): Issues #6, #7 (remaining)
 - ⏳ Medium (5/5): Issues #8, #9, #10, #12, #13 (remaining)
 - ⏳ Low (4/4): Issues #14, #15, #16, #17 (remaining)
 
@@ -787,4 +797,4 @@ When starting a new session:
 ---
 
 **End of Documentation**
-*Last session: Issue #4 and #11 implementation (Assistants API + Structured Logging)*
+*Last session: Issues #4, #5, #11 implementation (Assistants API + Thread Persistence + Structured Logging)*
