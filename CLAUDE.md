@@ -712,6 +712,22 @@ git push origin main
    - Commit: `bf483d7`
    - Note: Major magic numbers already extracted in previous work (chat, GPT, rate limiting)
 
+12. **Image Optimization** ✅ (Issue #10 - MEDIUM Priority)
+   - Added lazy loading to all img tags for improved page load performance
+   - Added async decoding to prevent blocking main thread during image decoding
+   - Components updated:
+     - ChatUI.jsx: AI Klas profile images (2 instances)
+     - ProjectSlideshow.jsx: Project screenshot images
+     - GithubStats.jsx: GitHub activity chart image
+   - ProfilePhoto.jsx already had lazy loading (verified)
+   - Benefits:
+     - Defers offscreen images for faster initial page load
+     - Reduces Time to Interactive (TTI)
+     - Improves Core Web Vitals (Largest Contentful Paint)
+     - Better mobile performance on slow connections
+   - Files: `src/components/ChatUI.jsx`, `src/components/ProjectSlideshow.jsx`, `src/components/GithubStats.jsx`
+   - Commit: `fc8e3f8`
+
 **Impact:**
 - Faster API responses (no 340-line prompt sent on every request)
 - Lower OpenAI costs (50-70% token reduction = significant savings)
@@ -723,8 +739,8 @@ git push origin main
 **CODE_REVIEW.md Progress:**
 - ✅ Critical (3/3): Issues #1, #2, #3 (done in previous session)
 - ✅ High (5/5): Issues #4, #5, #6, #7, #11 (ALL HIGH PRIORITY DONE! 🎉)
-- ✅ Medium (2/5): Issues #8, #9 (done this session)
-- ⏳ Medium (3/5): Issues #10, #12, #13 (remaining)
+- ✅ Medium (3/5): Issues #8, #9, #10 (done this session)
+- ⏳ Medium (2/5): Issues #12, #13 (remaining)
 - ⏳ Low (4/4): Issues #14, #15, #16, #17 (remaining)
 
 ---
