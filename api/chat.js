@@ -1,8 +1,30 @@
 import OpenAI from 'openai';
+import { checkRateLimit, getClientIP } from '../lib/utils/rateLimit.js';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+/**
+ * Sanitize text input on server side (defense in depth)
+ */
+function sanitizeTextInput(input, maxLength = 1000) {
+  if (!input || typeof input !== 'string') {
+    return '';
+  }
+
+  let sanitized = input
+    .trim()
+    .replace(/<script[^>]*>.*?<\/script>/gi, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/javascript:/gi, '')
+    .replace(/data:/gi, '')
+    .replace(/vbscript:/gi, '')
+    .replace(/on\w+\s*=/gi, '')
+    .substring(0, maxLength);
+
+  return sanitized;
+}
 
 const KLAS_CONTEXT = `
 Du ÄR Klas Olsson – en AI-avatar som representerar den riktiga Klas på hans portfolio.
@@ -345,6 +367,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
+  // Rate limiting: 10 requests per minute per IP
+  const clientIP = getClientIP(req);
+  const rateLimitResult = checkRateLimit(clientIP, 10, 60000);
+
+  if (!rateLimitResult.allowed) {
+    const retryAfterMinutes = Math.ceil(rateLimitResult.retryAfter / 60);
+    return res.status(429).json({
+      error: 'Rate limit exceeded',
+      reply: `För många förfrågningar. Försök igen om ${retryAfterMinutes} minut${reteLimitResult.retryAfter > 60 ? 'er' : ''}.`,
+      retryAfter: rateLimitResult.retryAfter
+    });
+  }
+
+  // Add rate limit headers for transparency
+  res.setHeader('X-RateLimit-Limit', '10');
+  res.setHeader('X-RateLimit-Remaining', String(rateLimitResult.remaining));
+  res.setHeader('X-RateLimit-Reset', String(rateLimitResult.resetAt));
+
   const { message, lang, conversationHistory = [] } = req.body;
 
   // Validera meddelande
@@ -354,9 +394,19 @@ export default async function handler(req, res) {
 
   // Begränsa meddelandelängd (förhindra abuse)
   if (message.length > 1000) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       error: 'Message too long',
       message: 'Håll meddelandet under 1000 tecken.'
+    });
+  }
+
+  // Sanitize input to prevent XSS and injection attacks (server-side validation)
+  const sanitizedMessage = sanitizeTextInput(message, 1000);
+
+  if (!sanitizedMessage) {
+    return res.status(400).json({
+      error: 'Invalid input',
+      reply: 'Meddelandet innehöll ogiltiga tecken. Försök igen.'
     });
   }
 
@@ -369,7 +419,7 @@ export default async function handler(req, res) {
   const messages = [
     { role: 'system', content: KLAS_CONTEXT + currentLang },
     ...recentHistory,
-    { role: 'user', content: message }
+    { role: 'user', content: sanitizedMessage }
   ];
 
   try {

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Loader2, CheckCircle, XCircle, Briefcase, Send, RefreshCw, User, Mail, ShieldCheck } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { generateCaptcha, verifyCaptcha } from '../../lib/utils/captcha';
 
 const TRANSLATIONS = {
     sv: { 
@@ -16,7 +17,7 @@ const TRANSLATIONS = {
         name: "DITT NAMN", 
         email: "DIN EMAIL", 
         who: "VEM ÄR DU?", 
-        security: "SÄKERHETSKOLL: VAD ÄR 3 + 4?" 
+        security: "SÄKERHETSKOLL: VAD ÄR" 
       }, 
       placeholders: { 
         budget: "t.ex. 5000", 
@@ -81,7 +82,7 @@ const TRANSLATIONS = {
         name: "YOUR NAME", 
         email: "YOUR EMAIL", 
         who: "WHO ARE YOU?", 
-        security: "SECURITY CHECK: WHAT IS 3 + 4?" 
+        security: "SECURITY CHECK: WHAT IS" 
       }, 
       placeholders: { 
         budget: "e.g. 5000", 
@@ -149,17 +150,30 @@ const HireMe = ({ lang, isDark }) => {
     description: '', 
     captcha: '' 
   });
-  const [status, setStatus] = useState('idle'); 
+  const [status, setStatus] = useState('idle');
   const [analysis, setAnalysis] = useState(null);
   const [isSending, setIsSending] = useState(false);
-  const [mathQuestion] = useState({ q: "3 + 4", a: "7" });
+  const [captchaData, setCaptchaData] = useState(generateCaptcha());
 
-  const handleSubmit = async (e) => { 
-    e.preventDefault(); 
-    if (formData.captcha.trim() !== mathQuestion.a) { 
-      toast.error(t.errors.captcha); 
-      return; 
-    } 
+  // Regenerate captcha on mount and when form is reset
+  useEffect(() => {
+    if (status === 'idle') {
+      setCaptchaData(generateCaptcha());
+    }
+  }, [status]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Verify captcha answer
+    if (!verifyCaptcha(formData.captcha, captchaData.answer)) {
+      toast.error(t.errors.captcha);
+      // Regenerate captcha after failed attempt
+      setCaptchaData(generateCaptcha());
+      setFormData({ ...formData, captcha: '' });
+      return;
+    }
+
     setStatus('analyzing'); 
     try { 
       const res = await axios.post('/api/analyze', formData); 
@@ -341,10 +355,18 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
           </div>
 
           <div>
-             <label className={labelClass}>{t.labels.security}</label>
+             <label className={labelClass}>{t.labels.security} {captchaData.question}?</label>
              <div className="relative">
                 <ShieldCheck className={`absolute left-3 top-3 ${isDark ? 'text-gray-500' : 'text-purple-400'}`} size={16} />
-                <input type="text" required className={`${inputClass} pl-10 w-1/3`} placeholder={t.placeholders.answer} value={formData.captcha} onChange={e => setFormData({...formData, captcha: e.target.value})} />
+                <input
+                  type="text"
+                  required
+                  className={`${inputClass} pl-10 w-1/3`}
+                  placeholder={t.placeholders.answer}
+                  value={formData.captcha}
+                  onChange={e => setFormData({...formData, captcha: e.target.value})}
+                  autoComplete="off"
+                />
              </div>
           </div>
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Send, Loader2, Sparkles } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import aiKlasImage from '../assets/aiklas.png';
+import { sanitizeTextInput } from '../../lib/validators/inputValidator';
 
 const ChatUI = ({ lang, isDark }) => {
   const [messages, setMessages] = useState([]);
@@ -25,7 +26,11 @@ const ChatUI = ({ lang, isDark }) => {
     const cleanInput = input.trim();
     if (!cleanInput || loading) return;
 
-    const userMsg = { role: 'user', content: cleanInput };
+    // Sanitize input to prevent XSS and injection attacks
+    const sanitized = sanitizeTextInput(cleanInput, MAX_LENGTH);
+    if (!sanitized) return;  // Don't send if sanitization removed everything
+
+    const userMsg = { role: 'user', content: sanitized };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
 
@@ -37,7 +42,7 @@ const ChatUI = ({ lang, isDark }) => {
 
     try {
       const res = await axios.post('/api/chat', {
-        message: cleanInput.substring(0, MAX_LENGTH),
+        message: sanitized,
         lang: lang
       }, { timeout: 15000 });
 
