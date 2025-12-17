@@ -11,7 +11,7 @@ import HireMe from './HireMe';
 import DevTimeline from './DevTimeline';
 
 // Data imports
-import { PROJECT_SLIDES, detectiveVideo } from './data/projectSlides';
+import { PROJECT_SLIDES, detectiveVideo } from './data/projectSlides.jsx';
 import { TRANSLATIONS, calculateAge } from './data/translations';
 
 const HeroStage = ({ isDark, toggleTheme }) => {
