@@ -48,6 +48,16 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
         }
       });
 
+      // Debug: Log sample days with contributions to verify count values
+      const daysWithContributions = calendar.filter(d => d.count > 0).slice(0, 10);
+      console.log('Sample days with contributions:', daysWithContributions.map(d => ({
+        date: d.date.toISOString().split('T')[0],
+        count: d.count,
+        countType: typeof d.count,
+        level: d.level,
+        color: d.color
+      })));
+
       setLoading(false);
     } catch (err) {
       console.error('GitHub API error:', err);
