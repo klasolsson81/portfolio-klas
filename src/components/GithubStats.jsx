@@ -93,11 +93,11 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
       return colors[level];
     } else {
       const colors = [
-        { bg: '#E5E7EB', border: '#D1D5DB' }, // 0 - gray-200/300
+        { bg: '#E8DFD3', border: '#D1C4B8' }, // 0 - warm beige/tan
         { bg: '#C084FC', border: '#A855F7' }, // 1 - purple-400/500
-        { bg: '#9333EA', border: '#7C3AED' }, // 2 - purple-600/700
-        { bg: '#7C3AED', border: '#6D28D9' }, // 3 - purple-700/800
-        { bg: '#581C87', border: '#4C1D95' }, // 4 - purple-900/950
+        { bg: '#8B5CF6', border: '#7C3AED' }, // 2 - purple-500/600
+        { bg: '#14B8A6', border: '#0D9488' }, // 3 - teal-500/600
+        { bg: '#0891B2', border: '#0E7490' }, // 4 - cyan-600/700
       ];
       return colors[level];
     }
@@ -201,25 +201,29 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
         : 'bg-white/30 backdrop-blur-sm border-purple-200/50 hover:border-purple-400/50'}`}>
 
       <div className="flex items-center justify-between mb-4">
-        <h3 className={`text-xs uppercase tracking-wider flex items-center gap-2
-          ${isDark ? 'text-gray-500' : 'text-purple-600'}`}>
-          <span className={isDark ? 'text-neon-purple' : 'text-purple-500'}>⚡</span>
+        <h3 className={`text-xs uppercase tracking-wider flex items-center gap-2 font-semibold
+          ${isDark
+            ? 'bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-purple bg-clip-text text-transparent'
+            : 'bg-gradient-to-r from-purple-600 via-teal-600 to-purple-600 bg-clip-text text-transparent'
+          }`}>
+          <span className={isDark ? 'text-neon-cyan' : 'text-purple-600'}>⚡</span>
           {lang === 'sv' ? 'Kodaktivitet (GitHub)' : 'Coding Activity (GitHub)'}
         </h3>
-        <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-purple-600'}`}>
+        <span className={`text-xs font-semibold ${isDark ? 'text-cyan-400' : 'text-teal-600'}`}>
           {totalContributions} {lang === 'sv' ? 'bidrag senaste 6 mån' : 'contributions last 6 months'}
         </span>
       </div>
 
       {/* Contribution grid - GitHub style (weeks as columns, days as rows) */}
-      <div className="mt-6 overflow-x-auto">
-        <div className="flex gap-[3px]">
+      <div className="mt-6 flex justify-center">
+        <div className="inline-flex gap-[3px]">
           {/* Day labels column */}
-          <div className="flex flex-col gap-[3px] justify-start pt-[14px]">
+          <div className="flex flex-col gap-[3px] justify-start pt-[16px]">
             {dayLabels.map((day, idx) => (
               <div
                 key={idx}
-                className={`w-4 h-2 flex items-center justify-start text-[8px] ${isDark ? 'text-gray-600' : 'text-purple-500'}`}
+                className={`w-4 h-2 flex items-center justify-start text-[9px] font-medium
+                  ${isDark ? 'text-cyan-400/70' : 'text-teal-600/70'}`}
               >
                 {idx % 2 === 1 ? day : ''} {/* Show only odd indices (Mon, Wed, Fri) */}
               </div>
@@ -227,71 +231,85 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
           </div>
 
           {/* Weeks columns */}
-          {weeks.map((week, weekIdx) => (
-            <div key={weekIdx} className="flex flex-col gap-[3px]">
-              {/* Month label for first day of week if new month */}
-              <div className={`h-[14px] text-[8px] ${isDark ? 'text-gray-600' : 'text-purple-500'}`}>
-                {week.find(day => day !== null) && weekIdx > 0 &&
-                 week.find(day => day !== null)?.date.getDate() <= 7
-                  ? formatDate(week.find(day => day !== null).date).split(' ')[1]
-                  : ''}
-              </div>
+          {weeks.map((week, weekIdx) => {
+            // Check if next week starts a new month
+            const currentMonth = week.find(d => d !== null)?.date.getMonth();
+            const nextWeek = weeks[weekIdx + 1];
+            const nextMonth = nextWeek?.find(d => d !== null)?.date.getMonth();
+            const isMonthEnd = currentMonth !== nextMonth && nextMonth !== undefined;
 
-              {/* Days of the week */}
-              {week.map((day, dayIdx) => {
-                if (!day) {
-                  // Empty cell for days before start or after end
+            return (
+              <div key={weekIdx} className={`flex flex-col gap-[3px] ${isMonthEnd ? 'mr-2' : ''}`}>
+                {/* Month label for first day of week if new month */}
+                <div className={`h-[16px] text-[9px] font-medium
+                  ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
+                  {week.find(day => day !== null) && weekIdx > 0 &&
+                   week.find(day => day !== null)?.date.getDate() <= 7
+                    ? formatDate(week.find(day => day !== null).date).split(' ')[1]
+                    : ''}
+                </div>
+
+                {/* Days of the week */}
+                {week.map((day, dayIdx) => {
+                  if (!day) {
+                    // Empty cell for days before start or after end
+                    return (
+                      <div
+                        key={dayIdx}
+                        className="w-2 h-2"
+                      />
+                    );
+                  }
+
+                  const colorStyle = getColorStyle(day.level);
                   return (
                     <div
                       key={dayIdx}
-                      className="w-2 h-2"
-                    />
-                  );
-                }
-
-                const colorStyle = getColorStyle(day.level);
-                return (
-                  <div
-                    key={dayIdx}
-                    className="group relative w-2 h-2 rounded-sm border transition-all hover:scale-150"
-                    style={{
-                      backgroundColor: colorStyle.bg,
-                      borderColor: colorStyle.border
-                    }}
-                    title={`${formatDate(day.date)}: ${day.count} ${lang === 'sv' ? 'bidrag' : 'contributions'}`}
-                  >
-                    {/* Tooltip on hover */}
-                    <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded text-[10px] whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10
-                      ${isDark ? 'bg-gray-900 text-gray-200 border border-white/10' : 'bg-white text-purple-900 border border-purple-200 shadow-lg'}`}>
-                      {formatDate(day.date)}: {day.count} {lang === 'sv' ? 'bidrag' : 'contributions'}
+                      className="group relative w-2 h-2 rounded-sm border transition-all duration-200 hover:scale-150 hover:z-10 cursor-pointer animate-in fade-in"
+                      style={{
+                        backgroundColor: colorStyle.bg,
+                        borderColor: colorStyle.border,
+                        boxShadow: day.level > 2 ? `0 0 4px ${colorStyle.bg}` : 'none'
+                      }}
+                      title={`${formatDate(day.date)}: ${day.count} ${lang === 'sv' ? 'bidrag' : 'contributions'}`}
+                    >
+                      {/* Tooltip on hover */}
+                      <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded text-[10px] whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10
+                        ${isDark ? 'bg-gray-900 text-gray-200 border border-white/10 shadow-lg' : 'bg-white text-purple-900 border border-purple-200 shadow-xl'}`}>
+                        {formatDate(day.date)}: {day.count} {lang === 'sv' ? 'bidrag' : 'contributions'}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Legend */}
-      <div className={`flex items-center justify-between mt-4 text-[10px] ${isDark ? 'text-gray-600' : 'text-purple-600'}`}>
-        <span>{lang === 'sv' ? 'Mindre' : 'Less'}</span>
-        <div className="flex gap-1">
-          {[0, 1, 2, 3, 4].map(level => {
-            const colorStyle = getColorStyle(level);
-            return (
-              <div
-                key={level}
-                className="w-2.5 h-2.5 rounded-sm border"
-                style={{
-                  backgroundColor: colorStyle.bg,
-                  borderColor: colorStyle.border
-                }}
-              />
+                  );
+                })}
+              </div>
             );
           })}
         </div>
-        <span>{lang === 'sv' ? 'Mer' : 'More'}</span>
+      </div>
+
+      {/* Legend - Compact */}
+      <div className="flex items-center justify-center gap-1.5 mt-4">
+        {[0, 1, 2, 3, 4].map(level => {
+          const colorStyle = getColorStyle(level);
+          return (
+            <div
+              key={level}
+              className="w-2.5 h-2.5 rounded-sm border transition-transform hover:scale-125"
+              style={{
+                backgroundColor: colorStyle.bg,
+                borderColor: colorStyle.border,
+                boxShadow: level > 2 ? `0 0 4px ${colorStyle.bg}50` : 'none'
+              }}
+              title={
+                level === 0 ? (lang === 'sv' ? 'Ingen aktivitet' : 'No activity') :
+                level === 1 ? '1-2' :
+                level === 2 ? '3-5' :
+                level === 3 ? '6-10' :
+                '10+'
+              }
+            />
+          );
+        })}
       </div>
 
       {/* GitHub link */}
@@ -300,10 +318,10 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
           href="https://github.com/klasolsson81"
           target="_blank"
           rel="noreferrer"
-          className={`text-[10px] transition-colors
+          className={`text-[10px] font-medium transition-all duration-200 hover:scale-105 inline-block
             ${isDark
-              ? 'text-gray-500 hover:text-neon-purple'
-              : 'text-purple-500 hover:text-purple-700'}`}
+              ? 'text-cyan-400 hover:text-neon-cyan'
+              : 'text-teal-600 hover:text-purple-600'}`}
         >
           {lang === 'sv' ? 'Visa hela profilen på GitHub →' : 'View full profile on GitHub →'}
         </a>
