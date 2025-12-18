@@ -875,6 +875,32 @@ git push origin main
    - Files: `lib/config/constants.js`, `api/chat.js`
    - Commits: `256c3d6`, `7a7560e`
 
+9. **Custom GitHub Contributions Calendar** ✅ (UX Enhancement)
+   - **Problem:** Old calendar showed full year, caused horizontal scroll on mobile, empty space in December
+   - User feedback: "På mobil versionen ser man bara halva, tomma tabellen"
+   - **Solution:** Built custom responsive calendar component
+   - **Features:**
+     - Shows only last 6 months (no empty space)
+     - Responsive grid: 8px squares on mobile → 12px on desktop
+     - No horizontal scroll
+     - Hover tooltips with date and contribution count
+     - Month labels at top
+     - Total contributions counter
+     - Color legend (Less → More)
+     - Bilingual support (Swedish/English)
+   - **Design:**
+     - Dark mode: gray → neon-purple → neon-cyan gradient
+     - Light mode: light purple → dark purple gradient
+     - Glassmorphism style matching portfolio theme
+     - Hover effects with scale transform
+   - **Technical:**
+     - Fetches from GitHub Events API
+     - Generates calendar grid for date range
+     - Contribution levels based on event count (0, 1-2, 3-5, 6-10, 10+)
+     - Loading and error states
+   - Files: `src/components/GithubStats.jsx`, `src/components/HeroStage.jsx`
+   - Commit: `2c0a5b5`
+
 **Removed Files:**
 - `lib/utils/assistantManager.js` - No longer needed after API migration
 
