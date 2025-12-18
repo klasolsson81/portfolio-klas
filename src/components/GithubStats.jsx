@@ -210,8 +210,8 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
       </div>
 
       {/* Contribution grid */}
-      <div className="mt-6 overflow-hidden">
-        <div className="grid grid-flow-col auto-cols-max gap-1 md:gap-1.5 justify-start">
+      <div className="mt-6 overflow-x-auto">
+        <div className="flex flex-wrap gap-1 md:gap-1.5">
           {contributions.map((day, index) => {
             const colorStyle = getColorStyle(day.level);
             return (
