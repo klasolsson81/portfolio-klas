@@ -288,11 +288,6 @@ export default async function handler(req, res) {
       max_completion_tokens: GPT_CONFIG.MAX_TOKENS,
     });
 
-    // Debug: Log full completion response
-    logger.info('GPT-5 completion response', {
-      completion: JSON.stringify(completion, null, 2)
-    });
-
     const reply = completion.choices[0].message.content;
 
     logger.info('Chat response sent', {
@@ -300,7 +295,8 @@ export default async function handler(req, res) {
       replyLength: reply ? reply.length : 0,
       model: GPT_CONFIG.MODEL,
       tokensUsed: completion.usage.total_tokens,
-      hasReply: !!reply
+      reasoningTokens: completion.usage.completion_tokens_details?.reasoning_tokens || 0,
+      finishReason: completion.choices[0].finish_reason
     });
 
     return res.status(HTTP_STATUS.OK).json({
