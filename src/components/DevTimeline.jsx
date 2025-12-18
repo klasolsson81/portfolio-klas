@@ -384,9 +384,19 @@ const TimelineEvent = ({ event, lang, isDark, index }) => {
       </div>
 
       {/* Kort - UPPDATERAD med backdrop-blur */}
-      <div 
+      <div
         className={`rounded-xl border backdrop-blur-sm ${colors.bg} ${colors.border} ${colors.glow} shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.01]`}
         onClick={() => setIsExpanded(!isExpanded)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsExpanded(!isExpanded);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isExpanded}
+        aria-label={`${event.title[lang]} - ${isExpanded ? 'Dölj detaljer' : 'Visa detaljer'}`}
       >
         {/* Header */}
         <div className="p-4 md:p-5">

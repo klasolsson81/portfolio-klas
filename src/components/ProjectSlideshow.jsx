@@ -1,15 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Terminal, Lightbulb, AlertTriangle, BookOpen } from 'lucide-react';
 
 const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const modalRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
       setCurrentIndex(0);
+      // Focus the modal when it opens for keyboard navigation
+      setTimeout(() => modalRef.current?.focus(), 100);
     }
   }, [isOpen, title]);
+
+  // Add Escape key listener to close modal
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
 
   if (!isOpen || !slides) return null;
 
@@ -34,28 +49,40 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 md:p-4" onClick={onClose}>
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }} 
-        animate={{ opacity: 1, scale: 1 }} 
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 md:p-4"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="slideshow-title"
+    >
+      <motion.div
+        ref={modalRef}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         className={`relative w-full max-w-6xl xl:max-w-7xl rounded-xl md:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[95vh] md:h-[90vh] border transition-colors duration-300
-          ${isDark 
-            ? 'bg-[#0a0b1e] border-white/10' 
+          ${isDark
+            ? 'bg-[#0a0b1e] border-white/10'
             : 'bg-white/80 backdrop-blur-xl border-purple-200/50'}`}
         onClick={e => e.stopPropagation()}
+        tabIndex={-1}
       >
         
         {/* Header */}
         <div className={`p-4 md:p-6 border-b flex justify-between items-center transition-colors
           ${isDark ? 'bg-black/30 border-white/10' : 'bg-white/50 border-purple-200/50'}`}>
           <div>
-            <h2 className={`text-lg md:text-2xl font-bold tracking-tight truncate max-w-[250px] md:max-w-none ${isDark ? 'text-white' : 'text-purple-900'}`}>{title}</h2>
+            <h2 id="slideshow-title" className={`text-lg md:text-2xl font-bold tracking-tight truncate max-w-[250px] md:max-w-none ${isDark ? 'text-white' : 'text-purple-900'}`}>{title}</h2>
             <p className={`text-xs uppercase tracking-wider mt-1 font-mono ${isDark ? 'text-gray-400' : 'text-purple-500'}`}>
               Sida {currentIndex + 1} / {slides.length}
             </p>
           </div>
-          <button onClick={onClose} className={`p-2 rounded-full transition-colors ${isDark ? 'hover:bg-white/10 text-gray-400 hover:text-white' : 'hover:bg-purple-100 text-purple-500 hover:text-purple-900'}`}>
+          <button
+            onClick={onClose}
+            className={`p-2 rounded-full transition-colors ${isDark ? 'hover:bg-white/10 text-gray-400 hover:text-white' : 'hover:bg-purple-100 text-purple-500 hover:text-purple-900'}`}
+            aria-label="Stäng dialog"
+          >
             <X size={24} />
           </button>
         </div>
@@ -103,7 +130,7 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
                   ${isDark ? 'bg-black/20 border-white/5' : 'bg-white/40 border-purple-200/50 shadow-sm'}`}>
                   <img
                     src={currentSlide.image}
-                    alt="Project Screenshot"
+                    alt={`${title} - ${currentSlide.title}`}
                     loading="lazy"
                     decoding="async"
                     className="w-full max-w-4xl h-auto object-contain rounded-lg shadow-lg"
@@ -119,13 +146,14 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
         <div className={`p-4 md:p-6 border-t flex justify-between items-center gap-4
           ${isDark ? 'bg-black/30 border-white/10' : 'bg-white/50 border-purple-200/50'}`}>
           
-          <button 
-            onClick={prevSlide} 
+          <button
+            onClick={prevSlide}
             disabled={currentIndex === 0}
             className={`flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all
-              ${isDark 
-                ? 'bg-white/10 md:bg-transparent hover:bg-white/20 text-gray-300' 
+              ${isDark
+                ? 'bg-white/10 md:bg-transparent hover:bg-white/20 text-gray-300'
                 : 'bg-purple-100/50 md:bg-transparent hover:bg-purple-100 text-purple-600'}`}
+            aria-label="Föregående sida"
           >
             <ChevronLeft className="w-8 h-8 md:w-5 md:h-5" />
             <span className="hidden md:inline font-medium">Föregående</span>
@@ -143,13 +171,14 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
             ))}
           </div>
 
-          <button 
-            onClick={nextSlide} 
+          <button
+            onClick={nextSlide}
             disabled={currentIndex === slides.length - 1}
             className={`flex items-center justify-center gap-2 p-4 md:px-5 md:py-2.5 rounded-full md:rounded-lg shadow-lg disabled:opacity-30 disabled:cursor-not-allowed disabled:bg-transparent disabled:border-transparent disabled:text-gray-500 transition-all
-              ${isDark 
-                ? 'bg-neon-purple text-white shadow-neon-purple/30 hover:bg-neon-cyan hover:text-black hover:shadow-neon-cyan/30' 
+              ${isDark
+                ? 'bg-neon-purple text-white shadow-neon-purple/30 hover:bg-neon-cyan hover:text-black hover:shadow-neon-cyan/30'
                 : 'bg-purple-600 text-white shadow-purple-500/30 hover:bg-purple-700 hover:shadow-purple-600/30'}`}
+            aria-label="Nästa sida"
           >
             <span className="hidden md:inline font-bold">Nästa</span>
             <ChevronRight className="w-8 h-8 md:w-5 md:h-5" />

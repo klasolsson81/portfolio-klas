@@ -258,6 +258,7 @@ const ChatUI = ({ lang, isDark }) => {
               ${isDark
                 ? 'bg-neon-purple hover:bg-neon-purple/80'
                 : 'bg-purple-600 hover:bg-purple-700'}`}
+            aria-label={lang === 'sv' ? 'Skicka meddelande' : 'Send message'}
           >
             <Send size={18} />
           </button>

@@ -44,7 +44,11 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             onClick={() => setActiveVideo(null)}
           >
             <div className="relative w-full max-w-4xl bg-black rounded-xl overflow-hidden border border-neon-purple/50 shadow-2xl shadow-neon-purple/20" onClick={e => e.stopPropagation()}>
-              <button onClick={() => setActiveVideo(null)} className="absolute top-4 right-4 z-10 text-white hover:text-neon-cyan bg-black/50 rounded-full p-2 transition-colors">
+              <button
+                onClick={() => setActiveVideo(null)}
+                className="absolute top-4 right-4 z-10 text-white hover:text-neon-cyan bg-black/50 rounded-full p-2 transition-colors"
+                aria-label="Stäng video"
+              >
                 <X size={24} />
               </button>
               <video controls autoPlay className="w-full h-auto max-h-[80vh]">
@@ -91,19 +95,21 @@ const HeroStage = ({ isDark, toggleTheme }) => {
 
             {/* Settings-knappar */}
             <div className="flex items-center gap-2 shrink-0">
-              <button 
-                onClick={toggleTheme} 
+              <button
+                onClick={toggleTheme}
                 className={`w-8 h-8 rounded-full border flex items-center justify-center
-                  ${isDark 
-                    ? 'text-gray-400 bg-black/40 border-white/10' 
+                  ${isDark
+                    ? 'text-gray-400 bg-black/40 border-white/10'
                     : 'text-warm-muted bg-white/60 border-warm-border'}`}
+                aria-label={isDark ? 'Byt till ljust tema' : 'Byt till mörkt tema'}
               >
                 {isDark ? <Sun size={14} /> : <Moon size={14} />}
               </button>
-              <button 
-                onClick={toggleLang} 
+              <button
+                onClick={toggleLang}
                 className={`w-8 h-8 rounded-full border flex items-center justify-center overflow-hidden
                   ${isDark ? 'bg-black/40 border-white/10' : 'bg-white/60 border-warm-border'}`}
+                aria-label={lang === 'sv' ? 'Switch to English' : 'Byt till svenska'}
               >
                 <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-sm`}></span>
               </button>
@@ -163,23 +169,24 @@ const HeroStage = ({ isDark, toggleTheme }) => {
             ${isDark ? 'border-white/10 bg-black/20' : 'border-white/30 bg-white/20'}`}
         >          
           <div className="flex w-full justify-end gap-3 mb-2 relative z-20">
-            <button 
-              onClick={toggleTheme} 
+            <button
+              onClick={toggleTheme}
               className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm
-                ${isDark 
-                  ? 'text-gray-400 hover:text-neon-cyan bg-black/40 border-white/10' 
+                ${isDark
+                  ? 'text-gray-400 hover:text-neon-cyan bg-black/40 border-white/10'
                   : 'text-warm-muted hover:text-warm-accent bg-white/60 border-warm-border hover:border-warm-accent/30'}`}
+              aria-label={isDark ? 'Byt till ljust tema' : 'Byt till mörkt tema'}
             >
               {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            <button 
-              onClick={toggleLang} 
+            <button
+              onClick={toggleLang}
               className={`flex items-center justify-center w-8 h-8 rounded-full border transition-colors shadow-sm hover:scale-105 active:scale-95 overflow-hidden
-                ${isDark 
-                  ? 'bg-black/40 border-white/10' 
+                ${isDark
+                  ? 'bg-black/40 border-white/10'
                   : 'bg-white/60 border-warm-border'}`}
-              title="Change Language"
+              aria-label={lang === 'sv' ? 'Switch to English' : 'Byt till svenska'}
             >
               <span className={`fi fi-${lang === 'sv' ? 'se' : 'gb'} fis text-lg`}></span>
             </button>
