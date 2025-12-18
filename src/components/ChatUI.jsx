@@ -24,16 +24,6 @@ const ChatUI = ({ lang, isDark }) => {
     return [];
   });
 
-  // Initialize threadId from localStorage (for OpenAI Assistants API thread persistence)
-  const [threadId, setThreadId] = useState(() => {
-    try {
-      return localStorage.getItem(`${CHAT_CONFIG.STORAGE_KEY}_threadId`) || null;
-    } catch (e) {
-      console.error('Failed to load thread ID:', e);
-      return null;
-    }
-  });
-
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
@@ -43,8 +33,8 @@ const ChatUI = ({ lang, isDark }) => {
   useEffect(() => {
     if (messages.length === 0) {
       const welcomeText = lang === 'sv'
-        ? "Hej! Det är jag som är Klas (i AI-form). Fråga mig gärna om min kod, mina projekt eller varför jag sadlade om till systemutvecklare!"
-        : "Hi! I'm Klas (AI version). Feel free to ask me about my code, my projects, or why I switched careers to system development!";
+        ? "Tjena! Hur är läget? Fråga mig om vad som helst - mina projekt, kod, eller varför jag blev utvecklare!"
+        : "Hey! What's up? Ask me anything - my projects, code, or why I became a developer!";
 
       setMessages([{ role: 'assistant', content: welcomeText }]);
     }
@@ -60,17 +50,6 @@ const ChatUI = ({ lang, isDark }) => {
       }
     }
   }, [messages]);
-
-  // Save threadId to localStorage whenever it changes
-  useEffect(() => {
-    if (threadId) {
-      try {
-        localStorage.setItem(`${CHAT_CONFIG.STORAGE_KEY}_threadId`, threadId);
-      } catch (e) {
-        console.error('Failed to save thread ID:', e);
-      }
-    }
-  }, [threadId]);
 
   const sendMessage = async (e) => {
     if (e) e.preventDefault();
@@ -92,18 +71,19 @@ const ChatUI = ({ lang, isDark }) => {
     setLoading(true);
 
     try {
+      // Build conversation history (exclude welcome message)
+      const conversationHistory = messages
+        .filter(m => m.role !== 'system')
+        .slice(-5) // Last 5 messages for context
+        .map(m => ({ role: m.role, content: m.content }));
+
       const res = await apiClient.post('/api/chat', {
         message: sanitized,
         lang: lang,
-        threadId: threadId  // Send existing threadId to continue conversation
+        conversationHistory: conversationHistory
       });
 
       setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
-
-      // Save threadId from response for future requests
-      if (res.data.threadId && res.data.threadId !== threadId) {
-        setThreadId(res.data.threadId);
-      }
     } catch (err) {
       // Error already handled by apiClient interceptor (toast shown)
       // Just add a fallback message to chat if response failed
@@ -133,9 +113,7 @@ const ChatUI = ({ lang, isDark }) => {
   // Clear conversation history
   const clearHistory = () => {
     setMessages([]);
-    setThreadId(null);
     localStorage.removeItem(CHAT_CONFIG.STORAGE_KEY);
-    localStorage.removeItem(`${CHAT_CONFIG.STORAGE_KEY}_threadId`);
     // Welcome message will be shown by the useEffect above
   };
 
