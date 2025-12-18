@@ -67,20 +67,20 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
   const getColorClass = (level) => {
     if (isDark) {
       const colors = [
-        'bg-gray-800 border-gray-700', // 0 contributions
-        'bg-purple-900 border-purple-800', // Low
-        'bg-purple-700 border-purple-600', // Medium
-        'bg-purple-500 border-purple-400', // High
-        'bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50', // Very high
+        'bg-gray-700 border-gray-600', // 0 contributions - lighter gray for visibility
+        'bg-purple-600 border-purple-500', // Low - much brighter purple
+        'bg-purple-400 border-purple-300', // Medium - bright purple
+        'bg-cyan-500 border-cyan-400', // High - bright cyan
+        'bg-cyan-300 border-cyan-200 shadow-lg shadow-cyan-300/50', // Very high - very bright cyan
       ];
       return colors[level];
     } else {
       const colors = [
-        'bg-purple-100 border-purple-200', // 0 contributions
-        'bg-purple-300 border-purple-400', // Low
-        'bg-purple-500 border-purple-600', // Medium
-        'bg-purple-600 border-purple-700', // High
-        'bg-purple-800 border-purple-900 shadow-lg shadow-purple-600/50', // Very high
+        'bg-gray-200 border-gray-300', // 0 contributions - light gray
+        'bg-purple-400 border-purple-500', // Low - medium purple
+        'bg-purple-600 border-purple-700', // Medium - darker purple
+        'bg-purple-700 border-purple-800', // High - dark purple
+        'bg-purple-900 border-purple-950 shadow-lg shadow-purple-700/50', // Very high - very dark purple
       ];
       return colors[level];
     }
