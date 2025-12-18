@@ -33,6 +33,21 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
 
       setContributions(calendar);
       setTotalContributions(data.totalContributions);
+
+      // Debug: Log what we're rendering
+      console.log('GitHub calendar rendering:', {
+        total: data.totalContributions,
+        days: calendar.length,
+        withContributions: calendar.filter(d => d.count > 0).length,
+        levels: {
+          level0: calendar.filter(d => d.level === 0).length,
+          level1: calendar.filter(d => d.level === 1).length,
+          level2: calendar.filter(d => d.level === 2).length,
+          level3: calendar.filter(d => d.level === 3).length,
+          level4: calendar.filter(d => d.level === 4).length,
+        }
+      });
+
       setLoading(false);
     } catch (err) {
       console.error('GitHub API error:', err);
@@ -52,20 +67,20 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
   const getColorClass = (level) => {
     if (isDark) {
       const colors = [
-        'bg-gray-800/30 border-gray-700/50', // 0 contributions
-        'bg-neon-purple/20 border-neon-purple/30', // Low
-        'bg-neon-purple/40 border-neon-purple/50', // Medium
-        'bg-neon-purple/70 border-neon-purple/80', // High
-        'bg-neon-cyan border-neon-cyan shadow-sm shadow-neon-cyan/30', // Very high
+        'bg-gray-800/50 border-gray-700/30', // 0 contributions - slightly lighter
+        'bg-neon-purple/30 border-neon-purple/50', // Low - more visible
+        'bg-neon-purple/50 border-neon-purple/70', // Medium - brighter
+        'bg-neon-purple/80 border-neon-purple', // High - very bright
+        'bg-neon-cyan border-neon-cyan shadow-md shadow-neon-cyan/50', // Very high - glowing
       ];
       return colors[level];
     } else {
       const colors = [
-        'bg-purple-100/30 border-purple-200/40', // 0 contributions
-        'bg-purple-300/50 border-purple-400/60', // Low
-        'bg-purple-500/60 border-purple-600/70', // Medium
-        'bg-purple-600/80 border-purple-700/90', // High
-        'bg-purple-700 border-purple-800 shadow-sm shadow-purple-500/30', // Very high
+        'bg-purple-100/40 border-purple-200/50', // 0 contributions
+        'bg-purple-400/60 border-purple-500/70', // Low - more saturated
+        'bg-purple-500/80 border-purple-600', // Medium - brighter
+        'bg-purple-600 border-purple-700', // High - solid color
+        'bg-purple-700 border-purple-800 shadow-md shadow-purple-500/50', // Very high - glowing
       ];
       return colors[level];
     }
