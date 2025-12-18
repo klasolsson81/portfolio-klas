@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Loader2, CheckCircle, XCircle, Briefcase, Send, RefreshCw, User, Mail, ShieldCheck } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Loader2, CheckCircle, XCircle, Briefcase, Send, User, Mail } from 'lucide-react';
 import apiClient from '../../lib/api/client';
 import { toast } from 'sonner';
-import { generateCaptcha, verifyCaptcha } from '../../lib/utils/captcha';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const TRANSLATIONS = {
     sv: { 
       title: "Anlita mig", 
       subtitle: "Fyll i formuläret så låter jag min AI göra en första bedömning av projektet.", 
       disclaimer: "OBSERVERA: Jag tar mig an projekt vid sidan av mina heltidsstudier och familjeliv. Detta formulär ger en första AI-bedömning, men jag garanterar inte att jag kan ta uppdraget.", 
-      labels: { 
-        help: "VAD BEHÖVER DU HJÄLP MED?", 
-        payment: "ERSÄTTNING?", 
-        budget: "BUDGET (CA KR)", 
-        desc: "BESKRIVNING", 
-        name: "DITT NAMN", 
-        email: "DIN EMAIL", 
-        who: "VEM ÄR DU?", 
-        security: "SÄKERHETSKOLL: VAD ÄR" 
-      }, 
-      placeholders: { 
-        budget: "t.ex. 5000", 
-        desc: "Vad behöver du hjälp med? Beskriv kort...", 
-        name: "Förnamn Efternamn", 
-        email: "namn@exempel.se", 
-        answer: "Svar" 
+      labels: {
+        help: "VAD BEHÖVER DU HJÄLP MED?",
+        payment: "ERSÄTTNING?",
+        budget: "BUDGET (CA KR)",
+        desc: "BESKRIVNING",
+        name: "DITT NAMN",
+        email: "DIN EMAIL",
+        who: "VEM ÄR DU?"
+      },
+      placeholders: {
+        budget: "t.ex. 5000",
+        desc: "Vad behöver du hjälp med? Beskriv kort...",
+        name: "Förnamn Efternamn",
+        email: "namn@exempel.se"
       }, 
       options: { 
         types: ["Hemsida (Enkel)", "Hemsida (Avancerad)", "Systemutveckling / Backend", "AI Integration / Automation", "Annat"], 
@@ -48,10 +46,10 @@ const TRANSLATIONS = {
         successMsg: "Jag har tagit emot din förfrågan. Eftersom jag studerar heltid och har familj, svarar jag och tar mig an projekt i mån av tid. Jag återkommer till dig på", 
         soon: "så snart jag kan!" 
       }, 
-      errors: { 
-        captcha: "Fel svar på säkerhetsfrågan.", 
-        ai: "Kunde inte nå AI-tjänsten.", 
-        mail: "Kunde inte skicka mailet. Försök igen senare." 
+      errors: {
+        captcha: "Säkerhetsverifiering misslyckades. Försök igen.",
+        ai: "Kunde inte nå AI-tjänsten.",
+        mail: "Kunde inte skicka mailet. Försök igen senare."
       },
       emailLabels: {
         header: "NY FÖRFRÅGAN VIA PORTFOLION (SV)",
@@ -74,22 +72,20 @@ const TRANSLATIONS = {
       title: "Hire Me", 
       subtitle: "Fill out the form and let my AI do an initial assessment of the project.", 
       disclaimer: "NOTE: I take on projects alongside my full-time studies and family life. This form provides an initial AI assessment, but I do not guarantee that I can take the assignment.", 
-      labels: { 
-        help: "WHAT DO YOU NEED HELP WITH?", 
-        payment: "COMPENSATION?", 
-        budget: "BUDGET (APPROX SEK)", 
-        desc: "DESCRIPTION", 
-        name: "YOUR NAME", 
-        email: "YOUR EMAIL", 
-        who: "WHO ARE YOU?", 
-        security: "SECURITY CHECK: WHAT IS" 
-      }, 
-      placeholders: { 
-        budget: "e.g. 5000", 
-        desc: "What do you need help with? Describe briefly...", 
-        name: "Firstname Lastname", 
-        email: "name@example.com", 
-        answer: "Answer" 
+      labels: {
+        help: "WHAT DO YOU NEED HELP WITH?",
+        payment: "COMPENSATION?",
+        budget: "BUDGET (APPROX SEK)",
+        desc: "DESCRIPTION",
+        name: "YOUR NAME",
+        email: "YOUR EMAIL",
+        who: "WHO ARE YOU?"
+      },
+      placeholders: {
+        budget: "e.g. 5000",
+        desc: "What do you need help with? Describe briefly...",
+        name: "Firstname Lastname",
+        email: "name@example.com"
       }, 
       options: { 
         types: ["Website (Simple)", "Website (Advanced)", "System Development / Backend", "AI Integration / Automation", "Other"], 
@@ -113,10 +109,10 @@ const TRANSLATIONS = {
         successMsg: "I've received your inquiry. Since I study full-time and have a family, I respond and take on projects as time allows. I'll get back to you at", 
         soon: "as soon as possible!" 
       }, 
-      errors: { 
-        captcha: "Wrong answer to security question.", 
-        ai: "Could not reach AI service.", 
-        mail: "Could not send email. Try again later." 
+      errors: {
+        captcha: "Security verification failed. Please try again.",
+        ai: "Could not reach AI service.",
+        mail: "Could not send email. Try again later."
       },
       emailLabels: {
         header: "NEW INQUIRY VIA PORTFOLIO (EN)",
@@ -139,51 +135,55 @@ const TRANSLATIONS = {
 
 const HireMe = ({ lang, isDark }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.sv;
+  const recaptchaRef = useRef(null);
 
-  const [formData, setFormData] = useState({ 
-    name: '', 
-    email: '', 
-    orgType: t.options.org[0], 
-    projectType: t.options.types[0], 
-    paymentType: t.options.payment[0], 
-    amount: '', 
-    description: '', 
-    captcha: '' 
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    orgType: t.options.org[0],
+    projectType: t.options.types[0],
+    paymentType: t.options.payment[0],
+    amount: '',
+    description: ''
   });
   const [status, setStatus] = useState('idle');
   const [analysis, setAnalysis] = useState(null);
   const [isSending, setIsSending] = useState(false);
-  const [captchaData, setCaptchaData] = useState(generateCaptcha());
-
-  // Regenerate captcha on mount and when form is reset
-  useEffect(() => {
-    if (status === 'idle') {
-      setCaptchaData(generateCaptcha());
-    }
-  }, [status]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verify captcha answer
-    if (!verifyCaptcha(formData.captcha, captchaData.answer)) {
-      toast.error(t.errors.captcha);
-      // Regenerate captcha after failed attempt
-      setCaptchaData(generateCaptcha());
-      setFormData({ ...formData, captcha: '' });
-      return;
-    }
-
-    setStatus('analyzing');
+    // Execute reCAPTCHA
     try {
-      const res = await apiClient.post('/api/analyze', formData);
-      setAnalysis(res.data);
-      setStatus(res.data.approved ? 'approved' : 'rejected');
-    } catch (err) {
-      setStatus('idle');
-      // Specific error message for AI analysis failure (overrides interceptor toast)
-      toast.error(t.errors.ai);
-    } 
+      const recaptchaToken = await recaptchaRef.current.executeAsync();
+      recaptchaRef.current.reset(); // Reset for next submission
+
+      // Verify reCAPTCHA token with our backend
+      const verifyResponse = await apiClient.post('/api/verify-recaptcha', {
+        token: recaptchaToken
+      });
+
+      if (!verifyResponse.data.success) {
+        toast.error(t.errors.captcha);
+        return;
+      }
+
+      // reCAPTCHA verified, proceed with AI analysis
+      setStatus('analyzing');
+      try {
+        const res = await apiClient.post('/api/analyze', formData);
+        setAnalysis(res.data);
+        setStatus(res.data.approved ? 'approved' : 'rejected');
+      } catch (err) {
+        setStatus('idle');
+        // Specific error message for AI analysis failure (overrides interceptor toast)
+        toast.error(t.errors.ai);
+      }
+    } catch (recaptchaError) {
+      // reCAPTCHA execution or verification failed
+      toast.error(t.errors.captcha);
+      console.error('reCAPTCHA error:', recaptchaError);
+    }
   };
 
   const sendRealEmail = async () => { 
@@ -250,18 +250,17 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
           {t.status.successMsg} <strong>{formData.email}</strong> {t.status.soon}
         </p>
         
-        <button 
+        <button
           onClick={() => {
-            setStatus('idle'); 
-            setFormData({ 
-              name: '', 
-              email: '', 
-              orgType: t.options.org[0], 
-              projectType: t.options.types[0], 
-              paymentType: t.options.payment[0], 
-              amount: '', 
-              description: '', 
-              captcha: '' 
+            setStatus('idle');
+            setFormData({
+              name: '',
+              email: '',
+              orgType: t.options.org[0],
+              projectType: t.options.types[0],
+              paymentType: t.options.payment[0],
+              amount: '',
+              description: ''
             });
           }} 
           className="px-8 py-3 bg-transparent border border-green-500/30 text-green-500 hover:bg-green-500/10 hover:border-green-500 hover:text-green-600 rounded-full font-medium transition-all"
@@ -356,21 +355,12 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
             <textarea className={`${inputClass} h-24 resize-none`} placeholder={t.placeholders.desc} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} required />
           </div>
 
-          <div>
-             <label className={labelClass}>{t.labels.security} {captchaData.question}?</label>
-             <div className="relative">
-                <ShieldCheck className={`absolute left-3 top-3 ${isDark ? 'text-gray-500' : 'text-purple-400'}`} size={16} />
-                <input
-                  type="text"
-                  required
-                  className={`${inputClass} pl-10 w-1/3`}
-                  placeholder={t.placeholders.answer}
-                  value={formData.captcha}
-                  onChange={e => setFormData({...formData, captcha: e.target.value})}
-                  autoComplete="off"
-                />
-             </div>
-          </div>
+          {/* Invisible reCAPTCHA v3 */}
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            size="invisible"
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+          />
 
           <button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-purple-500 text-white py-3 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all flex items-center justify-center gap-2 transform hover:scale-[1.01]">
             <Briefcase size={20} /> {t.buttons.analyze}

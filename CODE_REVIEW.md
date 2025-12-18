@@ -23,11 +23,11 @@ The portfolio website is **functional and visually impressive**, with excellent 
 - ✅ Clean component structure
 
 **Critical Issues:**
-- ❌ No input sanitization (XSS vulnerability)
-- ❌ No rate limiting (abuse risk)
+- ✅ No input sanitization (XSS vulnerability) - FIXED
+- ✅ No rate limiting (abuse risk) - FIXED
+- ✅ Weak captcha (bot vulnerability) - FIXED
 - ❌ No test coverage (0%)
-- ❌ Large system prompt on every request (performance)
-- ❌ Weak captcha (bot vulnerability)
+- ❌ Large system prompt on every request (performance) - FIXED
 
 ---
 
@@ -35,11 +35,11 @@ The portfolio website is **functional and visually impressive**, with excellent 
 
 | Severity | Count | Fixed | Remaining |
 |----------|-------|-------|-----------|
-| 🔴 Critical | 3 | 2 | 1 |
+| 🔴 Critical | 3 | 3 | 0 |
 | 🟠 High | 5 | 4 | 1 |
 | 🟡 Medium | 5 | 4 | 1 |
 | 🟢 Low | 4 | 0 | 4 |
-| **TOTAL** | **17** | **10** | **7** |
+| **TOTAL** | **17** | **11** | **6** |
 
 ---
 
@@ -188,8 +188,9 @@ export default async function handler(req, res) {
 
 ### Issue #3: Weak Captcha (Bot Protection)
 **Severity:** 🔴 Critical
+**Status:** ✅ FIXED (2025-12-18)
 **Impact:** Spam Risk - Bots can easily bypass 3+4 captcha
-**Files:** `src/components/HireMe.jsx`
+**Files:** `src/components/HireMe.jsx`, `api/verify-recaptcha.js`, `lib/config/env.js`, `lib/config/constants.js`
 
 **Problem:**
 ```javascript
@@ -207,73 +208,33 @@ This captcha is **trivial** for bots to bypass:
 - Easily scraped and automated
 
 **Solution:**
-Replace with Google reCAPTCHA v3 or hCaptcha:
+Replace with Google reCAPTCHA v3 (invisible captcha with score-based bot detection)
 
+**Implementation:**
+✅ Installed `react-google-recaptcha` package
+✅ Created `api/verify-recaptcha.js` - Server-side verification endpoint
+✅ Updated `HireMe.jsx` - Integrated invisible reCAPTCHA v3 component
+✅ Updated `lib/config/env.js` - Added RECAPTCHA_SECRET_KEY and VITE_RECAPTCHA_SITE_KEY validation
+✅ Updated `lib/config/constants.js` - Added RECAPTCHA.SCORE_THRESHOLD configuration (0.5)
+✅ Removed old `lib/utils/captcha.js` - Deleted weak math captcha utility
+✅ Created `.env.example` - Documented required reCAPTCHA environment variables
+
+**Features:**
+- Invisible reCAPTCHA v3 (no user interaction required)
+- Score-based bot detection (0.0-1.0 scale)
+- Server-side token verification with Google's API
+- Configurable score threshold (default: 0.5)
+- Comprehensive error handling and logging
+- Bilingual error messages
+
+**Environment Variables Required:**
 ```bash
-npm install react-google-recaptcha
+# Get keys from: https://www.google.com/recaptcha/admin/create
+RECAPTCHA_SECRET_KEY=your-secret-key
+VITE_RECAPTCHA_SITE_KEY=your-site-key
 ```
 
-```javascript
-import ReCAPTCHA from 'react-google-recaptcha';
-
-const HireMe = ({ lang, isDark }) => {
-  const [captchaToken, setCaptchaToken] = useState(null);
-
-  const handleCaptcha = (token) => {
-    setCaptchaToken(token);
-  };
-
-  const handleSubmit = async () => {
-    if (!captchaToken) {
-      toast.error('Vänligen verifiera att du inte är en robot');
-      return;
-    }
-
-    // Send captchaToken to backend for verification
-    const res = await axios.post('/api/hire', {
-      ...formData,
-      captchaToken
-    });
-  };
-
-  return (
-    <form>
-      {/* ... */}
-      <ReCAPTCHA
-        sitekey={process.env.VITE_RECAPTCHA_SITE_KEY}
-        onChange={handleCaptcha}
-      />
-    </form>
-  );
-};
-```
-
-**Backend verification:**
-```javascript
-// api/hire.js
-const verifyRecaptcha = async (token) => {
-  const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
-  });
-
-  const data = await response.json();
-  return data.success;
-};
-
-export default async function handler(req, res) {
-  const { captchaToken, ...formData } = req.body;
-
-  if (!await verifyRecaptcha(captchaToken)) {
-    return res.status(400).json({ error: 'Captcha verification failed' });
-  }
-
-  // Process form...
-}
-```
-
-**Priority:** HIGH - Implement to prevent spam
+**Priority:** ~~HIGH~~ COMPLETED
 
 ---
 

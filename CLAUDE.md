@@ -716,6 +716,54 @@ git push origin main
 
 ## Recent Changes
 
+### 2025-12-18 - Session 4 (Google reCAPTCHA v3 Implementation)
+
+**Completed Updates:**
+
+1. **Replace Weak Captcha with Google reCAPTCHA v3** ✅ (Issue #3 - CRITICAL Priority)
+   - Replaced trivial math captcha ("What is 3 + 4?") with Google reCAPTCHA v3
+   - Invisible captcha - no user interaction required
+   - Score-based bot detection (0.0-1.0 scale, threshold: 0.5)
+   - Server-side token verification with Google's API
+   - Comprehensive error handling and structured logging
+   - Bilingual error messages (Swedish/English)
+   - Files modified:
+     - `src/components/HireMe.jsx` - Integrated ReCAPTCHA component, removed math captcha
+     - `api/verify-recaptcha.js` (NEW) - Server-side verification endpoint
+     - `lib/config/env.js` - Added RECAPTCHA_SECRET_KEY and VITE_RECAPTCHA_SITE_KEY validation
+     - `lib/config/constants.js` - Added RECAPTCHA.SCORE_THRESHOLD configuration, removed old CAPTCHA config
+     - `lib/utils/captcha.js` (DELETED) - Removed weak math captcha utility
+     - `.env.example` (NEW) - Documented required environment variables
+     - `.env` - Added reCAPTCHA key placeholders
+   - Package: Installed `react-google-recaptcha`
+   - Environment variables required:
+     - `RECAPTCHA_SECRET_KEY` - Server-side secret (get from Google reCAPTCHA admin)
+     - `VITE_RECAPTCHA_SITE_KEY` - Client-side public key
+   - Commits: [pending]
+
+2. **Documentation Updates** ✅
+   - Updated CODE_REVIEW.md:
+     - Marked Issue #3 (Weak Captcha) as FIXED
+     - Updated summary table: 11/17 issues fixed (65% completion)
+     - All 3 critical issues now resolved (100%)
+     - Updated executive summary to reflect completed critical fixes
+   - Updated CLAUDE.md with Session 4 changes (this section)
+   - Files: `CODE_REVIEW.md`, `CLAUDE.md`
+   - Commits: [pending]
+
+**Summary:**
+- Critical security vulnerability fixed: Weak captcha replaced with industry-standard reCAPTCHA v3
+- All critical issues (3/3) now resolved in CODE_REVIEW
+- 11/17 total issues fixed (65% completion rate)
+- User needs to obtain reCAPTCHA keys from Google before testing
+
+**Next Steps:**
+1. Get reCAPTCHA keys from: https://www.google.com/recaptcha/admin/create
+2. Add keys to .env file and Vercel environment variables
+3. Test HireMe form with reCAPTCHA integration
+
+---
+
 ### 2025-12-18 - Session 3 (GitHub Calendar Redesign & Security Hardening)
 
 **Completed Updates:**
