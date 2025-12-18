@@ -7,10 +7,10 @@ import { sanitizeTextInput } from '../../lib/validators/inputValidator';
 import { CHAT_CONFIG, UI } from '../../lib/config/constants';
 
 const ChatUI = ({ lang, isDark }) => {
-  // Initialize messages from localStorage or empty array
+  // Initialize messages from sessionStorage (cleared on browser close)
   const [messages, setMessages] = useState(() => {
     try {
-      const saved = localStorage.getItem(CHAT_CONFIG.STORAGE_KEY);
+      const saved = sessionStorage.getItem(CHAT_CONFIG.STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         // Validate that it's an array with valid message objects
@@ -40,11 +40,11 @@ const ChatUI = ({ lang, isDark }) => {
     }
   }, [lang, messages.length]);
 
-  // Save messages to localStorage whenever they change
+  // Save messages to sessionStorage (cleared on browser close)
   useEffect(() => {
     if (messages.length > 0) {
       try {
-        localStorage.setItem(CHAT_CONFIG.STORAGE_KEY, JSON.stringify(messages));
+        sessionStorage.setItem(CHAT_CONFIG.STORAGE_KEY, JSON.stringify(messages));
       } catch (e) {
         console.error('Failed to save chat history:', e);
       }
@@ -113,7 +113,7 @@ const ChatUI = ({ lang, isDark }) => {
   // Clear conversation history
   const clearHistory = () => {
     setMessages([]);
-    localStorage.removeItem(CHAT_CONFIG.STORAGE_KEY);
+    sessionStorage.removeItem(CHAT_CONFIG.STORAGE_KEY);
     // Welcome message will be shown by the useEffect above
   };
 

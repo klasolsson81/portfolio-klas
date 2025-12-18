@@ -6,8 +6,19 @@ const InstallPrompt = ({ isDark, lang }) => {
   const [showPrompt, setShowPrompt] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
+  // Detect if user is on mobile device
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      || window.innerWidth <= 768;
+  };
+
   useEffect(() => {
     const handler = (e) => {
+      // Only show on mobile devices
+      if (!isMobile()) {
+        return; // Desktop users can use browser's install icon in address bar
+      }
+
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Stash the event so it can be triggered later
