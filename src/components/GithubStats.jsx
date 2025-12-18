@@ -84,20 +84,20 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
   const getColorStyle = (level) => {
     if (isDark) {
       const colors = [
-        { bg: '#374151', border: '#4B5563' }, // 0 - gray-700/600
-        { bg: '#9333EA', border: '#A855F7' }, // 1 - purple-600/500
-        { bg: '#C084FC', border: '#D8B4FE' }, // 2 - purple-400/300
-        { bg: '#06B6D4', border: '#22D3EE' }, // 3 - cyan-500/400
-        { bg: '#67E8F9', border: '#A5F3FC' }, // 4 - cyan-300/200
+        { bg: '#FF0000', border: '#FF0000' }, // 0 - BRIGHT RED for testing
+        { bg: '#00FF00', border: '#00FF00' }, // 1 - BRIGHT GREEN for testing
+        { bg: '#0000FF', border: '#0000FF' }, // 2 - BRIGHT BLUE for testing
+        { bg: '#FFFF00', border: '#FFFF00' }, // 3 - BRIGHT YELLOW for testing
+        { bg: '#FF00FF', border: '#FF00FF' }, // 4 - BRIGHT MAGENTA for testing
       ];
       return colors[level];
     } else {
       const colors = [
-        { bg: '#E5E7EB', border: '#D1D5DB' }, // 0 - gray-200/300
-        { bg: '#C084FC', border: '#A855F7' }, // 1 - purple-400/500
-        { bg: '#9333EA', border: '#7C3AED' }, // 2 - purple-600/700
-        { bg: '#7C3AED', border: '#6D28D9' }, // 3 - purple-700/800
-        { bg: '#581C87', border: '#4C1D95' }, // 4 - purple-900/950
+        { bg: '#FF0000', border: '#FF0000' }, // 0 - BRIGHT RED
+        { bg: '#00FF00', border: '#00FF00' }, // 1 - BRIGHT GREEN
+        { bg: '#0000FF', border: '#0000FF' }, // 2 - BRIGHT BLUE
+        { bg: '#FFFF00', border: '#FFFF00' }, // 3 - BRIGHT YELLOW
+        { bg: '#FF00FF', border: '#FF00FF' }, // 4 - BRIGHT MAGENTA
       ];
       return colors[level];
     }
