@@ -331,7 +331,7 @@ const HeroStage = ({ isDark, toggleTheme }) => {
                   </div>
                 </div>
 
-                <GithubStats isDark={isDark} />
+                <GithubStats isDark={isDark} lang={lang} />
               </motion.div>
             )}
 
