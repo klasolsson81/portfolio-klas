@@ -843,15 +843,36 @@ git push origin main
    - File: `api/chat.js` (line 287)
    - Commit: `4599d1e`
 
+6. **GPT-5 Reasoning Token Optimization** ✅ (Critical Performance Fix)
+   - **Problem:** GPT-5-nano used ALL completion tokens for reasoning, leaving none for visible response
+   - **Root cause:** `finish_reason: "length"`, `reasoning_tokens: 1500`, `content: ""`
+   - **Solution:** Added `reasoning: { effort: "minimal" }` parameter to minimize reasoning overhead
+   - Increased `max_completion_tokens` from 500 → 1500
+   - File: `api/chat.js`, `lib/config/constants.js`
+   - Commits: `99fa4aa`, `a8160a6`, `5ceb514`, `573e0e5`
+
+7. **Chatbot Personality Overhaul** ✅ (UX Enhancement)
+   - Completely rewrote KLAS_INSTRUCTIONS from ~170 lines → ~60 lines
+   - More conversational, natural, and human-like tone
+   - Added dry Swedish humor ("Inte för att bilen var tråkig", "fan, jag kan faktiskt koda")
+   - Less formal structure, more storytelling
+   - Removed ASCII borders and rigid sections
+   - Personal anecdotes instead of bullet points
+   - User feedback: "känns rätt så stelt just nu" → now more relaxed and genuine
+   - File: `api/chat.js` (KLAS_INSTRUCTIONS)
+   - Commit: `573e0e5`
+
 **Removed Files:**
 - `lib/utils/assistantManager.js` - No longer needed after API migration
 
 **Key Improvements:**
 - Chat now responds in 2-5 seconds (previously 60-83 seconds)
-- More personal and casual tone
+- More personal and casual tone with Swedish humor
+- Minimal reasoning tokens for faster responses
 - Better error handling with bilingual toast notifications
 - Cleaner codebase with better separation of concerns
 - Optimized images for faster page load
+- Chatbot feels more human and less "stiff"
 
 ### 2025-12-17 - Session 1 (RECON Addition)
 
