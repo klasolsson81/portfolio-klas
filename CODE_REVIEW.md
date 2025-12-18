@@ -1,6 +1,7 @@
 # CODE REVIEW - Klas Olsson Portfolio Website
 
 **Review Date:** 2025-12-17
+**Last Updated:** 2025-12-18
 **Reviewer:** Claude Code
 **Codebase:** portfolio-klas (React/Vite)
 **Tech Stack:** React 18.2, Vite 5.4, Three.js, OpenAI API
@@ -34,11 +35,11 @@ The portfolio website is **functional and visually impressive**, with excellent 
 
 | Severity | Count | Fixed | Remaining |
 |----------|-------|-------|-----------|
-| 🔴 Critical | 3 | 0 | 3 |
-| 🟠 High | 5 | 0 | 5 |
-| 🟡 Medium | 5 | 0 | 5 |
+| 🔴 Critical | 3 | 2 | 1 |
+| 🟠 High | 5 | 4 | 1 |
+| 🟡 Medium | 5 | 4 | 1 |
 | 🟢 Low | 4 | 0 | 4 |
-| **TOTAL** | **17** | **0** | **17** |
+| **TOTAL** | **17** | **10** | **7** |
 
 ---
 
@@ -46,8 +47,9 @@ The portfolio website is **functional and visually impressive**, with excellent 
 
 ### Issue #1: Input Sanitization Missing (XSS Vulnerability)
 **Severity:** 🔴 Critical
+**Status:** ✅ FIXED (2025-12-18)
 **Impact:** Security Risk - Cross-Site Scripting (XSS) attacks possible
-**Files:** `src/components/ChatUI.jsx`, `src/components/HireMe.jsx`
+**Files:** `src/components/ChatUI.jsx`, `src/components/HireMe.jsx`, `lib/validators/inputValidator.js`
 
 **Problem:**
 ```javascript
@@ -97,14 +99,21 @@ const sendMessage = async (e) => {
 };
 ```
 
-**Priority:** URGENT - Fix before production use with real users
+**Implementation:**
+✅ Created `lib/validators/inputValidator.js` with `sanitizeTextInput()` function
+✅ Integrated in `api/chat.js` - all user input sanitized before processing
+✅ Removes HTML tags, script tags, javascript: protocol, event handlers
+✅ Truncates to max length
+
+**Priority:** ~~URGENT~~ COMPLETED
 
 ---
 
 ### Issue #2: No Rate Limiting on Chat API
 **Severity:** 🔴 Critical
+**Status:** ✅ FIXED (2025-12-18)
 **Impact:** API Abuse - Unlimited OpenAI API calls = High costs
-**Files:** `api/chat.js`
+**Files:** `api/chat.js`, `lib/utils/rateLimit.js`
 
 **Problem:**
 ```javascript
@@ -166,7 +175,14 @@ export default async function handler(req, res) {
 }
 ```
 
-**Priority:** URGENT - Implement before public launch
+**Implementation:**
+✅ Created `lib/utils/rateLimit.js` with in-memory Map-based rate limiting
+✅ Implemented in `api/chat.js` with IP-based tracking
+✅ 10 requests per minute per IP address
+✅ Returns 429 status with Swedish error message when exceeded
+✅ Adds X-RateLimit-* headers to responses
+
+**Priority:** ~~URGENT~~ COMPLETED
 
 ---
 
@@ -265,6 +281,7 @@ export default async function handler(req, res) {
 
 ### Issue #4: Large System Prompt on Every Request
 **Severity:** 🟠 High
+**Status:** ✅ FIXED (2025-12-18)
 **Impact:** Performance - 340 lines sent on every chat request
 **Files:** `api/chat.js`
 
@@ -323,7 +340,14 @@ const run = await openai.beta.threads.runs.create(thread.id, {
 - ⚡ Faster responses
 - 💰 Lower costs
 
-**Priority:** HIGH - Implement to reduce costs
+**Implementation:**
+✅ Reduced system prompt from 340 lines → 60 lines (82% reduction)
+✅ Changed from formal structured prompt to conversational Swedish style
+✅ Using Chat Completions API (GPT-4o) - faster and more reliable than Assistants API
+✅ Estimated 50-70% token reduction per request
+✅ Inline prompt approach (sent with each request, but much smaller)
+
+**Priority:** ~~HIGH~~ COMPLETED
 
 ---
 
