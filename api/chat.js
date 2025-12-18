@@ -280,10 +280,11 @@ export default async function handler(req, res) {
     ];
 
     // Call OpenAI Chat Completions API
+    // GPT-5 models only support: model, messages, max_completion_tokens
+    // Temperature, penalties, and other parameters are not supported
     const completion = await openai.chat.completions.create({
       model: GPT_CONFIG.MODEL,
       messages: messages,
-      temperature: GPT_CONFIG.TEMPERATURE,
       max_completion_tokens: GPT_CONFIG.MAX_TOKENS,
     });
 
