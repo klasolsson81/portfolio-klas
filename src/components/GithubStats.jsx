@@ -110,25 +110,39 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
   };
 
-  const getMonthLabels = () => {
+  const organizeByWeeks = () => {
     if (contributions.length === 0) return [];
 
-    const months = lang === 'sv'
-      ? ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
-      : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    // Group contributions into weeks (7 days each)
+    const weeks = [];
+    let currentWeek = [];
 
-    const labels = [];
-    let lastMonth = -1;
+    // Start from the first day's day of week
+    const firstDayOfWeek = contributions[0]?.date.getDay() || 0;
 
-    contributions.forEach((day, index) => {
-      const month = day.date.getMonth();
-      if (month !== lastMonth && index % 7 === 0) {
-        labels.push({ month: months[month], index });
-        lastMonth = month;
+    // Add empty cells for days before the first day
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      currentWeek.push(null);
+    }
+
+    contributions.forEach((day) => {
+      currentWeek.push(day);
+      if (currentWeek.length === 7) {
+        weeks.push(currentWeek);
+        currentWeek = [];
       }
     });
 
-    return labels;
+    // Add remaining days as the last week
+    if (currentWeek.length > 0) {
+      // Fill remaining days with null
+      while (currentWeek.length < 7) {
+        currentWeek.push(null);
+      }
+      weeks.push(currentWeek);
+    }
+
+    return weeks;
   };
 
   if (loading) {
@@ -175,7 +189,10 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
     );
   }
 
-  const monthLabels = getMonthLabels();
+  const weeks = organizeByWeeks();
+  const dayLabels = lang === 'sv'
+    ? ['S', 'M', 'T', 'O', 'T', 'F', 'L'] // Sön, Mån, Tis, Ons, Tor, Fre, Lör
+    : ['S', 'M', 'T', 'W', 'T', 'F', 'S']; // Sun, Mon, Tue, Wed, Thu, Fri, Sat
 
   return (
     <div className={`mt-8 p-6 rounded-xl transition-all duration-300 border
@@ -194,44 +211,65 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
         </span>
       </div>
 
-      {/* Month labels */}
-      <div className="relative mb-2">
-        <div className="flex gap-[2px] md:gap-1">
-          {monthLabels.map((label, idx) => (
-            <div
-              key={idx}
-              style={{ marginLeft: `${(label.index / contributions.length) * 100}%` }}
-              className={`text-[8px] md:text-[10px] absolute ${isDark ? 'text-gray-600' : 'text-purple-500'}`}
-            >
-              {label.month}
+      {/* Contribution grid - GitHub style (weeks as columns, days as rows) */}
+      <div className="mt-6 overflow-x-auto">
+        <div className="flex gap-[3px]">
+          {/* Day labels column */}
+          <div className="flex flex-col gap-[3px] justify-start pt-[14px]">
+            {dayLabels.map((day, idx) => (
+              <div
+                key={idx}
+                className={`w-4 h-2 flex items-center justify-start text-[8px] ${isDark ? 'text-gray-600' : 'text-purple-500'}`}
+              >
+                {idx % 2 === 1 ? day : ''} {/* Show only odd indices (Mon, Wed, Fri) */}
+              </div>
+            ))}
+          </div>
+
+          {/* Weeks columns */}
+          {weeks.map((week, weekIdx) => (
+            <div key={weekIdx} className="flex flex-col gap-[3px]">
+              {/* Month label for first day of week if new month */}
+              <div className={`h-[14px] text-[8px] ${isDark ? 'text-gray-600' : 'text-purple-500'}`}>
+                {week.find(day => day !== null) && weekIdx > 0 &&
+                 week.find(day => day !== null)?.date.getDate() <= 7
+                  ? formatDate(week.find(day => day !== null).date).split(' ')[1]
+                  : ''}
+              </div>
+
+              {/* Days of the week */}
+              {week.map((day, dayIdx) => {
+                if (!day) {
+                  // Empty cell for days before start or after end
+                  return (
+                    <div
+                      key={dayIdx}
+                      className="w-2 h-2"
+                    />
+                  );
+                }
+
+                const colorStyle = getColorStyle(day.level);
+                return (
+                  <div
+                    key={dayIdx}
+                    className="group relative w-2 h-2 rounded-sm border transition-all hover:scale-150"
+                    style={{
+                      backgroundColor: colorStyle.bg,
+                      borderColor: colorStyle.border
+                    }}
+                    title={`${formatDate(day.date)}: ${day.count} ${lang === 'sv' ? 'bidrag' : 'contributions'}`}
+                  >
+                    {/* Tooltip on hover */}
+                    <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded text-[10px] whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10
+                      ${isDark ? 'bg-gray-900 text-gray-200 border border-white/10' : 'bg-white text-purple-900 border border-purple-200 shadow-lg'}`}>
+                      {formatDate(day.date)}: {day.count} {lang === 'sv' ? 'bidrag' : 'contributions'}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Contribution grid */}
-      <div className="mt-6 overflow-hidden">
-        <div className="flex flex-wrap gap-[3px]">
-          {contributions.map((day, index) => {
-            const colorStyle = getColorStyle(day.level);
-            return (
-              <div
-                key={index}
-                className="group relative w-2 h-2 rounded-sm border transition-all hover:scale-125"
-                style={{
-                  backgroundColor: colorStyle.bg,
-                  borderColor: colorStyle.border
-                }}
-                title={`${formatDate(day.date)}: ${day.count} ${lang === 'sv' ? 'bidrag' : 'contributions'}`}
-              >
-                {/* Tooltip on hover */}
-                <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded text-[10px] whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10
-                  ${isDark ? 'bg-gray-900 text-gray-200 border border-white/10' : 'bg-white text-purple-900 border border-purple-200 shadow-lg'}`}>
-                  {formatDate(day.date)}: {day.count} {lang === 'sv' ? 'bidrag' : 'contributions'}
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
 
