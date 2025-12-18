@@ -195,10 +195,10 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
     : ['S', 'M', 'T', 'W', 'T', 'F', 'S']; // Sun, Mon, Tue, Wed, Thu, Fri, Sat
 
   return (
-    <div className={`mt-8 p-6 rounded-xl transition-all duration-300 border
+    <div className={`mt-8 p-6 rounded-xl transition-all duration-300 border max-w-fit mx-auto
       ${isDark
         ? 'bg-black/20 border-white/10 hover:border-neon-cyan/30'
-        : 'bg-white/30 backdrop-blur-sm border-purple-200/50 hover:border-purple-400/50'}`}>
+        : 'bg-gradient-to-br from-orange-50/80 via-amber-50/70 to-yellow-50/60 backdrop-blur-sm border-orange-200/40 hover:border-orange-300/60'}`}>
 
       <div className="flex items-center justify-between mb-4">
         <h3 className={`text-xs uppercase tracking-wider flex items-center gap-2 font-semibold
