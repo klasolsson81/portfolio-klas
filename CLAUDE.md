@@ -1,6 +1,6 @@
 # Klas Olsson - Portfolio Website
 
-**Last Updated:** 2025-12-17
+**Last Updated:** 2025-12-18
 **Status:** Production (Deployed on Vercel)
 **URL:** https://klasolsson.se
 
@@ -796,6 +796,62 @@ git push origin main
 - ⏳ Low (4/4): Issues #14, #15, #16, #17 (remaining)
 
 ---
+
+### 2025-12-18 - Session 2 (CODE_REVIEW Implementation & Chat Overhaul)
+
+**Completed Updates:**
+
+1. **Image Optimization** ✅ (Issue #10 - MEDIUM Priority)
+   - Added `loading="lazy"` to all images for lazy loading
+   - Added `decoding="async"` for better perceived performance
+   - Optimized ProfilePhoto, ChatUI, and HeroStage components
+   - Files: `src/components/ProfilePhoto.jsx`, `src/components/ChatUI.jsx`, `src/components/HeroStage.jsx`
+   - Commit: `3821f1a`
+
+2. **Axios Interceptors** ✅ (Issue #12 - MEDIUM Priority)
+   - Created centralized axios client with response interceptor
+   - Bilingual error messages (Swedish/English) based on language context
+   - Automatic toast notifications for errors (timeout, rate limit, generic)
+   - Structured logging for debugging
+   - Updated ChatUI to use apiClient instead of direct axios
+   - Files: `lib/api/client.js` (new), `src/components/ChatUI.jsx`
+   - Commit: `e936d4f`
+
+3. **HeroStage Refactoring Phase 1** ✅ (Issue #13 - MEDIUM Priority)
+   - Extracted PROJECT_SLIDES to `src/components/data/projectSlides.jsx`
+   - Extracted TRANSLATIONS to `src/components/data/translations.js`
+   - Reduced HeroStage from 783 lines to 585 lines (25% reduction)
+   - Improved maintainability and separation of concerns
+   - Files: `src/components/HeroStage.jsx`, `src/components/data/projectSlides.jsx`, `src/components/data/translations.js`
+   - Commits: `5a3cb6a`, `3f2c573` (Vite build fix - renamed .js to .jsx)
+
+4. **Complete Chat API Overhaul** ✅ (Critical Performance Fix)
+   - **Problem:** Assistants API causing 60-83 second timeouts, poor UX
+   - **Solution:** Complete migration to Chat Completions API with gpt-5-nano
+   - **Results:** 95% speed improvement (60s → 2-5s responses)
+   - Removed thread management complexity
+   - Simplified architecture with conversation history (last 5 messages)
+   - Updated welcome message to casual tone ("Tjena! Hur är läget?")
+   - Configured gpt-5-nano for chatbot (fastest), GPT-5.2 for HireMe analysis
+   - Files: `api/chat.js`, `src/components/ChatUI.jsx`, `lib/config/constants.js`
+   - Commits: `7eee32f`, `4599d1e` (GPT-5 parameter fix)
+
+5. **GPT-5 API Compatibility Fix** ✅ (Critical Bug Fix)
+   - Fixed 500 error: "Unsupported parameter: 'max_tokens'"
+   - GPT-5 models require `max_completion_tokens` instead of `max_tokens`
+   - Updated api/chat.js to use correct parameter
+   - File: `api/chat.js` (line 287)
+   - Commit: `4599d1e`
+
+**Removed Files:**
+- `lib/utils/assistantManager.js` - No longer needed after API migration
+
+**Key Improvements:**
+- Chat now responds in 2-5 seconds (previously 60-83 seconds)
+- More personal and casual tone
+- Better error handling with bilingual toast notifications
+- Cleaner codebase with better separation of concerns
+- Optimized images for faster page load
 
 ### 2025-12-17 - Session 1 (RECON Addition)
 
