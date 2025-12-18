@@ -71,8 +71,21 @@ export default async function handler(req, res) {
       throw new Error('GraphQL query failed');
     }
 
+    // Check for valid response structure
+    if (!data.data || !data.data.user) {
+      console.error('Invalid GraphQL response structure:', JSON.stringify(data, null, 2));
+      throw new Error('Invalid response from GitHub GraphQL API');
+    }
+
     // Extract contribution data
     const contributionCalendar = data.data.user.contributionsCollection.contributionCalendar;
+
+    // Log summary for debugging
+    console.log('GitHub contributions fetched:', {
+      totalContributions: contributionCalendar.totalContributions,
+      weeksCount: contributionCalendar.weeks.length,
+      dateRange: { from: fromDate, to: toDate }
+    });
 
     // Flatten weeks into days array
     const contributions = [];
@@ -84,6 +97,11 @@ export default async function handler(req, res) {
           color: day.color,
         });
       });
+    });
+
+    console.log('Processed contributions:', {
+      daysCount: contributions.length,
+      nonZeroDays: contributions.filter(d => d.count > 0).length
     });
 
     // Return data
