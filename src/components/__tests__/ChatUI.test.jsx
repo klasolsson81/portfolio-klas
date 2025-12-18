@@ -2,8 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ChatUI from '../ChatUI';
 
-// Mock axios
-vi.mock('axios');
+// Mock apiClient to prevent axios interceptor errors
+vi.mock('../../lib/api/client', () => ({
+  default: {
+    post: vi.fn(() => Promise.resolve({ data: { response: 'Test response' } })),
+    get: vi.fn(() => Promise.resolve({ data: {} })),
+  },
+}));
 
 describe('ChatUI Component', () => {
   const defaultProps = {
@@ -19,12 +24,12 @@ describe('ChatUI Component', () => {
   describe('Rendering', () => {
     it('should render welcome message in Swedish', () => {
       render(<ChatUI {...defaultProps} />);
-      expect(screen.getByText(/Hej! Det är jag som är Klas/i)).toBeInTheDocument();
+      expect(screen.getByText(/Tjena! Hur är läget\?/i)).toBeInTheDocument();
     });
 
     it('should render welcome message in English', () => {
       render(<ChatUI {...defaultProps} lang="en" />);
-      expect(screen.getByText(/Hi! I'm Klas/i)).toBeInTheDocument();
+      expect(screen.getByText(/Hey! What's up\?/i)).toBeInTheDocument();
     });
 
     it('should render chat input', () => {
@@ -35,8 +40,9 @@ describe('ChatUI Component', () => {
 
     it('should render send button', () => {
       render(<ChatUI {...defaultProps} />);
-      const button = screen.getByRole('button', { name: /send/i });
-      expect(button).toBeInTheDocument();
+      const buttons = screen.getAllByRole('button');
+      const submitButton = buttons.find(btn => btn.type === 'submit');
+      expect(submitButton).toBeInTheDocument();
     });
   });
 
@@ -44,10 +50,11 @@ describe('ChatUI Component', () => {
     it('should not send empty message', () => {
       render(<ChatUI {...defaultProps} />);
       const input = screen.getByPlaceholderText(/Skriv din fråga här/i);
-      const button = screen.getByRole('button', { name: /send/i });
+      const buttons = screen.getAllByRole('button');
+      const submitButton = buttons.find(btn => btn.type === 'submit');
 
       fireEvent.change(input, { target: { value: '   ' } });
-      fireEvent.click(button);
+      fireEvent.click(submitButton);
 
       // Input should still be empty (trimmed)
       expect(input.value).toBe('   ');
@@ -63,10 +70,18 @@ describe('ChatUI Component', () => {
   });
 
   describe('Clear History', () => {
-    it('should show clear button when messages exist', async () => {
+    it('should show clear button when multiple messages exist', async () => {
       render(<ChatUI {...defaultProps} />);
 
-      // Welcome message is automatically added
+      // Add a user message to make messages.length > 1
+      const input = screen.getByPlaceholderText(/Skriv din fråga här/i);
+      const buttons = screen.getAllByRole('button');
+      const submitButton = buttons.find(btn => btn.type === 'submit');
+
+      fireEvent.change(input, { target: { value: 'Test message' } });
+      fireEvent.click(submitButton);
+
+      // Clear button should appear when messages.length > 1
       await waitFor(() => {
         const clearButton = screen.getByTitle(/Rensa historik/i);
         expect(clearButton).toBeInTheDocument();
@@ -76,13 +91,24 @@ describe('ChatUI Component', () => {
     it('should clear messages when clear button clicked', async () => {
       render(<ChatUI {...defaultProps} />);
 
+      // Add a user message first
+      const input = screen.getByPlaceholderText(/Skriv din fråga här/i);
+      const buttons = screen.getAllByRole('button');
+      const submitButton = buttons.find(btn => btn.type === 'submit');
+
+      fireEvent.change(input, { target: { value: 'Test message' } });
+      fireEvent.click(submitButton);
+
+      // Wait for clear button and click it
       await waitFor(() => {
         const clearButton = screen.getByTitle(/Rensa historik/i);
         fireEvent.click(clearButton);
       });
 
       // Should still show welcome message after clear
-      expect(screen.getByText(/Hej! Det är jag som är Klas/i)).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText(/Tjena! Hur är läget\?/i)).toBeInTheDocument();
+      });
     });
   });
 
@@ -120,7 +146,7 @@ describe('ChatUI Component', () => {
       render(<ChatUI {...defaultProps} />);
 
       // Should show welcome message as fallback
-      expect(screen.getByText(/Hej! Det är jag som är Klas/i)).toBeInTheDocument();
+      expect(screen.getByText(/Tjena! Hur är läget\?/i)).toBeInTheDocument();
     });
   });
 });

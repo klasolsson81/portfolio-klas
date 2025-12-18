@@ -25,13 +25,16 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 });
 
-// Mock localStorage
-const localStorageMock = {
-  getItem: (key) => null,
-  setItem: (key, value) => {},
-  removeItem: (key) => {},
-  clear: () => {},
-};
+// Mock localStorage with in-memory storage
+const localStorageMock = (() => {
+  let store = {};
+  return {
+    getItem: (key) => store[key] || null,
+    setItem: (key, value) => { store[key] = value; },
+    removeItem: (key) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
