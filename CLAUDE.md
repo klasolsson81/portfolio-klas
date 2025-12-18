@@ -716,6 +716,61 @@ git push origin main
 
 ## Recent Changes
 
+### 2025-12-18 - Session 3 (GitHub Calendar Redesign & Security Hardening)
+
+**Completed Updates:**
+
+1. **Custom GitHub Contributions Calendar** ✅ (New Feature)
+   - Complete rewrite from `react-github-calendar` library to custom implementation
+   - Created server-side GraphQL API endpoint (`/api/github-contributions`)
+   - GitHub Personal Access Token with "Profile" permission (secure, server-side)
+   - Weekly grid layout like GitHub's real calendar (7 rows × ~26 columns)
+   - Inline styles for guaranteed color rendering (bypasses Tailwind config issues)
+   - 5-level color gradient: Gray → Purple → Cyan (dark), Beige → Purple → Teal (light)
+   - Visual effects: Gradient animated title, glow on high-activity squares, hover scale 150%
+   - Compact centered layout with warm light mode background (orange/amber gradient)
+   - Month spacing: visual gap after each month boundary
+   - Tooltips with date and contribution count
+   - Files: `src/components/GithubStats.jsx` (~330 lines), `api/github-contributions.js` (~120 lines)
+   - Commits: Multiple iterations fixing layout, colors, sizing, and month spacing
+   - Issues resolved: Calendar visibility, flex-wrap layout, color opacity, month alignment
+
+2. **Chat API Security & Optimization** ✅ (Issues #1, #2, #4)
+   - Added input sanitization (`lib/validators/inputValidator.js`) - XSS protection
+   - Implemented rate limiting (`lib/utils/rateLimit.js`) - 10 req/min per IP
+   - Optimized system prompt: 340 lines → 60 lines (82% reduction)
+   - Conversational Swedish persona with dry humor
+   - Attempted GPT-5-nano migration (failed due to reasoning token issues)
+   - Reverted to GPT-4o (Chat Completions API) - reliable and fast
+   - Structured logging with JSON format and timestamps
+   - Files: `api/chat.js`, `lib/validators/inputValidator.js`, `lib/utils/rateLimit.js`
+   - Commits: `4599d1e`, `a8160a6`, `99fa4aa`, `5ceb514`, `7a7560e`
+
+3. **Documentation Updates** ✅
+   - Updated CLAUDE.md with GitHub calendar implementation details
+   - Updated AI Chat Assistant section (Chat Completions API, security features)
+   - Added lib/ directory structure to File Structure section
+   - Comprehensive component descriptions for GithubStats.jsx and api endpoint
+   - Updated CODE_REVIEW.md: 10/17 issues fixed (59% completion)
+   - Marked completed issues: #1, #2, #4, #7, #8, #10, #11, #12, #13
+   - Production readiness assessment added to Conclusion
+   - Files: `CLAUDE.md`, `CODE_REVIEW.md`
+   - Commits: `c6b3f45`, `277a16d`, `1a82a70`
+
+4. **Timeline Update** ✅
+   - Added OOP Grund course (VG grade) to DevTimeline
+   - Date: 2025-12-18
+   - Focus: Encapsulation, inheritance, polymorphism, abstraction
+   - Tags: C#, OOP, .NET, Design Patterns, SOLID
+   - File: `src/components/DevTimeline.jsx`
+   - Commit: `af94d3d`
+
+**Summary:**
+- Major feature: Custom GitHub calendar with GraphQL API
+- Security hardened: Input sanitization + rate limiting
+- Documentation fully updated
+- 10/17 CODE_REVIEW issues resolved
+
 ### 2025-12-17 - Session 2 (CODE_REVIEW Implementation)
 
 **Completed Updates:**
@@ -1113,6 +1168,67 @@ When starting a new session:
 10. **Slideshow slides:** When adding projects, use 4 slide types (problem, solution, code, learning)
 11. **API endpoints:** All serverless functions in `/api/` directory
 12. **Security:** Follow CODE_REVIEW.md recommendations for input validation, rate limiting, etc.
+
+### How to Add Timeline Events
+When adding new events to DevTimeline, follow this structure:
+
+**Location:** `src/components/DevTimeline.jsx` → `TIMELINE_EVENTS` array (line ~150)
+
+**Event Types Available:**
+- `education_start` - Starting education (graduation cap icon, purple)
+- `course_complete` - Completed course (award medal, green) - **Use for courses!**
+- `project` - Launched project (rocket icon, purple)
+- `skill` - New skill acquired (sparkles icon, cyan)
+- `event` - Special event (calendar icon, orange)
+- `milestone` - Achievement milestone (trophy icon, pink)
+- `certification` - Certification earned (award trophy, gold)
+
+**Structure for Courses:**
+```javascript
+{
+  date: "YYYY-MM-DD",           // ISO format, newest first!
+  type: "course_complete",
+  title: {
+    sv: "Kursnamn – VG",        // Swedish with grade
+    en: "Course Name – Distinction"  // English
+  },
+  description: {
+    sv: "Kort beskrivning av vad du lärde dig...",
+    en: "Brief description of what you learned..."
+  },
+  tags: ["Tag1", "Tag2", "Tag3"], // Technologies/topics (clickable filters)
+  grade: "VG"                   // Optional: "G", "VG", "MVG"
+}
+```
+
+**Example - Adding a Completed Course:**
+```javascript
+const TIMELINE_EVENTS = [
+  {
+    date: "2025-12-18",
+    type: "course_complete",
+    title: {
+      sv: "OOP Grund – VG",
+      en: "OOP Fundamentals – Distinction"
+    },
+    description: {
+      sv: "Fördjupade mina kunskaper inom objektorienterad programmering med fokus på inkapsling, arv, polymorfism och abstraktion.",
+      en: "Deepened my knowledge in object-oriented programming with focus on encapsulation, inheritance, polymorphism and abstraction."
+    },
+    tags: ["C#", "OOP", ".NET", "Design Patterns", "SOLID"],
+    grade: "VG"
+  },
+  // ... existing events below
+];
+```
+
+**Important Notes:**
+- ✅ **Always add at the TOP** of TIMELINE_EVENTS array (newest first!)
+- ✅ **Both Swedish and English** for title and description
+- ✅ **Tags are clickable filters** - keep them relevant and consistent
+- ✅ **Grade is optional** but recommended for courses
+- ✅ **Commit with descriptive message** using `feat:` prefix
+- ✅ **Update CLAUDE.md** after adding events
 
 ---
 
