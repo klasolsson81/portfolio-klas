@@ -862,6 +862,19 @@ git push origin main
    - File: `api/chat.js` (KLAS_INSTRUCTIONS)
    - Commit: `573e0e5`
 
+8. **Revert to GPT-4o** ✅ (Critical Fix - Model Change)
+   - **Problem:** GPT-5-nano fundamentally broken for chatbots
+   - Always used ALL 1500 completion tokens for internal reasoning
+   - Left 0 tokens for visible responses (`finishReason: "length"`, `replyLength: 0`)
+   - Could not be controlled without `reasoning` parameter (not supported in Chat Completions API)
+   - User feedback: "jag hade aldrig detta problemet tidigare" - correct, GPT-4o worked perfectly
+   - **Solution:** Reverted to GPT-4o (proven, reliable, no reasoning tokens)
+   - Re-added `temperature: 0.7` for natural responses (supported by GPT-4o)
+   - Changed `max_completion_tokens` → `max_tokens` (GPT-4o standard)
+   - **Kept:** New conversational prompt (60 lines, personal tone)
+   - Files: `lib/config/constants.js`, `api/chat.js`
+   - Commits: `256c3d6`, `7a7560e`
+
 **Removed Files:**
 - `lib/utils/assistantManager.js` - No longer needed after API migration
 
