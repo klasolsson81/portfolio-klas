@@ -211,11 +211,11 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
 
       {/* Contribution grid */}
       <div className="mt-6 overflow-hidden">
-        <div className="grid grid-flow-col auto-cols-max gap-[2px] md:gap-1 justify-start">
+        <div className="grid grid-flow-col auto-cols-max gap-1 md:gap-1.5 justify-start">
           {contributions.map((day, index) => (
             <div
               key={index}
-              className={`group relative w-2 h-2 md:w-3 md:h-3 rounded-sm border transition-all hover:scale-125 ${getColorClass(day.level)}`}
+              className={`group relative w-3 h-3 md:w-4 md:h-4 rounded-sm border-2 transition-all hover:scale-125 ${getColorClass(day.level)}`}
               title={`${formatDate(day.date)}: ${day.count} ${lang === 'sv' ? 'bidrag' : 'contributions'}`}
             >
               {/* Tooltip on hover */}
