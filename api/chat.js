@@ -170,12 +170,11 @@ export default async function handler(req, res) {
     ];
 
     // Call OpenAI Chat Completions API
-    // GPT-5 models support: model, messages, max_completion_tokens, reasoning
+    // GPT-5-nano only supports: model, messages, max_completion_tokens
     const completion = await openai.chat.completions.create({
       model: GPT_CONFIG.MODEL,
       messages: messages,
       max_completion_tokens: GPT_CONFIG.MAX_TOKENS,
-      reasoning: { effort: "minimal" }, // Minimize reasoning tokens for faster responses
     });
 
     const reply = completion.choices[0].message.content;
