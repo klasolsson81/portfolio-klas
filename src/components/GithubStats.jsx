@@ -81,23 +81,23 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
     return 4;
   };
 
-  const getColorClass = (level) => {
+  const getColorStyle = (level) => {
     if (isDark) {
       const colors = [
-        'bg-gray-700 border-gray-600', // 0 contributions - lighter gray for visibility
-        'bg-purple-600 border-purple-500', // Low - much brighter purple
-        'bg-purple-400 border-purple-300', // Medium - bright purple
-        'bg-cyan-500 border-cyan-400', // High - bright cyan
-        'bg-cyan-300 border-cyan-200 shadow-lg shadow-cyan-300/50', // Very high - very bright cyan
+        { bg: '#374151', border: '#4B5563' }, // 0 - gray-700/600
+        { bg: '#9333EA', border: '#A855F7' }, // 1 - purple-600/500
+        { bg: '#C084FC', border: '#D8B4FE' }, // 2 - purple-400/300
+        { bg: '#06B6D4', border: '#22D3EE' }, // 3 - cyan-500/400
+        { bg: '#67E8F9', border: '#A5F3FC' }, // 4 - cyan-300/200
       ];
       return colors[level];
     } else {
       const colors = [
-        'bg-gray-200 border-gray-300', // 0 contributions - light gray
-        'bg-purple-400 border-purple-500', // Low - medium purple
-        'bg-purple-600 border-purple-700', // Medium - darker purple
-        'bg-purple-700 border-purple-800', // High - dark purple
-        'bg-purple-900 border-purple-950 shadow-lg shadow-purple-700/50', // Very high - very dark purple
+        { bg: '#E5E7EB', border: '#D1D5DB' }, // 0 - gray-200/300
+        { bg: '#C084FC', border: '#A855F7' }, // 1 - purple-400/500
+        { bg: '#9333EA', border: '#7C3AED' }, // 2 - purple-600/700
+        { bg: '#7C3AED', border: '#6D28D9' }, // 3 - purple-700/800
+        { bg: '#581C87', border: '#4C1D95' }, // 4 - purple-900/950
       ];
       return colors[level];
     }
@@ -212,19 +212,26 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
       {/* Contribution grid */}
       <div className="mt-6 overflow-hidden">
         <div className="grid grid-flow-col auto-cols-max gap-1 md:gap-1.5 justify-start">
-          {contributions.map((day, index) => (
-            <div
-              key={index}
-              className={`group relative w-3 h-3 md:w-4 md:h-4 rounded-sm border-2 transition-all hover:scale-125 ${getColorClass(day.level)}`}
-              title={`${formatDate(day.date)}: ${day.count} ${lang === 'sv' ? 'bidrag' : 'contributions'}`}
-            >
-              {/* Tooltip on hover */}
-              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded text-[10px] whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10
-                ${isDark ? 'bg-gray-900 text-gray-200 border border-white/10' : 'bg-white text-purple-900 border border-purple-200 shadow-lg'}`}>
-                {formatDate(day.date)}: {day.count} {lang === 'sv' ? 'bidrag' : 'contributions'}
+          {contributions.map((day, index) => {
+            const colorStyle = getColorStyle(day.level);
+            return (
+              <div
+                key={index}
+                className="group relative w-3 h-3 md:w-4 md:h-4 rounded-sm border-2 transition-all hover:scale-125"
+                style={{
+                  backgroundColor: colorStyle.bg,
+                  borderColor: colorStyle.border
+                }}
+                title={`${formatDate(day.date)}: ${day.count} ${lang === 'sv' ? 'bidrag' : 'contributions'}`}
+              >
+                {/* Tooltip on hover */}
+                <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded text-[10px] whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10
+                  ${isDark ? 'bg-gray-900 text-gray-200 border border-white/10' : 'bg-white text-purple-900 border border-purple-200 shadow-lg'}`}>
+                  {formatDate(day.date)}: {day.count} {lang === 'sv' ? 'bidrag' : 'contributions'}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -232,12 +239,19 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
       <div className={`flex items-center justify-between mt-4 text-[10px] ${isDark ? 'text-gray-600' : 'text-purple-600'}`}>
         <span>{lang === 'sv' ? 'Mindre' : 'Less'}</span>
         <div className="flex gap-1">
-          {[0, 1, 2, 3, 4].map(level => (
-            <div
-              key={level}
-              className={`w-3 h-3 rounded-sm border ${getColorClass(level)}`}
-            />
-          ))}
+          {[0, 1, 2, 3, 4].map(level => {
+            const colorStyle = getColorStyle(level);
+            return (
+              <div
+                key={level}
+                className="w-3 h-3 rounded-sm border-2"
+                style={{
+                  backgroundColor: colorStyle.bg,
+                  borderColor: colorStyle.border
+                }}
+              />
+            );
+          })}
         </div>
         <span>{lang === 'sv' ? 'Mer' : 'More'}</span>
       </div>
