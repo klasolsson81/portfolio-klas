@@ -149,6 +149,21 @@ const EVENT_TYPES = {
 // =====================================================
 const TIMELINE_EVENTS = [
   {
+    date: "2025-12-18",
+    type: "course_complete",
+    title: {
+      sv: "OOP Grund – VG",
+      en: "OOP Fundamentals – Distinction"
+    },
+    description: {
+      sv: "Fördjupade mina kunskaper inom objektorienterad programmering med fokus på inkapsling, arv, polymorfism och abstraktion. Implementerade avancerade designmönster och SOLID-principer.",
+      en: "Deepened my knowledge in object-oriented programming with focus on encapsulation, inheritance, polymorphism and abstraction. Implemented advanced design patterns and SOLID principles."
+    },
+    tags: ["C#", "OOP", ".NET", "Design Patterns", "SOLID"],
+    grade: "VG"
+  },
+
+  {
     date: "2025-12-14",
     type: "project",
     title: {
