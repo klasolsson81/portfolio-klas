@@ -16,63 +16,29 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
 
   const fetchGitHubContributions = async () => {
     try {
-      // GitHub username
-      const username = 'klasolsson81';
-
-      // Calculate date range (last 6 months)
-      const today = new Date();
-      const sixMonthsAgo = new Date();
-      sixMonthsAgo.setMonth(today.getMonth() - 6);
-
-      // Fetch contribution data from GitHub API
-      const response = await fetch(`https://api.github.com/users/${username}/events/public?per_page=100`);
+      // Fetch from our API endpoint (uses GitHub GraphQL API server-side)
+      const response = await fetch('/api/github-contributions');
 
       if (!response.ok) throw new Error('Failed to fetch');
 
-      const events = await response.json();
+      const data = await response.json();
 
-      // Generate calendar grid for last 6 months
-      const calendar = generateCalendarGrid(sixMonthsAgo, today, events);
+      // Convert API response to calendar format
+      const calendar = data.contributions.map(day => ({
+        date: new Date(day.date),
+        count: day.count,
+        level: getContributionLevel(day.count),
+        color: day.color,
+      }));
+
       setContributions(calendar);
-
-      // Calculate total contributions
-      const total = calendar.reduce((sum, day) => sum + day.count, 0);
-      setTotalContributions(total);
-
+      setTotalContributions(data.totalContributions);
       setLoading(false);
     } catch (err) {
       console.error('GitHub API error:', err);
       setError(true);
       setLoading(false);
     }
-  };
-
-  const generateCalendarGrid = (startDate, endDate, events) => {
-    const calendar = [];
-    const currentDate = new Date(startDate);
-
-    // Count contributions by date
-    const contributionsByDate = {};
-    events.forEach(event => {
-      const date = new Date(event.created_at).toDateString();
-      contributionsByDate[date] = (contributionsByDate[date] || 0) + 1;
-    });
-
-    // Generate grid
-    while (currentDate <= endDate) {
-      const dateStr = currentDate.toDateString();
-      const count = contributionsByDate[dateStr] || 0;
-
-      calendar.push({
-        date: new Date(currentDate),
-        count: count,
-        level: getContributionLevel(count)
-      });
-
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-
-    return calendar;
   };
 
   const getContributionLevel = (count) => {
