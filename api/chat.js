@@ -284,7 +284,7 @@ export default async function handler(req, res) {
       model: GPT_CONFIG.MODEL,
       messages: messages,
       temperature: GPT_CONFIG.TEMPERATURE,
-      max_tokens: GPT_CONFIG.MAX_TOKENS,
+      max_completion_tokens: GPT_CONFIG.MAX_TOKENS,
       presence_penalty: GPT_CONFIG.PRESENCE_PENALTY,
       frequency_penalty: GPT_CONFIG.FREQUENCY_PENALTY,
     });
