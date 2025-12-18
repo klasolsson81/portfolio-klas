@@ -23,6 +23,13 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
 
       const data = await response.json();
 
+      // Debug: Log raw API response
+      console.log('Raw API response:', {
+        totalContributions: data.totalContributions,
+        contributionsCount: data.contributions?.length,
+        firstFewContributions: data.contributions?.slice(0, 5)
+      });
+
       // Convert API response to calendar format
       const calendar = data.contributions.map(day => ({
         date: new Date(day.date),
