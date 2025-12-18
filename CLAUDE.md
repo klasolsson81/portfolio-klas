@@ -878,7 +878,7 @@ git push origin main
 9. **Custom GitHub Contributions Calendar** ✅ (UX Enhancement)
    - **Problem:** Old calendar showed full year, caused horizontal scroll on mobile, empty space in December
    - User feedback: "På mobil versionen ser man bara halva, tomma tabellen"
-   - **Solution:** Built custom responsive calendar component
+   - **Solution:** Built custom responsive calendar component with GitHub GraphQL API
    - **Features:**
      - Shows only last 6 months (no empty space)
      - Responsive grid: 8px squares on mobile → 12px on desktop
@@ -893,13 +893,22 @@ git push origin main
      - Light mode: light purple → dark purple gradient
      - Glassmorphism style matching portfolio theme
      - Hover effects with scale transform
-   - **Technical:**
-     - Fetches from GitHub Events API
-     - Generates calendar grid for date range
-     - Contribution levels based on event count (0, 1-2, 3-5, 6-10, 10+)
-     - Loading and error states
-   - Files: `src/components/GithubStats.jsx`, `src/components/HeroStage.jsx`
-   - Commit: `2c0a5b5`
+   - **Technical V1 (2c0a5b5):**
+     - Initial implementation with GitHub Events API
+     - User feedback: "tabellen ser tom ut" - Events API doesn't show all contributions
+   - **Technical V2 (adf3ddf):**
+     - **NEW:** Server-side API endpoint `/api/github-contributions`
+     - Uses GitHub GraphQL API for accurate contribution data
+     - Requires GITHUB_TOKEN (Personal Access Token with 'Profile' read permission)
+     - Fetches from `contributionsCollection` GraphQL query
+     - Returns real contribution calendar matching GitHub profile
+     - Server-side token security (not exposed to client)
+   - **Environment Setup:**
+     - GitHub Personal Access Token: Settings → Developer → Fine-grained tokens
+     - Permission: "Profile" (Read-only)
+     - Vercel: Add `GITHUB_TOKEN` environment variable
+   - Files: `api/github-contributions.js` (NEW), `src/components/GithubStats.jsx`, `src/components/HeroStage.jsx`, `lib/config/env.js`
+   - Commits: `2c0a5b5` (initial), `adf3ddf` (GraphQL)
 
 **Removed Files:**
 - `lib/utils/assistantManager.js` - No longer needed after API migration
