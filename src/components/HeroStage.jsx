@@ -14,24 +14,13 @@ import DevTimeline from './DevTimeline';
 import { PROJECT_SLIDES, detectiveVideo } from './data/projectSlides.jsx';
 import { TRANSLATIONS, calculateAge } from './data/translations';
 
-const HeroStage = ({ isDark, toggleTheme }) => {
+const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
   const [section, setSection] = useState('about');
-  const [lang, setLang] = useState('sv');
   const [activeVideo, setActiveVideo] = useState(null);
   const [activeSlideshow, setActiveSlideshow] = useState(null);
 
-  // FIX: Automatisk språk-detektering vid start
-  useEffect(() => {
-    const userLang = navigator.language || navigator.userLanguage;
-    if (!userLang.startsWith('sv')) {
-      setLang('en');
-    }
-  }, []);
-
-  const t = TRANSLATIONS[lang]; 
+  const t = TRANSLATIONS[lang];
   const myAge = calculateAge('1981-02-04');
-
-  const toggleLang = () => setLang(l => l === 'sv' ? 'en' : 'sv');
 
   return (
     <div className="min-h-screen md:flex md:items-center md:justify-center p-3 md:p-8 relative z-10">

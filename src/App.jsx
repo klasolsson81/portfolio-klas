@@ -2,12 +2,15 @@ import React, { Suspense, useState, useEffect } from 'react';
 import NodeNetwork from './components/NodeNetwork';
 import HeroStage from './components/HeroStage';
 import FloatingCode from './components/FloatingCode';
+import InstallPrompt from './components/InstallPrompt';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster } from 'sonner';
 
 function App() {
   const [isDark, setIsDark] = useState(true);
+  const [lang, setLang] = useState('sv');
 
+  // Theme management
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
@@ -16,7 +19,16 @@ function App() {
     }
   }, [isDark]);
 
+  // Language detection
+  useEffect(() => {
+    const userLang = navigator.language || navigator.userLanguage;
+    if (!userLang.startsWith('sv')) {
+      setLang('en');
+    }
+  }, []);
+
   const toggleTheme = () => setIsDark(!isDark);
+  const toggleLang = () => setLang(l => l === 'sv' ? 'en' : 'sv');
 
   return (
     // BG-TRANSPARENT för BÅDA teman - låter body CSS visa gradient-bakgrunden
@@ -36,10 +48,13 @@ function App() {
       </ErrorBoundary>
 
       <ErrorBoundary componentName="HeroStage" isDark={isDark} showHomeButton>
-        <HeroStage isDark={isDark} toggleTheme={toggleTheme} />
+        <HeroStage isDark={isDark} toggleTheme={toggleTheme} lang={lang} toggleLang={toggleLang} />
       </ErrorBoundary>
 
-      <div className={`fixed bottom-2 w-full text-center text-[10px] pointer-events-none z-20 transition-colors duration-300 
+      {/* PWA Install Prompt */}
+      <InstallPrompt isDark={isDark} lang={lang} />
+
+      <div className={`fixed bottom-2 w-full text-center text-[10px] pointer-events-none z-20 transition-colors duration-300
         ${isDark ? 'text-gray-600' : 'text-warm-text/40'}`}>
         &copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI
       </div>

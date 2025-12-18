@@ -11,7 +11,9 @@
       "Bash(npm run build:*)",
       "WebFetch(domain:platform.openai.com)",
       "WebSearch",
-      "Bash(npm run test:coverage:*)"
+      "Bash(npm run test:coverage:*)",
+      "Bash(node scripts/generate-icons.js:*)",
+      "Bash(npm run dev:*)"
     ]
   }
 }
