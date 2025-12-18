@@ -20,7 +20,7 @@ Interactive 3D portfolio website showcasing Klas Olsson's work as a .NET System 
 - **Icons:** Lucide React 0.330
 - **AI Chatbot:** OpenAI API 4.28 (GPT-4o)
 - **Notifications:** Sonner toast library
-- **GitHub Stats:** React GitHub Calendar
+- **GitHub Stats:** Custom GitHub Contributions Calendar (GraphQL API)
 - **Deployment:** Vercel
 - **Analytics:** Vercel Analytics
 - **Font:** Inter (Google Fonts)
@@ -43,14 +43,18 @@ Interactive 3D portfolio website showcasing Klas Olsson's work as a .NET System 
 - Performance-optimized rendering with lazy loading (Suspense)
 - Different visual styles for dark/light modes
 
-### 2. **AI Chat Assistant** (OpenAI Assistants API)
-- Interactive chatbot with thread-based conversation history
-- Trained on Klas's CV, experience, and projects using persistent instructions
-- Answers questions about skills, background, and availability
+### 2. **AI Chat Assistant** (OpenAI Chat Completions API)
+- Interactive chatbot using GPT-4o model
+- Conversational Swedish persona (60-line system prompt, down from 170 lines)
+- Trained on Klas's CV, experience, and projects
+- Answers questions about skills, background, and LIA availability
 - Toast notifications for errors and status updates
-- Thread-based conversation memory (50-70% token reduction vs Chat Completions API)
+- Conversation history (last 5 messages for context)
 - Backend API running on Vercel serverless functions
-- Structured logging for production monitoring
+- **Input sanitization** (XSS protection, HTML tag removal)
+- **Rate limiting** (10 requests per minute per IP)
+- **Structured logging** (JSON format with timestamps and context)
+- Error handling with user-friendly Swedish messages
 
 ### 3. **Bilingual Support** (Swedish/English)
 - Language switcher with Swedish (🇸🇪) and British (🇬🇧) flag icons
@@ -114,12 +118,36 @@ Interactive 3D portfolio website showcasing Klas Olsson's work as a .NET System 
 - Dark/Light theme support with glassmorphism overlay
 - Responsive design for mobile/tablet/desktop
 
-### 6. **GitHub Stats Integration**
-- Live GitHub contribution calendar using `react-github-calendar`
-- Total contributions count
-- Real-time data from GitHub API
-- Themed to match site design (dark/light modes)
-- Error handling for API failures
+### 6. **GitHub Stats Integration** (Custom Implementation)
+- **Custom GitHub contributions calendar** built from scratch (no external library)
+- **Server-side GraphQL API** (`/api/github-contributions`) for secure token handling
+- **GitHub Personal Access Token** with "Profile" permission (read-only, 5000 req/hour)
+- **Last 6 months** of contribution data (184 days)
+- **Weekly grid layout** like GitHub's real calendar:
+  - 7 rows (days of week: Sun-Sat)
+  - Weeks as vertical columns (chronological left-to-right)
+  - Day labels (M, W, F) on the left
+  - Month labels above weeks when new month starts
+  - Month spacing: visual gap after each month
+- **Inline styles** for guaranteed color rendering (not Tailwind classes)
+- **Color palette** (5 levels):
+  - Dark mode: Gray → Purple gradient → Cyan gradient
+  - Light mode: Warm beige → Purple → Teal/Cyan
+- **Visual effects**:
+  - Gradient animated title (purple ↔ cyan ↔ purple)
+  - Glow effect on high-activity squares (level 3-4)
+  - Hover scale (150%) with z-index lift
+  - Fade-in animations
+  - Smooth transitions (200ms)
+  - Cursor pointer on interactive elements
+- **Compact centered layout**: Container only as wide as calendar content
+- **Warm light mode**: Orange/amber gradient background (matches peach theme)
+- **Tooltips**: Hover to see date and contribution count
+- **Compact legend**: 5 color squares with hover tooltips showing ranges (1-2, 3-5, 6-10, 10+)
+- **Total contributions count**: Displayed with colorful text (cyan/teal)
+- **Error handling**: Graceful fallback with GitHub profile link
+- **Loading states**: Animated skeleton while fetching
+- **Mobile responsive**: Horizontal scroll if needed on small screens
 
 ### 7. **Hire Me Section**
 - Call-to-action with contact information
@@ -273,7 +301,19 @@ portfolio-klas/
 │   ├── kv-klas-olsson.pdf    # Downloadable CV
 │   └── apple-touch-icon.png
 ├── api/                       # Vercel serverless functions
-│   └── chat.js               # OpenAI chatbot endpoint
+│   ├── chat.js               # OpenAI chatbot endpoint (GPT-4o)
+│   └── github-contributions.js  # GitHub GraphQL API endpoint
+├── lib/                       # Utilities and configuration
+│   ├── config/
+│   │   ├── env.js            # Environment variable validation
+│   │   └── constants.js      # Application constants (GPT config, rate limits, etc.)
+│   ├── utils/
+│   │   ├── logger.js         # Structured JSON logging
+│   │   └── rateLimit.js      # In-memory rate limiting
+│   ├── validators/
+│   │   └── inputValidator.js # Input sanitization (XSS protection)
+│   └── api/
+│       └── client.js         # Axios instance with interceptors
 ├── src/
 │   ├── main.jsx              # React entry point
 │   ├── App.jsx               # Main app component (theme, layout)
@@ -287,7 +327,7 @@ portfolio-klas/
 │       ├── DevTimeline.jsx   # Interactive developer timeline
 │       ├── ProjectSlideshow.jsx  # Modal project deep dives
 │       ├── ChatUI.jsx        # AI chatbot interface
-│       ├── GithubStats.jsx   # GitHub contributions calendar
+│       ├── GithubStats.jsx   # Custom GitHub contributions calendar
 │       └── HireMe.jsx        # Contact/CTA section
 ├── index.html                # HTML entry with SEO meta tags
 ├── package.json              # Dependencies and scripts
@@ -390,14 +430,64 @@ portfolio-klas/
 - Props: `isDark`, `lang`
 - Context: Trained on Klas's CV and portfolio
 
-#### `src/components/GithubStats.jsx` (~80 lines)
-- GitHub contributions calendar
-- Uses `react-github-calendar` library
-- Fetches data from GitHub API
-- Shows total contributions count
-- Error handling for API failures
-- Themed to match site design
+#### `src/components/GithubStats.jsx` (~330 lines)
+- **Custom GitHub contributions calendar** (no external library)
+- Fetches from `/api/github-contributions` server-side endpoint
+- **Data organization:**
+  - Organizes 184 days into weekly structure (7 days × ~26 weeks)
+  - Adds empty cells for alignment (days before start/after end)
+  - Calculates contribution levels (0-4) based on count thresholds
+- **Layout implementation:**
+  - Weekly grid: Weeks as columns, days (Sun-Sat) as rows
+  - Day labels column (M, W, F) with cyan/teal colors
+  - Month labels above weeks (when new month starts)
+  - Month spacing logic (gap after last week of each month)
+- **Color styling:**
+  - Inline styles with hex values (bypasses Tailwind config issues)
+  - 5-level gradient: Gray → Purple → Cyan (dark), Beige → Purple → Teal (light)
+  - Glow shadows on high-activity squares (boxShadow for level 3-4)
+- **Visual effects:**
+  - Gradient animated title (bg-clip-text with purple-cyan gradient)
+  - Hover scale 150% with z-index lift
+  - Fade-in animations
+  - Cursor pointer
+  - Smooth transitions (200ms)
+- **Container layout:**
+  - `max-w-fit mx-auto` for compact centered sizing
+  - Warm gradient background in light mode (orange/amber)
+  - Glassmorphism with hover border effects
+- **Legend:** Compact 5-square legend with tooltips showing ranges
+- **Error/loading states:** Graceful fallbacks with GitHub profile link
 - Props: `isDark`, `lang`
+
+#### `api/github-contributions.js` (~120 lines)
+- **GitHub GraphQL API** integration
+- Fetches contribution calendar for last 6 months
+- Uses `GITHUB_TOKEN` environment variable (Personal Access Token with "Profile" permission)
+- **GraphQL query:**
+  ```graphql
+  contributionsCollection(from: $from, to: $to) {
+    contributionCalendar {
+      totalContributions
+      weeks {
+        contributionDays {
+          contributionCount
+          date
+          color
+        }
+      }
+    }
+  }
+  ```
+- **Response processing:**
+  - Flattens weeks array into flat contributions array
+  - Maps: date, count, color for each day
+  - Returns: `{ contributions: [...], totalContributions: 705 }`
+- **Server-side benefits:**
+  - Hides GitHub token from client
+  - Prevents CORS issues
+  - Adds logging for debugging
+- **Error handling:** Returns 500 with friendly error message on failure
 
 #### `src/components/NodeNetwork.jsx` (~150 lines)
 - Three.js particle network background
