@@ -5,6 +5,8 @@ import { X, ChevronLeft, ChevronRight, Terminal, Lightbulb, AlertTriangle, BookO
 const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const modalRef = useRef(null);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   useEffect(() => {
     if (isOpen) {
@@ -14,17 +16,53 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
     }
   }, [isOpen, title]);
 
-  // Add Escape key listener to close modal
+  // Add keyboard navigation (Escape, Arrow keys)
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isOpen) {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
         onClose();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) setCurrentIndex(currentIndex + 1);
       }
     };
 
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose, currentIndex, slides.length]);
+
+  // Touch/swipe gesture handlers
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const minSwipeDistance = 50; // Minimum distance in pixels to trigger swipe
+    const swipeDistance = touchStartX.current - touchEndX.current;
+
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      if (swipeDistance > 0) {
+        // Swiped left -> Next slide
+        if (currentIndex < slides.length - 1) setCurrentIndex(currentIndex + 1);
+      } else {
+        // Swiped right -> Previous slide
+        if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+      }
+    }
+
+    // Reset touch positions
+    touchStartX.current = 0;
+    touchEndX.current = 0;
+  };
 
   if (!isOpen || !slides) return null;
 
@@ -66,6 +104,9 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
             ? 'bg-[#0a0b1e] border-white/10'
             : 'bg-white/80 backdrop-blur-xl border-purple-200/50'}`}
         onClick={e => e.stopPropagation()}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         tabIndex={-1}
       >
         
@@ -76,6 +117,9 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
             <h2 id="slideshow-title" className={`text-lg md:text-2xl font-bold tracking-tight truncate max-w-[250px] md:max-w-none ${isDark ? 'text-white' : 'text-purple-900'}`}>{title}</h2>
             <p className={`text-xs uppercase tracking-wider mt-1 font-mono ${isDark ? 'text-gray-400' : 'text-purple-500'}`}>
               Sida {currentIndex + 1} / {slides.length}
+            </p>
+            <p className={`text-[9px] mt-1 hidden md:block ${isDark ? 'text-gray-500' : 'text-purple-400'}`}>
+              ⌨️ Använd piltangenter eller swipe
             </p>
           </div>
           <button
