@@ -3,12 +3,15 @@ import NodeNetwork from './components/NodeNetwork';
 import HeroStage from './components/HeroStage';
 import FloatingCode from './components/FloatingCode';
 import InstallPrompt from './components/InstallPrompt';
+import CookieConsent from './components/CookieConsent';
+import PrivacyPolicy from './components/PrivacyPolicy';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster } from 'sonner';
 
 function App() {
   const [isDark, setIsDark] = useState(true);
   const [lang, setLang] = useState('sv');
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   // Theme management
   useEffect(() => {
@@ -25,6 +28,19 @@ function App() {
     if (!userLang.startsWith('sv')) {
       setLang('en');
     }
+  }, []);
+
+  // Handle privacy policy links
+  useEffect(() => {
+    const handlePrivacyClick = (e) => {
+      if (e.target.getAttribute('href') === '/privacy-policy') {
+        e.preventDefault();
+        setShowPrivacyPolicy(true);
+      }
+    };
+
+    document.addEventListener('click', handlePrivacyClick);
+    return () => document.removeEventListener('click', handlePrivacyClick);
   }, []);
 
   const toggleTheme = () => setIsDark(!isDark);
@@ -54,9 +70,30 @@ function App() {
       {/* PWA Install Prompt */}
       <InstallPrompt isDark={isDark} lang={lang} />
 
-      <div className={`fixed bottom-2 w-full text-center text-[10px] pointer-events-none z-20 transition-colors duration-300
+      {/* GDPR Cookie Consent */}
+      <CookieConsent isDark={isDark} lang={lang} />
+
+      {/* Privacy Policy Modal */}
+      <PrivacyPolicy
+        isOpen={showPrivacyPolicy}
+        onClose={() => setShowPrivacyPolicy(false)}
+        isDark={isDark}
+        lang={lang}
+      />
+
+      <div className={`fixed bottom-2 w-full text-center text-[10px] z-20 transition-colors duration-300
         ${isDark ? 'text-gray-600' : 'text-warm-text/40'}`}>
-        &copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI
+        <span className="pointer-events-none">
+          &copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI
+        </span>
+        <span className="mx-2 pointer-events-none">•</span>
+        <a
+          href="/privacy-policy"
+          className={`pointer-events-auto underline hover:no-underline transition-colors
+            ${isDark ? 'hover:text-neon-cyan' : 'hover:text-purple-700'}`}
+        >
+          {lang === 'sv' ? 'Integritetspolicy' : 'Privacy Policy'}
+        </a>
       </div>
 
       <Toaster 

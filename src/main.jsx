@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import 'flag-icons/css/flag-icons.min.css';
@@ -27,13 +27,31 @@ const updateSW = registerSW({
   }
 })
 
+// Conditional Analytics component (only loads if consent given)
+const ConditionalAnalytics = () => {
+  const [hasConsent, setHasConsent] = useState(false);
+
+  useEffect(() => {
+    const consent = localStorage.getItem('cookie-consent');
+    setHasConsent(consent === 'accepted');
+  }, []);
+
+  if (!hasConsent) return null;
+
+  return (
+    <>
+      <Analytics />
+      <SpeedInsights />
+    </>
+  );
+};
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
 
-    {/* Här laddas statistiken och prestandamätningen */}
-    <Analytics />
-    <SpeedInsights />
+    {/* Här laddas statistiken och prestandamätningen (endast med samtycke) */}
+    <ConditionalAnalytics />
 
   </React.StrictMode>,
 )

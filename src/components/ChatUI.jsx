@@ -232,9 +232,18 @@ const ChatUI = ({ lang, isDark }) => {
 
       {/* Input-område */}
       <form onSubmit={sendMessage} className={`shrink-0 p-3 md:p-4 border-t relative transition-colors duration-300
-        ${isDark 
-          ? 'bg-black/80 border-white/10' 
+        ${isDark
+          ? 'bg-black/80 border-white/10'
           : 'bg-white/20 backdrop-blur-sm border-purple-200/50'}`}>
+
+        {/* OpenAI Disclaimer */}
+        <div className={`text-[9px] mb-2 text-center transition-colors duration-300
+          ${isDark ? 'text-gray-500' : 'text-purple-500/70'}`}>
+          {lang === 'sv'
+            ? '🔒 Dina frågor skickas till OpenAI (ChatGPT). Dela inte känslig personlig information.'
+            : '🔒 Your questions are sent to OpenAI (ChatGPT). Don\'t share sensitive personal information.'}
+        </div>
+
         <div className="flex gap-2 items-end">
           <textarea 
             ref={textareaRef}
