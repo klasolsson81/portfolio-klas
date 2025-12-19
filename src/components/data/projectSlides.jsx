@@ -107,7 +107,7 @@ export const PROJECT_SLIDES = {
     {
       title: "Projektöversikt",
       type: "intro",
-      content: <p><strong>RECON</strong> är ett AI-drivet B2B-verktyg som analyserar företag i realtid. Genom att aggregera data från webbplatser, sociala medier, nyheter och finansiella rapporter genererar det actionable säljinsikter: ice breakers, pain points, sales hooks och finansiella signaler. Byggt under en 2-dagars workshop med InFiNetCode AB (13-14 dec 2024).</p>
+      content: <p><strong>RECON</strong> är ett AI-drivet B2B-verktyg som analyserar företag i realtid. Genom att aggregera data från webbplatser, sociala medier, nyheter och finansiella rapporter genererar det actionable säljinsikter: ice breakers, pain points, sales hooks och finansiella signaler. Byggt under en 2-dagars workshop med InFiNetCode AB (13-14 dec 2025).</p>
     },
     {
       title: "Utmaning: Hastighet & Tillförlitlighet",

@@ -14,7 +14,8 @@
       "Bash(npm run test:coverage:*)",
       "Bash(node scripts/generate-icons.js:*)",
       "Bash(npm run dev:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(test:*)"
     ]
   }
 }
