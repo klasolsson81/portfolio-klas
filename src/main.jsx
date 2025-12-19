@@ -32,8 +32,17 @@ const ConditionalAnalytics = () => {
   const [hasConsent, setHasConsent] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie-consent');
-    setHasConsent(consent === 'accepted');
+    // Check initial consent
+    const checkConsent = () => {
+      const consent = localStorage.getItem('cookie-consent');
+      setHasConsent(consent === 'accepted');
+    };
+
+    checkConsent();
+
+    // Listen for consent changes
+    window.addEventListener('cookie-consent-changed', checkConsent);
+    return () => window.removeEventListener('cookie-consent-changed', checkConsent);
   }, []);
 
   if (!hasConsent) return null;

@@ -22,15 +22,14 @@ const CookieConsent = ({ isDark, lang, onConsentChange }) => {
     localStorage.setItem('cookie-consent', 'accepted');
     setShowBanner(false);
     if (onConsentChange) onConsentChange(true);
-    // Reload to apply analytics (only happens once)
-    window.location.reload();
+    // Dispatch custom event to notify analytics components
+    window.dispatchEvent(new Event('cookie-consent-changed'));
   };
 
   const handleReject = () => {
     localStorage.setItem('cookie-consent', 'rejected');
     setShowBanner(false);
     if (onConsentChange) onConsentChange(false);
-    // No reload needed for rejection
   };
 
   const text = {
