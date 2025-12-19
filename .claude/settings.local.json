@@ -13,7 +13,8 @@
       "WebSearch",
       "Bash(npm run test:coverage:*)",
       "Bash(node scripts/generate-icons.js:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(git mv:*)"
     ]
   }
 }
