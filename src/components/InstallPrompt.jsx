@@ -97,7 +97,7 @@ const InstallPrompt = ({ isDark, lang }) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
           transition={{ duration: 0.3 }}
-          className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md z-50"
+          className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md z-[60]"
         >
           <div
             className={`rounded-xl p-4 shadow-2xl border backdrop-blur-xl transition-colors duration-300

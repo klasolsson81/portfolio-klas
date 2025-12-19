@@ -81,7 +81,7 @@ function App() {
         lang={lang}
       />
 
-      <div className={`fixed bottom-2 w-full text-center text-[10px] z-20 transition-colors duration-300
+      <div className={`fixed bottom-2 w-full text-center text-[10px] z-[20] transition-colors duration-300
         ${isDark ? 'text-gray-600' : 'text-warm-text/40'}`}>
         <span className="pointer-events-none">
           &copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI
