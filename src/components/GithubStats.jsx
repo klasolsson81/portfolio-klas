@@ -170,10 +170,7 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
 
       <div className="flex items-center justify-between mb-4">
         <h3 className={`text-xs uppercase tracking-wider flex items-center gap-2 font-semibold
-          ${isDark
-            ? 'bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-purple bg-clip-text text-transparent'
-            : 'bg-gradient-to-r from-purple-600 via-teal-600 to-purple-600 bg-clip-text text-transparent'
-          }`}>
+          ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
           <span className={isDark ? 'text-neon-cyan' : 'text-purple-600'}>⚡</span>
           {lang === 'sv' ? 'Kodaktivitet (GitHub)' : 'Coding Activity (GitHub)'}
         </h3>

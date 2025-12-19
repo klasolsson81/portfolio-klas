@@ -295,7 +295,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
                   <div>
                     <h3 className={`text-xs font-bold mb-3 uppercase tracking-widest
-                      ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
+                      ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
                       {t.about.factsTitle}
                     </h3>
                     <ul className={`space-y-2 text-sm ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
@@ -340,7 +340,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
 
                   <div>
                     <h3 className={`text-xs font-bold mb-3 uppercase tracking-widest
-                      ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
+                      ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
                       {t.about.stackTitle}
                     </h3>
                     <div className="flex flex-wrap gap-1.5">
