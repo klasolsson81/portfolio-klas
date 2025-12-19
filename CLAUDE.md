@@ -143,6 +143,32 @@ const containerVariants = {
 
 ## Recent Changes
 
+### 2025-12-19 - Session 11 (Animated Section Headings)
+
+**Visual Enhancement:**
+
+1. **Animated Gradient Headings** ✅
+   - Added shimmer gradient animations to section headings
+   - Dark mode: Gray → Cyan → Purple shimmer (7s loop)
+   - Light mode: Gray → Purple → Teal shimmer (7s loop)
+   - Applied to:
+     - "Personligt" heading in About section
+     - "Tech-Stack" heading in About section
+     - "Kodaktivitet (GitHub)" heading in GitHub Stats
+   - Consistent animation speed (7s) with smooth 300% background size
+   - Complements existing name and subtitle animations
+
+**Technical Details:**
+- New CSS classes: `animate-section-gradient` (dark), `light-section-gradient` (light)
+- Uses existing `text-shimmer` keyframe animation
+- Maintains accessibility with high contrast color combinations
+
+**Files Modified:** `index.css`, `HeroStage.jsx`, `GithubStats.jsx`
+
+**Commit:** `95bdc78`
+
+---
+
 ### 2025-12-19 - Session 10 (GDPR Cookie Consent & Code Review Fixes)
 
 **Critical Updates:**
