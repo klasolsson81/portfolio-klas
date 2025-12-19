@@ -16,7 +16,8 @@ const CookieConsent = ({ isDark, lang, onConsentChange }) => {
       // Notify parent about existing consent (if callback provided)
       if (onConsentChange) onConsentChange(consent === 'accepted');
     }
-  }, [onConsentChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty array - only run once on mount
 
   const handleAccept = () => {
     localStorage.setItem('cookie-consent', 'accepted');

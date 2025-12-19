@@ -150,6 +150,15 @@ const ChatUI = ({ lang, isDark }) => {
 
       {/* Meddelandeområdet */}
       <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
+        {/* History truncation warning */}
+        {messages.length > 6 && (
+          <div className={`text-center text-[10px] py-2 px-3 rounded-lg mx-auto max-w-fit ${isDark ? 'bg-white/5 text-gray-500' : 'bg-purple-50/50 text-purple-500'}`}>
+            💬 {lang === 'sv'
+              ? 'Äldre meddelanden visas men skickas inte till AI (senaste 5 används)'
+              : 'Older messages shown but not sent to AI (last 5 used)'}
+          </div>
+        )}
+
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start items-end'}`}>
             

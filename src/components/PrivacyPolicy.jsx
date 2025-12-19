@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   // Add ESC key handling
   useEffect(() => {
     if (!isOpen) return;
@@ -16,6 +18,15 @@ const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
+
+  // Simulate content loading (actual content renders immediately, this is for UX)
+  useEffect(() => {
+    if (isOpen) {
+      setIsLoading(true);
+      const timer = setTimeout(() => setIsLoading(false), 150);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   const text = {
     sv: {
@@ -216,9 +227,26 @@ const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
 
           {/* Content */}
           <div className="p-6 space-y-6">
-            <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-purple-700'}`}>
-              {t.intro}
-            </p>
+            {isLoading ? (
+              // Loading skeleton
+              <div className="space-y-4 animate-pulse">
+                <div className={`h-4 rounded ${isDark ? 'bg-white/10' : 'bg-purple-200'}`}></div>
+                <div className={`h-4 rounded w-3/4 ${isDark ? 'bg-white/10' : 'bg-purple-200'}`}></div>
+                <div className="space-y-3 mt-8">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="space-y-2">
+                      <div className={`h-6 rounded w-1/3 ${isDark ? 'bg-white/15' : 'bg-purple-300'}`}></div>
+                      <div className={`h-4 rounded ${isDark ? 'bg-white/10' : 'bg-purple-200'}`}></div>
+                      <div className={`h-4 rounded w-5/6 ${isDark ? 'bg-white/10' : 'bg-purple-200'}`}></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <>
+                <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-purple-700'}`}>
+                  {t.intro}
+                </p>
 
             {t.sections.map((section, idx) => (
               <div key={idx} className="space-y-3">
@@ -250,6 +278,8 @@ const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
                 </div>
               </div>
             ))}
+              </>
+            )}
           </div>
         </motion.div>
       </motion.div>
