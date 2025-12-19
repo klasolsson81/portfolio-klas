@@ -284,31 +284,63 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                 </h2>
                 <div className={`space-y-4 leading-relaxed text-sm md:text-base ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
                   <p>
-                    <strong className={isDark ? 'text-white' : 'text-warm-text'}>
+                    <span className={`font-semibold ${isDark ? 'text-white' : 'text-warm-text'}`}>
                       {t.about.intro1.split('.')[0]}.
-                    </strong> 
-                    {t.about.intro1.split('.').slice(1).join('.')}
+                    </span>
+                    {' '}{t.about.intro1.split('.').slice(1).join('.')}
                   </p>
-                  <p dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', `<span class="${isDark ? 'text-neon-cyan' : 'text-warm-accent'} font-bold">n8n</span>`) }} />
+                  <p dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', `<span class="${isDark ? 'text-neon-cyan' : 'text-warm-accent'} font-semibold">n8n</span>`) }} />
                 </div>
 
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
                   <div>
-                    <h3 className={`text-[10px] font-bold mb-2 uppercase tracking-widest bg-clip-text text-transparent
-                      ${isDark ? 'animate-subtitle-shimmer' : 'light-subtitle-shimmer'}`}>
+                    <h3 className={`text-xs font-bold mb-3 uppercase tracking-widest
+                      ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
                       {t.about.factsTitle}
                     </h3>
-                    <ul className={`space-y-1.5 text-sm ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
-                      <li><span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>➤</span> {t.about.facts.age}: <span className={isDark ? 'text-white' : 'text-warm-text'}>{myAge}</span></li>
-                      <li><span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>➤</span> {t.about.facts.city}: {t.about.factValues.city}</li>
-                      <li><span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>➤</span> {t.about.facts.lang}: {t.about.factValues.lang}</li>
-                      <li><span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>➤</span> {t.about.facts.family}: {t.about.factValues.family}</li>
+                    <ul className={`space-y-2 text-sm ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
+                      <li className="flex items-baseline gap-2">
+                        <span className={`${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>➤</span>
+                        <span className={`font-semibold min-w-[60px] ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
+                          {t.about.facts.age}:
+                        </span>
+                        <span className={`font-medium ${isDark ? 'text-white' : 'text-warm-text'}`}>
+                          {myAge}
+                        </span>
+                      </li>
+                      <li className="flex items-baseline gap-2">
+                        <span className={`${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>➤</span>
+                        <span className={`font-semibold min-w-[60px] ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
+                          {t.about.facts.city}:
+                        </span>
+                        <span className={`font-medium ${isDark ? 'text-white' : 'text-warm-text'}`}>
+                          {t.about.factValues.city}
+                        </span>
+                      </li>
+                      <li className="flex items-baseline gap-2">
+                        <span className={`${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>➤</span>
+                        <span className={`font-semibold min-w-[60px] ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
+                          {t.about.facts.lang}:
+                        </span>
+                        <span className={`font-medium ${isDark ? 'text-white' : 'text-warm-text'}`}>
+                          {t.about.factValues.lang}
+                        </span>
+                      </li>
+                      <li className="flex items-baseline gap-2">
+                        <span className={`${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>➤</span>
+                        <span className={`font-semibold min-w-[60px] ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
+                          {t.about.facts.family}:
+                        </span>
+                        <span className={`font-medium ${isDark ? 'text-white' : 'text-warm-text'}`}>
+                          {t.about.factValues.family}
+                        </span>
+                      </li>
                     </ul>
                   </div>
-                  
+
                   <div>
-                    <h3 className={`text-[10px] font-bold mb-2 uppercase tracking-widest bg-clip-text text-transparent
-                      ${isDark ? 'animate-subtitle-shimmer' : 'light-subtitle-shimmer'}`}>
+                    <h3 className={`text-xs font-bold mb-3 uppercase tracking-widest
+                      ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
                       {t.about.stackTitle}
                     </h3>
                     <div className="flex flex-wrap gap-1.5">
