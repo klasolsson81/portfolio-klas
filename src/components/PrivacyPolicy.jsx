@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
+  // Add ESC key handling
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
   const text = {
     sv: {
       title: 'Integritetspolicy',

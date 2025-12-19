@@ -40,9 +40,14 @@ const ConditionalAnalytics = () => {
 
     checkConsent();
 
-    // Listen for consent changes
-    window.addEventListener('cookie-consent-changed', checkConsent);
-    return () => window.removeEventListener('cookie-consent-changed', checkConsent);
+    // Listen for consent changes (use named function for better debugging)
+    const handleConsentChange = () => checkConsent();
+    window.addEventListener('cookie-consent-changed', handleConsentChange);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener('cookie-consent-changed', handleConsentChange);
+    };
   }, []);
 
   if (!hasConsent) return null;
