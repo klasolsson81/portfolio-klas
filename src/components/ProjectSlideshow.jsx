@@ -34,7 +34,7 @@ const ProjectSlideshow = ({ isOpen, onClose, slides, title, isDark }) => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose, currentIndex, slides.length]);
+  }, [isOpen, onClose, currentIndex, slides?.length]);
 
   // Touch/swipe gesture handlers
   const handleTouchStart = (e) => {
