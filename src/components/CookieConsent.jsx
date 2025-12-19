@@ -13,8 +13,8 @@ const CookieConsent = ({ isDark, lang, onConsentChange }) => {
       const timer = setTimeout(() => setShowBanner(true), 1000);
       return () => clearTimeout(timer);
     } else {
-      // Notify parent about existing consent
-      onConsentChange(consent === 'accepted');
+      // Notify parent about existing consent (if callback provided)
+      if (onConsentChange) onConsentChange(consent === 'accepted');
     }
   }, [onConsentChange]);
 
