@@ -246,8 +246,8 @@ const ChatUI = ({ lang, isDark }) => {
           : 'bg-white/20 backdrop-blur-sm border-purple-200/50'}`}>
 
         {/* OpenAI Disclaimer */}
-        <div className={`text-[9px] mb-2 text-center transition-colors duration-300
-          ${isDark ? 'text-gray-500' : 'text-purple-500/70'}`}>
+        <div className={`text-xs mb-2 text-center leading-relaxed transition-colors duration-300
+          ${isDark ? 'text-gray-400' : 'text-purple-600/80'}`}>
           {lang === 'sv'
             ? '🔒 Dina frågor skickas till OpenAI (ChatGPT). Dela inte känslig personlig information.'
             : '🔒 Your questions are sent to OpenAI (ChatGPT). Don\'t share sensitive personal information.'}

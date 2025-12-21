@@ -81,15 +81,15 @@ function App() {
         lang={lang}
       />
 
-      <div className={`fixed bottom-2 w-full text-center text-[10px] z-[20] transition-colors duration-300
-        ${isDark ? 'text-gray-600' : 'text-warm-text/40'}`}>
+      <div className={`fixed bottom-2 w-full text-center text-sm z-[20] transition-colors duration-300 leading-relaxed
+        ${isDark ? 'text-gray-400' : 'text-warm-text/60'}`}>
         <span className="pointer-events-none">
           &copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI
         </span>
         <span className="mx-2 pointer-events-none">•</span>
         <a
           href="/privacy-policy"
-          className={`pointer-events-auto underline hover:no-underline transition-colors
+          className={`pointer-events-auto underline hover:no-underline transition-all duration-200 font-medium
             ${isDark ? 'hover:text-neon-cyan' : 'hover:text-purple-700'}`}
         >
           {lang === 'sv' ? 'Integritetspolicy' : 'Privacy Policy'}

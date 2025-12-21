@@ -343,14 +343,14 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                       ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
                       {t.about.stackTitle}
                     </h3>
-                    <div className="flex flex-wrap gap-1.5">
-                      {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Tailwind CSS', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
-                        <span 
-                          key={tag} 
-                          className={`px-2 py-1 rounded text-[10px] md:text-xs font-mono cursor-default transition-colors
-                            ${isDark 
-                              ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20' 
-                              : 'bg-purple-100/70 border border-purple-200 text-warm-accent hover:bg-purple-100'}`}
+                    <div className="flex flex-wrap gap-2">
+                      {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Three.js', 'Tailwind CSS', 'Framer Motion', 'Vite', 'Vercel', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
+                        <span
+                          key={tag}
+                          className={`px-2.5 py-1.5 rounded-lg text-xs font-mono cursor-default transition-all duration-200 hover:scale-105 active:scale-95
+                            ${isDark
+                              ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20 hover:shadow-md'
+                              : 'bg-purple-100/70 border border-purple-200 text-warm-accent hover:bg-purple-100 hover:shadow-sm'}`}
                         >
                           {tag}
                         </span>
@@ -465,47 +465,61 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
 
 // Desktop NavButton
 const NavButton = ({ label, icon, active, onClick, isDark }) => (
-  <button 
+  <button
     onClick={onClick}
-    className={`w-full flex flex-row items-center justify-start gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group
-      ${active 
-        ? isDark 
-          ? 'bg-neon-purple/20 text-white border-l-2 border-neon-purple' 
-          : 'bg-purple-100/70 text-warm-text border-l-2 border-warm-accent'
-        : isDark 
-          ? 'text-gray-400 hover:bg-white/5 hover:text-white' 
-          : 'text-warm-muted hover:bg-warm-hover hover:text-warm-text'}
+    className={`relative w-full flex flex-row items-center justify-start gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group overflow-hidden
+      ${active
+        ? isDark
+          ? 'bg-neon-purple/20 text-white border-l-4 border-neon-purple shadow-lg'
+          : 'bg-purple-100/70 text-warm-text border-l-4 border-warm-accent shadow-md'
+        : isDark
+          ? 'text-gray-300 hover:bg-white/10 hover:text-white hover:shadow-md hover:scale-[1.02] active:scale-[0.98]'
+          : 'text-warm-text/70 hover:bg-warm-hover hover:text-warm-text hover:shadow-sm hover:scale-[1.02] active:scale-[0.98]'}
     `}
   >
-    <span className={`transition-colors ${active 
-      ? isDark ? 'text-neon-cyan' : 'text-warm-accent' 
-      : isDark ? 'group-hover:text-neon-purple' : 'group-hover:text-warm-accent'}`}>
+    {/* Subtle gradient overlay on hover (not AI-typical) */}
+    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none
+      ${isDark
+        ? 'bg-gradient-to-r from-white/5 to-transparent'
+        : 'bg-gradient-to-r from-purple-50/50 to-transparent'}`}
+    />
+
+    <span className={`relative z-10 transition-all duration-300 ${active
+      ? isDark ? 'text-neon-cyan scale-110' : 'text-warm-accent scale-110'
+      : isDark ? 'group-hover:text-white group-hover:scale-110 group-hover:rotate-3' : 'group-hover:text-warm-accent group-hover:scale-110 group-hover:rotate-3'}`}>
       {React.cloneElement(icon, { size: 16 })}
     </span>
-    <span>{label}</span>
+    <span className={`relative z-10 ${active ? 'font-bold' : 'font-medium group-hover:font-semibold'}`}>{label}</span>
   </button>
 );
 
 // Mobil NavButton - kompakt utan truncate
 const MobileNavButton = ({ label, icon, active, onClick, isDark, isHire }) => (
-  <button 
+  <button
     onClick={onClick}
-    className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2 rounded-lg text-[9px] font-medium transition-all duration-200
-      ${active 
-        ? isDark 
-          ? 'bg-neon-purple/20 text-white' 
-          : 'bg-purple-100/70 text-warm-text'
-        : isDark 
-          ? 'text-gray-400 hover:bg-white/5' 
-          : 'text-warm-muted hover:bg-warm-hover'}
+    className={`relative flex-1 flex flex-col items-center justify-center gap-1 py-2.5 rounded-lg text-[10px] font-medium transition-all duration-300 group overflow-hidden
+      ${active
+        ? isDark
+          ? 'bg-neon-purple/20 text-white shadow-md scale-105'
+          : 'bg-purple-100/70 text-warm-text shadow-sm scale-105'
+        : isDark
+          ? 'text-gray-300 hover:bg-white/10 hover:text-white active:scale-95'
+          : 'text-warm-text/70 hover:bg-warm-hover hover:text-warm-text active:scale-95'}
     `}
   >
-    <span className={`transition-colors ${active 
-      ? isDark ? 'text-neon-cyan' : 'text-warm-accent' 
-      : ''}`}>
+    {/* Subtle background glow on active */}
+    {active && (
+      <div className={`absolute inset-0 blur-sm opacity-50 pointer-events-none
+        ${isDark ? 'bg-neon-purple/10' : 'bg-purple-200/30'}`}
+      />
+    )}
+
+    <span className={`relative z-10 transition-all duration-300 ${active
+      ? isDark ? 'text-neon-cyan scale-110' : 'text-warm-accent scale-110'
+      : 'group-hover:scale-110 group-hover:rotate-6'}`}>
       {icon}
     </span>
-    <span className={`text-center whitespace-nowrap ${isHire && !active 
+    <span className={`relative z-10 text-center whitespace-nowrap ${active ? 'font-bold' : 'font-medium'} ${isHire && !active
       ? isDark ? 'animate-subtitle-shimmer bg-clip-text text-transparent font-bold' : 'light-subtitle-shimmer bg-clip-text text-transparent font-bold'
       : ''}`}>
       {label}
