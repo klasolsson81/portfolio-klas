@@ -413,6 +413,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                     demoUrl="https://recon.klasolsson.se"
                     githubUrl="https://github.com/klasolsson81/CheatSheet"
                     image="/recon-screenshot.png"
+                    onDetails={() => setActiveSlideshow({ title: "RECON - B2B Sales Intelligence", slides: PROJECT_SLIDES.recon })}
                     isDark={isDark}
                     lang={lang}
                   />
@@ -426,6 +427,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                     demoUrl="https://klasolsson81.github.io/SkyHighAdventures/"
                     githubUrl="https://github.com/klasolsson81/sky-adventure-game"
                     image="/skyhigh-screenshot.png"
+                    onDetails={() => setActiveSlideshow({ title: "Sky High Adventures", slides: PROJECT_SLIDES.skyhigh })}
                     isDark={isDark}
                     lang={lang}
                   />
@@ -438,15 +440,6 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                     {lang === 'sv' ? 'Koddjupdykningar' : 'Code Deep Dives'}
                   </h3>
 
-                <ProjectCard
-                  title="RECON - B2B Sales Intelligence"
-                  desc={lang === 'sv' ? "AI-driven B2B-analys som genererar säljinsikter i realtid. 70% snabbare, omfattande kod-review, multi-provider arkitektur." : "AI-powered B2B analysis generating sales insights in real-time. 70% faster, comprehensive code review, multi-provider architecture."}
-                  tags={['Next.js', 'TypeScript', 'OpenAI', 'Tavily', 'Vercel']}
-                  link="https://recon.klasolsson.se"
-                  onDetails={() => setActiveSlideshow({ title: "RECON - B2B Sales Intelligence", slides: PROJECT_SLIDES.recon })}
-                  detailsText={t.projects.details}
-                  isDark={isDark}
-                />
                 <ProjectCard
                   title="Console Detective AI"
                   desc={lang === 'sv' ? "Ett textbaserat noir-detektivspel..." : "A text-based noir detective game..."}
@@ -668,11 +661,18 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
 );
 
 // LiveDemoCard - Featured project card with screenshot and demo link
-const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, isDark, lang }) => (
-  <div className={`group relative rounded-xl overflow-hidden border transition-all duration-300 hover:scale-[1.02]
-    ${isDark
-      ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 shadow-lg hover:shadow-neon-cyan/20'
-      : 'bg-gradient-to-br from-orange-50/80 to-amber-50/60 border-orange-200/50 hover:border-warm-accent/60 shadow-md hover:shadow-warm-accent/10'}`}>
+const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, onDetails, isDark, lang }) => {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
+  return (
+    <>
+      <div
+        className={`group relative rounded-xl overflow-hidden border transition-all duration-300 hover:scale-[1.02] cursor-pointer
+          ${isDark
+            ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 shadow-lg hover:shadow-neon-cyan/20'
+            : 'bg-gradient-to-br from-orange-50/80 to-amber-50/60 border-orange-200/50 hover:border-warm-accent/60 shadow-md hover:shadow-warm-accent/10'}`}
+        onClick={() => setIsExpanded(true)}
+      >
 
     {/* Screenshot/Image */}
     <div className={`relative h-40 md:h-48 overflow-hidden ${isDark ? 'bg-black/40' : 'bg-orange-100/50'}`}>
@@ -713,6 +713,7 @@ const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, isDark, la
           href={demoUrl}
           target="_blank"
           rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all shadow-md hover:shadow-lg hover:scale-105
             ${isDark
               ? 'bg-neon-purple text-white hover:bg-neon-purple/80'
@@ -726,6 +727,7 @@ const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, isDark, la
           href={githubUrl}
           target="_blank"
           rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
           className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs md:text-sm font-medium border transition-all hover:scale-105
             ${isDark
               ? 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white'
@@ -734,6 +736,22 @@ const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, isDark, la
           <Github size={16} />
           {lang === 'sv' ? 'Kod' : 'Code'}
         </a>
+
+        {onDetails && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDetails();
+            }}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs md:text-sm font-medium border transition-all hover:scale-105
+              ${isDark
+                ? 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white'
+                : 'bg-orange-50/50 border-orange-200 text-warm-muted hover:bg-orange-100 hover:text-warm-text'}`}
+          >
+            <Code size={16} />
+            {lang === 'sv' ? 'Djupdykning' : 'Deep Dive'}
+          </button>
+        )}
       </div>
 
       {/* Tech Stack Tags */}
@@ -750,8 +768,132 @@ const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, isDark, la
           </span>
         ))}
       </div>
+
+      {/* Click hint */}
+      <div className={`mt-3 text-center text-[10px] ${isDark ? 'text-gray-500' : 'text-warm-accent/60'}`}>
+        👆 {lang === 'sv' ? 'Klicka för större vy' : 'Click for larger view'}
+      </div>
     </div>
   </div>
-);
+
+  {/* Expanded Modal */}
+  {isExpanded && (
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+      onClick={() => setIsExpanded(false)}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        className={`relative w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border
+          ${isDark
+            ? 'bg-[#0a0b1e] border-white/10'
+            : 'bg-orange-50/95 backdrop-blur-xl border-orange-200/50'}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={() => setIsExpanded(false)}
+          className={`absolute top-4 right-4 z-10 p-2 rounded-full transition-all hover:scale-110
+            ${isDark
+              ? 'bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white'
+              : 'bg-orange-100 hover:bg-orange-200 text-warm-accent hover:text-warm-text'}`}
+          aria-label={lang === 'sv' ? 'Stäng' : 'Close'}
+        >
+          <X size={24} />
+        </button>
+
+        {/* Large screenshot */}
+        <div className={`relative h-64 md:h-80 overflow-hidden ${isDark ? 'bg-black/40' : 'bg-orange-100/50'}`}>
+          {image ? (
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Rocket className={`w-24 h-24 ${isDark ? 'text-neon-purple/30' : 'text-warm-accent/30'}`} />
+            </div>
+          )}
+          <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-t from-black/60 to-transparent' : 'bg-gradient-to-t from-orange-50/60 to-transparent'}`} />
+        </div>
+
+        {/* Content */}
+        <div className="p-6 md:p-8">
+          <h2 className={`text-2xl md:text-3xl font-bold mb-4
+            ${isDark ? 'text-white' : 'text-warm-text'}`}>
+            {title}
+          </h2>
+
+          <p className={`text-base md:text-lg leading-relaxed mb-6
+            ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
+            {desc}
+          </p>
+
+          {/* Large Action Buttons */}
+          <div className="flex flex-wrap gap-3 mb-6">
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={`flex items-center gap-3 px-6 py-3 rounded-xl text-base font-bold transition-all shadow-lg hover:shadow-xl hover:scale-105
+                ${isDark
+                  ? 'bg-neon-purple text-white hover:bg-neon-purple/80'
+                  : 'bg-warm-accent text-white hover:bg-warm-accentDark'}`}
+            >
+              <Rocket size={20} />
+              {lang === 'sv' ? 'Öppna Live Demo' : 'Open Live Demo'}
+            </a>
+
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={`flex items-center gap-3 px-6 py-3 rounded-xl text-base font-medium border transition-all hover:scale-105
+                ${isDark
+                  ? 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white'
+                  : 'bg-orange-50/50 border-orange-200 text-warm-muted hover:bg-orange-100 hover:text-warm-text'}`}
+            >
+              <Github size={20} />
+              {lang === 'sv' ? 'Visa Kod' : 'View Code'}
+            </a>
+
+            {onDetails && (
+              <button
+                onClick={onDetails}
+                className={`flex items-center gap-3 px-6 py-3 rounded-xl text-base font-medium border transition-all hover:scale-105
+                  ${isDark
+                    ? 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white'
+                    : 'bg-orange-50/50 border-orange-200 text-warm-muted hover:bg-orange-100 hover:text-warm-text'}`}
+              >
+                <Code size={20} />
+                {lang === 'sv' ? 'Teknisk Djupdykning' : 'Technical Deep Dive'}
+              </button>
+            )}
+          </div>
+
+          {/* Tech Stack Tags - Larger */}
+          <div className="flex flex-wrap gap-2">
+            {tags.map(tag => (
+              <span
+                key={tag}
+                className={`text-sm px-3 py-1.5 rounded-lg font-mono
+                  ${isDark
+                    ? 'bg-black/40 text-gray-300 border border-white/10'
+                    : 'bg-orange-100/50 text-warm-accent border border-orange-200/50'}`}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  )}
+</>
+  );
+};
 
 export default HeroStage;
