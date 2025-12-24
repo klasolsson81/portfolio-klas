@@ -52,6 +52,8 @@ export default defineConfig({
         ]
       },
       workbox: {
+        // Increase file size limit for larger screenshots (default: 2 MB)
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
         // Cache strategies
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2}'],
         runtimeCaching: [
