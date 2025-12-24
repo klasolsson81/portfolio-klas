@@ -143,6 +143,51 @@ const containerVariants = {
 
 ## Recent Changes
 
+### 2025-12-24 - Session 16 (Sky High Adventures Update & Visual Improvements)
+
+**Project Updates & Enhanced Card Separation**
+
+**Problem:** Sky High Adventures card showed outdated tech stack (C#/.NET/WebAssembly) instead of actual stack (React/Phaser 3). Project cards had weak visual separation making boundaries difficult to distinguish.
+
+**Solution:** Updated project information and enhanced visual hierarchy with stronger borders, spacing, and shadows.
+
+1. **Sky High Adventures Info Updated** ✅
+   - Description: Changed from "C# AI-story game" → "React + Phaser 3 flight game"
+   - Tech stack: `C#, .NET, WebAssembly` → `React, Phaser 3, Vite, JavaScript, Game Dev`
+   - Demo URL: Updated to `https://skyadventuregame.klasolsson.se/`
+   - GitHub URL: Updated to `sky-adventure-game` repo
+   - Removed slideshow/deep dive functionality (not applicable)
+
+2. **Visual Separation Enhancements** ✅
+   - **Increased card spacing**: `space-y-3` (12px) → `space-y-6` (24px) - 100% increase
+   - **Stronger section separator**: Single border → double border (`border-t-2`) between "Live Demos" and "Code Deep Dives"
+   - **More padding between sections**: `pt-4` → `pt-8 mt-6` for clearer visual breaks
+   - **Thicker card borders**: `border` (1px) → `border-2` (2px) on all cards
+   - **Increased border opacity**:
+     - Dark mode: `/10` → `/20` (100% increase)
+     - Light mode: `warm-border` → `/70` (explicit orange-300/70)
+   - **Enhanced shadows**:
+     - LiveDemoCard: `shadow-lg` → `shadow-xl`, hover `/20` → `/30`
+     - ProjectCard: `shadow-lg` → `shadow-xl`, hover `/10` → `/30`
+   - **Improved hover effects**: Stronger border/shadow transitions for better interactivity
+
+**Technical Implementation:**
+- All changes in `HeroStage.jsx`
+- Maintains theme consistency (dark: neon cyan/purple, light: warm terracotta/orange)
+- No breaking changes to existing functionality
+
+**User Benefit:**
+- Accurate project information for Sky High Adventures
+- Much clearer visual boundaries between cards - no longer "bleeding together"
+- Better depth perception with enhanced shadows
+- Improved UX with more prominent interactive elements
+
+**Files Modified:** `HeroStage.jsx`
+
+**Commits:** `811233e` (visual improvements)
+
+---
+
 ### 2025-12-24 - Session 15 (Live Demos Showcase)
 
 **New Feature: Live Demos Section**
