@@ -675,12 +675,12 @@ const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, isDark, la
       : 'bg-gradient-to-br from-orange-50/80 to-amber-50/60 border-orange-200/50 hover:border-warm-accent/60 shadow-md hover:shadow-warm-accent/10'}`}>
 
     {/* Screenshot/Image */}
-    <div className={`relative h-32 md:h-40 overflow-hidden ${isDark ? 'bg-black/40' : 'bg-orange-100/50'}`}>
+    <div className={`relative h-40 md:h-48 overflow-hidden ${isDark ? 'bg-black/40' : 'bg-orange-100/50'}`}>
       {image ? (
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+          className="w-full h-full object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
           onError={(e) => {
             e.target.style.display = 'none';
             e.target.nextSibling.style.display = 'flex';
