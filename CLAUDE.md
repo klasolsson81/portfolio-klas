@@ -143,6 +143,57 @@ const containerVariants = {
 
 ## Recent Changes
 
+### 2025-12-24 - Session 14 (Light Mode Warm Color Overhaul)
+
+**Complete Light Mode Redesign - NO White, NO Purple!**
+
+**Problem:** Light mode had cold purple/teal colors + white backgrounds that clashed with warm peach gradient theme.
+
+**Solution:** Replaced ALL 142 occurrences of purple/white/teal with warm orange/terracotta/amber palette across 14 files.
+
+1. **CSS Changes (index.css)** ✅
+   - Scrollbar: purple → terracotta `#D2691E`
+   - Glassmorphism: white `rgba(255,255,255,...)` → peach cream `rgba(255,245,238,...)`
+   - Text gradients: purple/teal → brown/terracotta/amber shimmer
+   - Shadows & borders: purple → burnt orange
+   - Tech tags: purple backgrounds → warm peach
+
+2. **Config Changes (tailwind.config.js)** ✅
+   - `warm.card`: `#FFFFFF` → `#FFF5EE` (peach cream, NO white!)
+   - `warm.accent`: `#7C3AED` → `#D2691E` (terracotta, NO purple!)
+   - `warm.accentLight`: `#EDE9FE` → `#FFEEE6` (light peach)
+   - `warm.accentDark`: `#5B21B6` → `#CC5500` (burnt orange)
+   - `warm.accentAmber`: `#FF9800` (new warm amber)
+   - `warm.muted`: `#4A4A5E` → `#6B5B52` (warm brown, NO purple-gray!)
+
+3. **Component Updates (12 files)** ✅
+   - HeroStage.jsx, DevTimeline.jsx, HireMe.jsx (by agent)
+   - ChatUI.jsx, ProjectSlideshow.jsx, PrivacyPolicy.jsx (by agent)
+   - GithubStats.jsx: teal/cyan contribution colors → terracotta/amber
+   - CookieConsent.jsx, InstallPrompt.jsx, ErrorBoundary.jsx, FloatingCode.jsx
+   - All purple-100/200/500/600/700/900 → orange + warm-accent
+   - All bg-white/50/60/75 → bg-orange-50/100
+
+**New Warm Palette:**
+- **Primary Accent**: Terracotta `#D2691E`
+- **Secondary**: Warm Amber `#FF9800`
+- **Dark Accent**: Burnt Orange `#CC5500`
+- **Text**: Warm Brown `#6B5B52`
+- **Backgrounds**: Peach Cream, Orange-50/100 (NO white!)
+
+**Research-based:**
+- [Warm Earth Tones 2025](https://www.etsy.com/listing/4300694911/)
+- [Peach UI Design](https://www.figma.com/colors/peach/)
+- Pantone 2025: Mocha Mousse trend
+
+**Result:** Fully cohesive warm theme! Peach gradient background + terracotta accents = perfect visual harmony 🎨
+
+**Files Modified:** 14 files (index.css, tailwind.config.js, + 12 components)
+
+**Commit:** `a4d25da`
+
+---
+
 ### 2025-12-21 - Session 13 (Complete UI/Typography Overhaul)
 
 **UI/UX Improvements:**
