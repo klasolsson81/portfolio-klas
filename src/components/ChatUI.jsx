@@ -125,11 +125,11 @@ const ChatUI = ({ lang, isDark }) => {
     <div className={`flex flex-col flex-1 min-h-0 w-full rounded-2xl overflow-hidden border shadow-inner relative transition-colors duration-300
       ${isDark
         ? 'bg-black/40 border-white/5'
-        : 'bg-white/30 backdrop-blur-sm border-purple-200/50'}`}>
+        : 'bg-orange-50/30 backdrop-blur-sm border-orange-200/50'}`}>
 
       {/* Decorative sparkles */}
       <div className={`absolute top-4 right-14 opacity-20 pointer-events-none
-        ${isDark ? 'text-neon-purple' : 'text-purple-500'}`}>
+        ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
         <Sparkles size={32} className="animate-pulse"/>
       </div>
 
@@ -152,7 +152,7 @@ const ChatUI = ({ lang, isDark }) => {
       <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
         {/* History truncation warning */}
         {messages.length > 6 && (
-          <div className={`text-center text-[10px] py-2 px-3 rounded-lg mx-auto max-w-fit ${isDark ? 'bg-white/5 text-gray-500' : 'bg-purple-50/50 text-purple-500'}`}>
+          <div className={`text-center text-[10px] py-2 px-3 rounded-lg mx-auto max-w-fit ${isDark ? 'bg-white/5 text-gray-500' : 'bg-orange-50/50 text-warm-accent'}`}>
             💬 {lang === 'sv'
               ? 'Äldre meddelanden visas men skickas inte till AI (senaste 5 används)'
               : 'Older messages shown but not sent to AI (last 5 used)'}
@@ -169,7 +169,7 @@ const ChatUI = ({ lang, isDark }) => {
                 loading="lazy"
                 decoding="async"
                 className={`w-10 h-10 md:w-14 md:h-14 rounded-full mr-2 md:mr-3 shadow-sm shrink-0 object-cover border
-                  ${isDark ? 'border-neon-purple/30' : 'border-purple-300'}`}
+                  ${isDark ? 'border-neon-purple/30' : 'border-orange-300'}`}
               />
             )}
 
@@ -178,17 +178,17 @@ const ChatUI = ({ lang, isDark }) => {
               m.role === 'user' 
                 ? (isDark 
                     ? 'bg-neon-purple/20 text-white border border-neon-purple/30 rounded-tr-sm' 
-                    : 'bg-purple-500/20 text-purple-900 border border-purple-300/50 rounded-tr-sm')
+                    : 'bg-orange-500/20 text-warm-text border border-orange-300/50 rounded-tr-sm')
                 : (isDark 
                     ? 'bg-[#1a1b2e] text-gray-200 border border-white/5 rounded-tl-sm' 
-                    : 'bg-white/40 text-purple-900 border border-purple-200/50 rounded-tl-sm backdrop-blur-sm')
+                    : 'bg-orange-50/40 text-warm-text border border-orange-200/50 rounded-tl-sm backdrop-blur-sm')
             }`}>
               <ReactMarkdown
                 components={{
                   a: ({node, ...props}) => (
                     <a 
                       {...props} 
-                      className={`underline break-all ${isDark ? 'text-neon-cyan hover:text-white' : 'text-purple-700 hover:text-purple-900'}`}
+                      className={`underline break-all ${isDark ? 'text-neon-cyan hover:text-white' : 'text-warm-accentDark hover:text-warm-text'}`}
                       target="_blank" 
                       rel="noopener noreferrer" 
                     />
@@ -200,13 +200,13 @@ const ChatUI = ({ lang, isDark }) => {
                   strong: ({node, ...props}) => (
                     <strong 
                       {...props} 
-                      className={`font-bold ${isDark ? 'text-neon-purple' : 'text-purple-700'}`}
+                      className={`font-bold ${isDark ? 'text-neon-purple' : 'text-warm-accentDark'}`}
                     />
                   ),
                   code: ({node, ...props}) => (
                     <code 
                       {...props} 
-                      className={`px-1 py-0.5 rounded text-xs font-mono ${isDark ? 'bg-black/40 text-neon-cyan' : 'bg-purple-100/50 text-purple-700'}`}
+                      className={`px-1 py-0.5 rounded text-xs font-mono ${isDark ? 'bg-black/40 text-neon-cyan' : 'bg-orange-100/50 text-warm-accentDark'}`}
                     />
                   )
                 }}
@@ -225,13 +225,13 @@ const ChatUI = ({ lang, isDark }) => {
               loading="lazy"
               decoding="async"
               className={`w-10 h-10 md:w-14 md:h-14 rounded-full mr-2 md:mr-3 shrink-0 object-cover border opacity-80
-                ${isDark ? 'border-neon-purple/30' : 'border-purple-300'}`}
+                ${isDark ? 'border-neon-purple/30' : 'border-orange-300'}`}
             />
             <div className={`p-3 md:p-4 rounded-2xl rounded-tl-sm border flex items-center gap-2 text-sm transition-colors duration-300
               ${isDark 
                 ? 'bg-[#1a1b2e] border-white/5 text-gray-400' 
-                : 'bg-white/40 border-purple-200/50 text-purple-600 backdrop-blur-sm'}`}>
-              <Loader2 className={`animate-spin ${isDark ? 'text-neon-purple' : 'text-purple-600'}`} size={16} />
+                : 'bg-orange-50/40 border-orange-200/50 text-warm-accent backdrop-blur-sm'}`}>
+              <Loader2 className={`animate-spin ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`} size={16} />
               {lang === 'sv' ? "Tänker..." : "Thinking..."}
             </div>
           </div>
@@ -243,11 +243,11 @@ const ChatUI = ({ lang, isDark }) => {
       <form onSubmit={sendMessage} className={`shrink-0 p-3 md:p-4 border-t relative transition-colors duration-300
         ${isDark
           ? 'bg-black/80 border-white/10'
-          : 'bg-white/20 backdrop-blur-sm border-purple-200/50'}`}>
+          : 'bg-orange-50/20 backdrop-blur-sm border-orange-200/50'}`}>
 
         {/* OpenAI Disclaimer */}
         <div className={`text-xs mb-2 text-center leading-relaxed transition-colors duration-300
-          ${isDark ? 'text-gray-400' : 'text-purple-600/80'}`}>
+          ${isDark ? 'text-gray-400' : 'text-warm-accent/80'}`}>
           {lang === 'sv'
             ? '🔒 Dina frågor skickas till OpenAI (ChatGPT). Dela inte känslig personlig information.'
             : '🔒 Your questions are sent to OpenAI (ChatGPT). Don\'t share sensitive personal information.'}
@@ -264,7 +264,7 @@ const ChatUI = ({ lang, isDark }) => {
             className={`flex-1 rounded-xl px-4 py-3 outline-none text-sm transition-colors resize-none overflow-hidden min-h-[46px] max-h-[120px]
               ${isDark
                 ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-neon-purple/50'
-                : 'bg-white/50 border border-purple-200/50 text-purple-900 placeholder-purple-400 focus:border-purple-400'}`}
+                : 'bg-orange-50/50 border border-orange-200/50 text-warm-text placeholder-orange-400 focus:border-warm-accent'}`}
             maxLength={CHAT_CONFIG.MAX_MESSAGE_LENGTH}
             aria-label="Chat input"
           />
@@ -275,7 +275,7 @@ const ChatUI = ({ lang, isDark }) => {
             className={`p-3 rounded-xl text-white transition-all disabled:opacity-50 shadow-md hover:shadow-lg shrink-0 mb-[1px]
               ${isDark
                 ? 'bg-neon-purple hover:bg-neon-purple/80'
-                : 'bg-purple-600 hover:bg-purple-700'}`}
+                : 'bg-warm-accent hover:bg-warm-accentDark'}`}
             aria-label={lang === 'sv' ? 'Skicka meddelande' : 'Send message'}
           >
             <Send size={18} />
@@ -283,7 +283,7 @@ const ChatUI = ({ lang, isDark }) => {
         </div>
 
         {input.length > UI.CHAR_COUNTER_THRESHOLD && (
-          <div className={`absolute bottom-1 left-6 text-[10px] ${isDark ? 'text-gray-500' : 'text-purple-500'}`}>
+          <div className={`absolute bottom-1 left-6 text-[10px] ${isDark ? 'text-gray-500' : 'text-warm-accent'}`}>
             {input.length} / {CHAT_CONFIG.MAX_MESSAGE_LENGTH}
           </div>
         )}

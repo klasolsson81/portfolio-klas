@@ -74,11 +74,11 @@ const EVENT_TYPES = {
         dot: 'bg-purple-500'
       },
       light: {
-        bg: 'bg-purple-500/10',
-        border: 'border-purple-400/40',
-        text: 'text-purple-700',
-        glow: 'shadow-purple-200/50',
-        dot: 'bg-purple-500'
+        bg: 'bg-orange-500/10',
+        border: 'border-orange-400/40',
+        text: 'text-orange-700',
+        glow: 'shadow-orange-200/50',
+        dot: 'bg-orange-500'
       }
     }
   },
@@ -376,10 +376,10 @@ const TimelineEvent = ({ event, lang, isDark, index }) => {
       className="relative pl-8 md:pl-12 pb-8 last:pb-0"
     >
       {/* Tidslinje-linje */}
-      <div className={`absolute left-[11px] md:left-[19px] top-8 bottom-0 w-0.5 ${isDark ? 'bg-white/10' : 'bg-purple-200/50'}`} />
+      <div className={`absolute left-[11px] md:left-[19px] top-8 bottom-0 w-0.5 ${isDark ? 'bg-white/10' : 'bg-orange-200/50'}`} />
       
       {/* Tidslinje-punkt */}
-      <div className={`absolute left-0 md:left-2 top-1 w-6 h-6 rounded-full ${colors.dot} flex items-center justify-center ring-4 ${isDark ? 'ring-[#0a0b1e]' : 'ring-white/50'}`}>
+      <div className={`absolute left-0 md:left-2 top-1 w-6 h-6 rounded-full ${colors.dot} flex items-center justify-center ring-4 ${isDark ? 'ring-[#0a0b1e]' : 'ring-orange-50/50'}`}>
         <Icon size={12} className="text-white" />
       </div>
 
@@ -404,7 +404,7 @@ const TimelineEvent = ({ event, lang, isDark, index }) => {
             <div className="flex-1 min-w-0">
               {/* Datum & typ-badge */}
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className={`text-xs font-mono ${isDark ? 'text-gray-500' : 'text-purple-500'}`}>
+                <span className={`text-xs font-mono ${isDark ? 'text-gray-500' : 'text-warm-accent'}`}>
                   {month} {year}
                 </span>
                 <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-medium ${colors.bg} ${colors.text} border ${colors.border}`}>
@@ -418,16 +418,16 @@ const TimelineEvent = ({ event, lang, isDark, index }) => {
               </div>
               
               {/* Titel */}
-              <h3 className={`font-bold text-base md:text-lg ${isDark ? 'text-white' : 'text-purple-900'}`}>
+              <h3 className={`font-bold text-base md:text-lg ${isDark ? 'text-white' : 'text-warm-text'}`}>
                 {event.title[lang]}
               </h3>
             </div>
 
             {/* Expand-ikon */}
-            <button className={`p-1 rounded-lg transition-colors ${isDark ? 'hover:bg-white/10' : 'hover:bg-purple-100/50'}`}>
-              {isExpanded 
-                ? <ChevronUp size={18} className={isDark ? 'text-gray-400' : 'text-purple-500'} />
-                : <ChevronDown size={18} className={isDark ? 'text-gray-400' : 'text-purple-500'} />
+            <button className={`p-1 rounded-lg transition-colors ${isDark ? 'hover:bg-white/10' : 'hover:bg-orange-100/50'}`}>
+              {isExpanded
+                ? <ChevronUp size={18} className={isDark ? 'text-gray-400' : 'text-warm-accent'} />
+                : <ChevronDown size={18} className={isDark ? 'text-gray-400' : 'text-warm-accent'} />
               }
             </button>
           </div>
@@ -438,9 +438,9 @@ const TimelineEvent = ({ event, lang, isDark, index }) => {
               <span 
                 key={tag} 
                 className={`text-[10px] px-2 py-0.5 rounded-md font-mono transition-colors
-                  ${isDark 
-                    ? 'bg-white/5 text-gray-400 border border-white/10' 
-                    : 'bg-white/30 text-purple-600 border border-purple-200/50'}`}
+                  ${isDark
+                    ? 'bg-white/5 text-gray-400 border border-white/10'
+                    : 'bg-orange-50/30 text-warm-accent border border-orange-200/50'}`}
               >
                 #{tag}
               </span>
@@ -458,8 +458,8 @@ const TimelineEvent = ({ event, lang, isDark, index }) => {
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className={`px-4 md:px-5 pb-4 md:pb-5 pt-0 border-t ${isDark ? 'border-white/5' : 'border-purple-200/30'}`}>
-                <p className={`text-sm leading-relaxed pt-4 ${isDark ? 'text-gray-300' : 'text-purple-700'}`}>
+              <div className={`px-4 md:px-5 pb-4 md:pb-5 pt-0 border-t ${isDark ? 'border-white/5' : 'border-orange-200/30'}`}>
+                <p className={`text-sm leading-relaxed pt-4 ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
                   {event.description[lang]}
                 </p>
 {/* NY KOD FÖR LÄNK HÄR: */}
@@ -494,12 +494,12 @@ const FilterChip = ({ tag, isActive, onClick, isDark }) => (
     onClick={onClick}
     className={`text-xs px-3 py-1.5 rounded-full font-medium transition-all duration-200 ${
       isActive
-        ? isDark 
-          ? 'bg-neon-purple text-white shadow-lg shadow-neon-purple/30' 
-          : 'bg-purple-600 text-white shadow-lg shadow-purple-500/30'
+        ? isDark
+          ? 'bg-neon-purple text-white shadow-lg shadow-neon-purple/30'
+          : 'bg-warm-accent text-white shadow-lg shadow-orange-500/30'
         : isDark
           ? 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-white'
-          : 'bg-white/30 text-purple-600 border border-purple-200/50 hover:bg-white/50 hover:text-purple-800'
+          : 'bg-orange-50/30 text-warm-accent border border-orange-200/50 hover:bg-orange-50/50 hover:text-warm-accentDark'
     }`}
   >
     #{tag}
@@ -568,10 +568,10 @@ const DevTimeline = ({ lang, isDark }) => {
     <div className="md:flex-1 md:min-h-0 flex flex-col">
       {/* Header */}
       <div className="shrink-0 mb-4">
-        <h2 className={`text-xl md:text-2xl font-bold mb-1 ${isDark ? 'text-neon-purple' : 'text-purple-700'}`}>
+        <h2 className={`text-xl md:text-2xl font-bold mb-1 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
           {t.title[lang]}
         </h2>
-        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-purple-600'}`}>
+        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-warm-accent'}`}>
           {t.subtitle[lang]}
         </p>
       </div>
@@ -581,14 +581,14 @@ const DevTimeline = ({ lang, isDark }) => {
         <button
           onClick={() => setShowFilters(!showFilters)}
           className={`flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg transition-colors
-            ${isDark 
-              ? 'bg-white/5 text-gray-300 hover:bg-white/10' 
-              : 'bg-white/30 text-purple-700 hover:bg-white/50 border border-purple-200/50'}`}
+            ${isDark
+              ? 'bg-white/5 text-gray-300 hover:bg-white/10'
+              : 'bg-orange-50/30 text-warm-text hover:bg-orange-50/50 border border-orange-200/50'}`}
         >
           <Filter size={16} />
           {t.filter[lang]}
           {activeFilters.length > 0 && (
-            <span className={`ml-1 px-2 py-0.5 rounded-full text-xs ${isDark ? 'bg-neon-purple text-white' : 'bg-purple-600 text-white'}`}>
+            <span className={`ml-1 px-2 py-0.5 rounded-full text-xs ${isDark ? 'bg-neon-purple text-white' : 'bg-warm-accent text-white'}`}>
               {activeFilters.length}
             </span>
           )}
@@ -598,9 +598,9 @@ const DevTimeline = ({ lang, isDark }) => {
         <button
           onClick={toggleSortOrder}
           className={`flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg transition-colors
-            ${isDark 
-              ? 'bg-white/5 text-gray-300 hover:bg-white/10' 
-              : 'bg-white/30 text-purple-700 hover:bg-white/50 border border-purple-200/50'}`}
+            ${isDark
+              ? 'bg-white/5 text-gray-300 hover:bg-white/10'
+              : 'bg-orange-50/30 text-warm-text hover:bg-orange-50/50 border border-orange-200/50'}`}
         >
           <ArrowUpDown size={16} />
           {sortOrder === 'newest' ? t.newest[lang] : t.oldest[lang]}
@@ -663,9 +663,9 @@ const DevTimeline = ({ lang, isDark }) => {
                 <button
                   onClick={() => setShowAll(!showAll)}
                   className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-all
-                    ${isDark 
-                      ? 'bg-neon-purple/10 text-neon-purple border border-neon-purple/30 hover:bg-neon-purple/20' 
-                      : 'bg-purple-500/10 text-purple-700 border border-purple-300/50 hover:bg-purple-500/20'}`}
+                    ${isDark
+                      ? 'bg-neon-purple/10 text-neon-purple border border-neon-purple/30 hover:bg-neon-purple/20'
+                      : 'bg-orange-500/10 text-warm-accent border border-orange-300/50 hover:bg-orange-500/20'}`}
                 >
                   {showAll ? (
                     <>
@@ -683,7 +683,7 @@ const DevTimeline = ({ lang, isDark }) => {
             )}
           </>
         ) : (
-          <div className={`text-center py-12 ${isDark ? 'text-gray-500' : 'text-purple-500'}`}>
+          <div className={`text-center py-12 ${isDark ? 'text-gray-500' : 'text-warm-muted'}`}>
             <Filter size={32} className="mx-auto mb-3 opacity-50" />
             <p>{t.noResults[lang]}</p>
           </div>

@@ -15,7 +15,8 @@
       "Bash(node scripts/generate-icons.js:*)",
       "Bash(npm run dev:*)",
       "Bash(git mv:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(done)"
     ]
   }
 }

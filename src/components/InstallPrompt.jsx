@@ -103,7 +103,7 @@ const InstallPrompt = ({ isDark, lang }) => {
             className={`rounded-xl p-4 shadow-2xl border backdrop-blur-xl transition-colors duration-300
               ${isDark
                 ? 'bg-[#1a1b2e]/95 border-white/10 shadow-neon-purple/20'
-                : 'bg-white/95 border-purple-200/50 shadow-purple-500/20'}`}
+                : 'bg-orange-50/95 border-orange-200/50 shadow-orange-500/20'}`}
           >
             <div className="flex items-start gap-3">
               {/* Icon */}
@@ -111,7 +111,7 @@ const InstallPrompt = ({ isDark, lang }) => {
                 className={`flex items-center justify-center w-10 h-10 rounded-full shrink-0
                   ${isDark
                     ? 'bg-neon-purple/20 text-neon-purple'
-                    : 'bg-purple-100 text-purple-600'}`}
+                    : 'bg-orange-100 text-warm-accent'}`}
               >
                 <Download size={20} />
               </div>
@@ -119,12 +119,12 @@ const InstallPrompt = ({ isDark, lang }) => {
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <h3
-                  className={`font-bold text-sm mb-1 ${isDark ? 'text-white' : 'text-purple-900'}`}
+                  className={`font-bold text-sm mb-1 ${isDark ? 'text-white' : 'text-warm-text'}`}
                 >
                   {t.title}
                 </h3>
                 <p
-                  className={`text-xs leading-relaxed ${isDark ? 'text-gray-300' : 'text-purple-700'}`}
+                  className={`text-xs leading-relaxed ${isDark ? 'text-gray-300' : 'text-warm-accentDark'}`}
                 >
                   {t.description}
                 </p>
@@ -136,7 +136,7 @@ const InstallPrompt = ({ isDark, lang }) => {
                     className={`flex-1 px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-md hover:shadow-lg
                       ${isDark
                         ? 'bg-neon-purple text-white hover:bg-neon-cyan hover:text-black shadow-neon-purple/30 hover:shadow-neon-cyan/30'
-                        : 'bg-purple-600 text-white hover:bg-purple-700 shadow-purple-500/30 hover:shadow-purple-600/30'}`}
+                        : 'bg-warm-accent text-white hover:bg-warm-accentDark shadow-orange-500/30 hover:shadow-orange-600/30'}`}
                   >
                     {t.install}
                   </button>
@@ -145,7 +145,7 @@ const InstallPrompt = ({ isDark, lang }) => {
                     className={`px-4 py-2 rounded-lg text-xs font-medium transition-colors
                       ${isDark
                         ? 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-                        : 'bg-purple-100/50 text-purple-600 hover:bg-purple-100 hover:text-purple-700'}`}
+                        : 'bg-orange-100/50 text-warm-accent hover:bg-orange-100 hover:text-warm-accentDark'}`}
                   >
                     {t.later}
                   </button>
@@ -158,7 +158,7 @@ const InstallPrompt = ({ isDark, lang }) => {
                 className={`shrink-0 p-1 rounded-full transition-colors
                   ${isDark
                     ? 'text-gray-500 hover:text-white hover:bg-white/10'
-                    : 'text-purple-400 hover:text-purple-700 hover:bg-purple-100'}`}
+                    : 'text-warm-muted hover:text-warm-accentDark hover:bg-orange-100'}`}
                 aria-label={lang === 'sv' ? 'Stäng' : 'Close'}
               >
                 <X size={16} />

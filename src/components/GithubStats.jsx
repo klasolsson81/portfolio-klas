@@ -62,10 +62,10 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
     } else {
       const colors = [
         { bg: '#E8DFD3', border: '#D1C4B8' }, // 0 - warm beige/tan
-        { bg: '#C084FC', border: '#A855F7' }, // 1 - purple-400/500
-        { bg: '#8B5CF6', border: '#7C3AED' }, // 2 - purple-500/600
-        { bg: '#14B8A6', border: '#0D9488' }, // 3 - teal-500/600
-        { bg: '#0891B2', border: '#0E7490' }, // 4 - cyan-600/700
+        { bg: '#F59E0B', border: '#F97316' }, // 1 - orange-500/orange-600
+        { bg: '#EA580C', border: '#DC2626' }, // 2 - orange-600/red-600
+        { bg: '#D2691E', border: '#CC5500' }, // 3 - terracotta/burnt orange (WARM!)
+        { bg: '#FF9800', border: '#F57C00' }, // 4 - warm amber/orange-700 (WARM!)
       ];
       return colors[level];
     }
@@ -118,13 +118,13 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
       <div className={`mt-8 p-6 rounded-xl transition-all duration-300 border
         ${isDark
           ? 'bg-black/20 border-white/10'
-          : 'bg-white/30 backdrop-blur-sm border-purple-200/50'}`}>
+          : 'bg-orange-50/30 backdrop-blur-sm border-orange-200/50'}`}>
         <h3 className={`text-xs mb-4 uppercase tracking-wider flex items-center gap-2
-          ${isDark ? 'text-gray-500' : 'text-purple-600'}`}>
-          <span className={isDark ? 'text-neon-purple' : 'text-purple-500'}>⚡</span>
+          ${isDark ? 'text-gray-500' : 'text-warm-accent'}`}>
+          <span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>⚡</span>
           {lang === 'sv' ? 'Kodaktivitet (GitHub)' : 'Coding Activity (GitHub)'}
         </h3>
-        <div className={`text-center py-8 ${isDark ? 'text-gray-500' : 'text-purple-600'}`}>
+        <div className={`text-center py-8 ${isDark ? 'text-gray-500' : 'text-warm-accent'}`}>
           <p>{lang === 'sv' ? 'Laddar...' : 'Loading...'}</p>
         </div>
       </div>
@@ -136,19 +136,19 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
       <div className={`mt-8 p-6 rounded-xl transition-all duration-300 border
         ${isDark
           ? 'bg-black/20 border-white/10'
-          : 'bg-white/30 backdrop-blur-sm border-purple-200/50'}`}>
+          : 'bg-orange-50/30 backdrop-blur-sm border-orange-200/50'}`}>
         <h3 className={`text-xs mb-4 uppercase tracking-wider flex items-center gap-2
-          ${isDark ? 'text-gray-500' : 'text-purple-600'}`}>
-          <span className={isDark ? 'text-neon-purple' : 'text-purple-500'}>⚡</span>
+          ${isDark ? 'text-gray-500' : 'text-warm-accent'}`}>
+          <span className={isDark ? 'text-neon-purple' : 'text-warm-accent'}>⚡</span>
           {lang === 'sv' ? 'Kodaktivitet (GitHub)' : 'Coding Activity (GitHub)'}
         </h3>
-        <div className={`text-center py-8 ${isDark ? 'text-gray-500' : 'text-purple-600'}`}>
+        <div className={`text-center py-8 ${isDark ? 'text-gray-500' : 'text-warm-accent'}`}>
           <p>{lang === 'sv' ? 'Kunde inte ladda GitHub-statistik' : 'Failed to load GitHub stats'}</p>
           <a
             href="https://github.com/klasolsson81"
             target="_blank"
             rel="noreferrer"
-            className={`transition-colors ${isDark ? 'text-neon-purple hover:text-neon-cyan' : 'text-purple-700 hover:text-purple-900'} hover:underline`}
+            className={`transition-colors ${isDark ? 'text-neon-purple hover:text-neon-cyan' : 'text-warm-accentDark hover:text-warm-text'} hover:underline`}
           >
             {lang === 'sv' ? 'Besök min GitHub-profil →' : 'Visit my GitHub profile →'}
           </a>
@@ -171,10 +171,10 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
       <div className="flex items-center justify-between mb-4">
         <h3 className={`text-xs uppercase tracking-wider flex items-center gap-2 font-semibold
           ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
-          <span className={isDark ? 'text-neon-cyan' : 'text-purple-600'}>⚡</span>
+          <span className={isDark ? 'text-neon-cyan' : 'text-warm-accent'}>⚡</span>
           {lang === 'sv' ? 'Kodaktivitet (GitHub)' : 'Coding Activity (GitHub)'}
         </h3>
-        <span className={`text-xs font-semibold ${isDark ? 'text-cyan-400' : 'text-teal-600'}`}>
+        <span className={`text-xs font-semibold ${isDark ? 'text-cyan-400' : 'text-warm-accent'}`}>
           {totalContributions} {lang === 'sv' ? 'bidrag senaste 6 mån' : 'contributions last 6 months'}
         </span>
       </div>
@@ -188,7 +188,7 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
               <div
                 key={idx}
                 className={`w-4 h-2 flex items-center justify-start text-[9px] font-medium
-                  ${isDark ? 'text-cyan-400/70' : 'text-teal-600/70'}`}
+                  ${isDark ? 'text-cyan-400/70' : 'text-warm-accent/70'}`}
               >
                 {idx % 2 === 1 ? day : ''} {/* Show only odd indices (Mon, Wed, Fri) */}
               </div>
@@ -207,7 +207,7 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
               <div key={weekIdx} className={`flex flex-col gap-[3px] ${isMonthEnd ? 'mr-2' : ''}`}>
                 {/* Month label for first day of week if new month */}
                 <div className={`h-[16px] text-[9px] font-medium
-                  ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
+                  ${isDark ? 'text-purple-400' : 'text-warm-accent'}`}>
                   {week.find(day => day !== null) && weekIdx > 0 &&
                    week.find(day => day !== null)?.date.getDate() <= 7
                     ? formatDate(week.find(day => day !== null).date).split(' ')[1]
@@ -240,7 +240,7 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
                     >
                       {/* Tooltip on hover */}
                       <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded text-[10px] whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10
-                        ${isDark ? 'bg-gray-900 text-gray-200 border border-white/10 shadow-lg' : 'bg-white text-purple-900 border border-purple-200 shadow-xl'}`}>
+                        ${isDark ? 'bg-gray-900 text-gray-200 border border-white/10 shadow-lg' : 'bg-white text-warm-text border border-orange-200 shadow-xl'}`}>
                         {formatDate(day.date)}: {day.count} {lang === 'sv' ? 'bidrag' : 'contributions'}
                       </div>
                     </div>
@@ -286,7 +286,7 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
           className={`text-[10px] font-medium transition-all duration-200 hover:scale-105 inline-block
             ${isDark
               ? 'text-cyan-400 hover:text-neon-cyan'
-              : 'text-teal-600 hover:text-purple-600'}`}
+              : 'text-warm-accent hover:text-warm-accentDark'}`}
         >
           {lang === 'sv' ? 'Visa hela profilen på GitHub →' : 'View full profile on GitHub →'}
         </a>

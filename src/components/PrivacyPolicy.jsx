@@ -191,23 +191,23 @@ const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
           className={`relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl border custom-scrollbar
             ${isDark
               ? 'bg-[#1a1b2e]/95 border-white/10'
-              : 'bg-white/95 border-purple-200/50'}`}
+              : 'bg-orange-50/95 border-orange-200/50'}`}
         >
           {/* Header */}
           <div className={`sticky top-0 z-10 p-6 border-b backdrop-blur-xl
             ${isDark
               ? 'bg-[#1a1b2e]/95 border-white/10'
-              : 'bg-white/95 border-purple-200/50'}`}>
+              : 'bg-orange-50/95 border-orange-200/50'}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${isDark ? 'bg-neon-cyan/20' : 'bg-purple-100'}`}>
-                  <Shield className={isDark ? 'text-neon-cyan' : 'text-purple-600'} size={24} />
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-neon-cyan/20' : 'bg-orange-100'}`}>
+                  <Shield className={isDark ? 'text-neon-cyan' : 'text-warm-accent'} size={24} />
                 </div>
                 <div>
-                  <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-purple-900'}`}>
+                  <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-warm-text'}`}>
                     {t.title}
                   </h2>
-                  <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-purple-600'}`}>
+                  <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-warm-accent'}`}>
                     {t.lastUpdated}: {today}
                   </p>
                 </div>
@@ -217,7 +217,7 @@ const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
                 className={`p-2 rounded-lg transition-colors
                   ${isDark
                     ? 'hover:bg-white/10 text-gray-400 hover:text-white'
-                    : 'hover:bg-purple-100 text-purple-600 hover:text-purple-900'}`}
+                    : 'hover:bg-orange-100 text-warm-accent hover:text-warm-text'}`}
                 aria-label="Close"
               >
                 <X size={24} />
@@ -230,27 +230,27 @@ const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
             {isLoading ? (
               // Loading skeleton
               <div className="space-y-4 animate-pulse">
-                <div className={`h-4 rounded ${isDark ? 'bg-white/10' : 'bg-purple-200'}`}></div>
-                <div className={`h-4 rounded w-3/4 ${isDark ? 'bg-white/10' : 'bg-purple-200'}`}></div>
+                <div className={`h-4 rounded ${isDark ? 'bg-white/10' : 'bg-orange-200'}`}></div>
+                <div className={`h-4 rounded w-3/4 ${isDark ? 'bg-white/10' : 'bg-orange-200'}`}></div>
                 <div className="space-y-3 mt-8">
                   {[1, 2, 3].map(i => (
                     <div key={i} className="space-y-2">
-                      <div className={`h-6 rounded w-1/3 ${isDark ? 'bg-white/15' : 'bg-purple-300'}`}></div>
-                      <div className={`h-4 rounded ${isDark ? 'bg-white/10' : 'bg-purple-200'}`}></div>
-                      <div className={`h-4 rounded w-5/6 ${isDark ? 'bg-white/10' : 'bg-purple-200'}`}></div>
+                      <div className={`h-6 rounded w-1/3 ${isDark ? 'bg-white/15' : 'bg-orange-300'}`}></div>
+                      <div className={`h-4 rounded ${isDark ? 'bg-white/10' : 'bg-orange-200'}`}></div>
+                      <div className={`h-4 rounded w-5/6 ${isDark ? 'bg-white/10' : 'bg-orange-200'}`}></div>
                     </div>
                   ))}
                 </div>
               </div>
             ) : (
               <>
-                <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-purple-700'}`}>
+                <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-warm-accentDark'}`}>
                   {t.intro}
                 </p>
 
             {t.sections.map((section, idx) => (
               <div key={idx} className="space-y-3">
-                <h3 className={`text-lg font-bold ${isDark ? 'text-neon-cyan' : 'text-purple-700'}`}>
+                <h3 className={`text-lg font-bold ${isDark ? 'text-neon-cyan' : 'text-warm-accentDark'}`}>
                   {section.title}
                 </h3>
                 <div className="space-y-2">
@@ -261,11 +261,11 @@ const PrivacyPolicy = ({ isOpen, onClose, isDark, lang }) => {
                     const parts = line.split(/(\*\*.*?\*\*)/g);
 
                     return (
-                      <p key={lineIdx} className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-purple-700'}`}>
+                      <p key={lineIdx} className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-warm-accentDark'}`}>
                         {parts.map((part, partIdx) => {
                           if (part.startsWith('**') && part.endsWith('**')) {
                             return (
-                              <strong key={partIdx} className={`font-bold ${isDark ? 'text-white' : 'text-purple-900'}`}>
+                              <strong key={partIdx} className={`font-bold ${isDark ? 'text-white' : 'text-warm-text'}`}>
                                 {part.slice(2, -2)}
                               </strong>
                             );

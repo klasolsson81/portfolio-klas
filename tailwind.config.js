@@ -15,17 +15,18 @@ export default {
           darkbg: "#0a0b1e",
           darkerbg: "#050614",
         },
-        // SOLAR TECH - Varmt ljust tema
+        // SOLAR TECH - Varmt ljust tema (INGA VITA / LILA FÄRGER!)
         warm: {
           bg: "#FFF6E5",           // Varm guld-beige (matchar CSS gradient)
-          card: "#FFFFFF",         // Vit kortbakgrund
+          card: "#FFF5EE",         // Peach cream kortbakgrund (INTE vit!)
           cardAlt: "#FFF8F2",      // Alternativ kortfärg (persika-ton)
           text: "#1A1E29",         // Mörk blågrå (gunmetal) - rubriker
-          muted: "#4A4A5E",        // Grå med lila ton - brödtext
-          subtle: "#7A7A8E",       // Svagare text
-          accent: "#7C3AED",       // Stark lila (Violet-600)
-          accentLight: "#EDE9FE",  // Ljus lila bakgrund (Violet-100)
-          accentDark: "#5B21B6",   // Mörkare lila (Violet-800)
+          muted: "#6B5B52",        // Varm brun - brödtext (INTE lila-grå!)
+          subtle: "#8B7B72",       // Svagare text (warm gray)
+          accent: "#D2691E",       // Terracotta/Burnt Orange (INTE lila!)
+          accentLight: "#FFEEE6",  // Ljus peach bakgrund (INTE lila!)
+          accentDark: "#CC5500",   // Burnt orange dark (INTE mörk lila!)
+          accentAmber: "#FF9800",  // Warm amber (sekundär accent)
           border: "#E8DFD3",       // Varm beige kantlinje
           hover: "#FFF5EB",        // Ljus persika hover
           active: "#FFEDD5",       // Aktiv state (orange-100)

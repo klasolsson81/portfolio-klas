@@ -59,9 +59,9 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
       <motion.div 
         layout
         className={`w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
-          ${isDark 
-            ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl' 
-            : 'bg-white/50 backdrop-blur-2xl border border-white/50 shadow-xl shadow-purple-500/10'}`}
+          ${isDark
+            ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl'
+            : 'bg-orange-50/50 backdrop-blur-2xl border border-orange-200/50 shadow-xl shadow-orange-400/10'}`}
         style={{ borderRadius: 24 }}
       >
         {/* MOBIL HEADER - Kompakt och ren */}
@@ -131,9 +131,9 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                 download="CV_Klas_Olsson.pdf"
                 onClick={() => {confetti({ particleCount: 60, spread: 50, origin: { y: 0.7 } }); toast.success('CV laddas ner!');}}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold
-                  ${isDark 
-                    ? 'bg-neon-purple/20 border border-neon-purple/30 text-neon-cyan' 
-                    : 'bg-purple-100/70 border border-purple-200 text-warm-accent'}`}
+                  ${isDark
+                    ? 'bg-neon-purple/20 border border-neon-purple/30 text-neon-cyan'
+                    : 'bg-orange-100/70 border border-orange-200 text-warm-accent'}`}
               >
                 <Download size={13} />
                 CV
@@ -155,7 +155,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
         <motion.div 
           layout 
           className={`hidden md:flex p-6 md:w-1/3 border-r flex-col items-start relative overflow-y-auto custom-scrollbar shrink-0
-            ${isDark ? 'border-white/10 bg-black/20' : 'border-white/30 bg-white/20'}`}
+            ${isDark ? 'border-white/10 bg-black/20' : 'border-orange-200/30 bg-orange-50/20'}`}
         >          
           <div className="flex w-full justify-end gap-3 mb-2 relative z-20">
             <button
@@ -182,9 +182,9 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
           </div>
 
           <div className={`absolute inset-0 pointer-events-none
-            ${isDark 
-              ? 'bg-gradient-to-br from-neon-purple/10 to-transparent' 
-              : 'bg-gradient-to-br from-purple-100/30 via-transparent to-amber-50/20'}`}
+            ${isDark
+              ? 'bg-gradient-to-br from-neon-purple/10 to-transparent'
+              : 'bg-gradient-to-br from-orange-100/30 via-transparent to-amber-50/20'}`}
           ></div>
           
           <ProfilePhoto isDark={isDark} />
@@ -245,9 +245,9 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
               download="CV_Klas_Olsson.pdf"
               onClick={() => {confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#00f3ff', '#bd00ff', '#ffffff'] }); toast.success('Tack för visat intresse! CV laddas ner.');}}
               className={`relative group flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 shadow-sm
-                ${isDark 
-                  ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20 hover:border-neon-purple' 
-                  : 'bg-purple-100/70 border border-purple-200 text-warm-accent hover:bg-purple-100 hover:border-warm-accent'}`}
+                ${isDark
+                  ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20 hover:border-neon-purple'
+                  : 'bg-orange-100/70 border border-orange-200 text-warm-accent hover:bg-orange-100 hover:border-warm-accent'}`}
               title={t.nav.cv}
             >
               <Download size={18} className="relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300"/>
@@ -269,7 +269,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
         <motion.div 
           layout 
           className={`flex-1 min-h-0 p-4 md:p-8 relative flex flex-col md:overflow-hidden transition-colors duration-500
-            ${isDark ? 'bg-black/30' : 'bg-white/20'}`}
+            ${isDark ? 'bg-black/30' : 'bg-orange-50/20'}`}
         >
           <AnimatePresence mode="wait">
             
@@ -350,7 +350,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                           className={`px-2.5 py-1.5 rounded-lg text-xs font-mono cursor-default transition-all duration-200 hover:scale-105 active:scale-95
                             ${isDark
                               ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20 hover:shadow-md'
-                              : 'bg-purple-100/70 border border-purple-200 text-warm-accent hover:bg-purple-100 hover:shadow-sm'}`}
+                              : 'bg-orange-100/70 border border-orange-200 text-warm-accent hover:bg-orange-100 hover:shadow-sm'}`}
                         >
                           {tag}
                         </span>
@@ -471,7 +471,7 @@ const NavButton = ({ label, icon, active, onClick, isDark }) => (
       ${active
         ? isDark
           ? 'bg-neon-purple/20 text-white border-l-4 border-neon-purple shadow-lg'
-          : 'bg-purple-100/70 text-warm-text border-l-4 border-warm-accent shadow-md'
+          : 'bg-orange-100/70 text-warm-text border-l-4 border-warm-accent shadow-md'
         : isDark
           ? 'text-gray-300 hover:bg-white/10 hover:text-white hover:shadow-md hover:scale-[1.02] active:scale-[0.98]'
           : 'text-warm-text/70 hover:bg-warm-hover hover:text-warm-text hover:shadow-sm hover:scale-[1.02] active:scale-[0.98]'}
@@ -481,7 +481,7 @@ const NavButton = ({ label, icon, active, onClick, isDark }) => (
     <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none
       ${isDark
         ? 'bg-gradient-to-r from-white/5 to-transparent'
-        : 'bg-gradient-to-r from-purple-50/50 to-transparent'}`}
+        : 'bg-gradient-to-r from-orange-50/50 to-transparent'}`}
     />
 
     <span className={`relative z-10 transition-all duration-300 ${active
@@ -501,7 +501,7 @@ const MobileNavButton = ({ label, icon, active, onClick, isDark, isHire }) => (
       ${active
         ? isDark
           ? 'bg-neon-purple/20 text-white shadow-md scale-105'
-          : 'bg-purple-100/70 text-warm-text shadow-sm scale-105'
+          : 'bg-orange-100/70 text-warm-text shadow-sm scale-105'
         : isDark
           ? 'text-gray-300 hover:bg-white/10 hover:text-white active:scale-95'
           : 'text-warm-text/70 hover:bg-warm-hover hover:text-warm-text active:scale-95'}
@@ -510,7 +510,7 @@ const MobileNavButton = ({ label, icon, active, onClick, isDark, isHire }) => (
     {/* Subtle background glow on active */}
     {active && (
       <div className={`absolute inset-0 blur-sm opacity-50 pointer-events-none
-        ${isDark ? 'bg-neon-purple/10' : 'bg-purple-200/30'}`}
+        ${isDark ? 'bg-neon-purple/10' : 'bg-orange-200/30'}`}
       />
     )}
 
@@ -532,10 +532,10 @@ const HireNavButton = ({ label, icon, active, onClick, isDark }) => (
   <button 
     onClick={onClick}
     className={`w-full flex flex-row items-center justify-start gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group
-      ${active 
-        ? isDark 
-          ? 'bg-neon-purple/20 text-white border-l-2 border-neon-purple' 
-          : 'bg-purple-100/70 text-warm-text border-l-2 border-warm-accent'
+      ${active
+        ? isDark
+          ? 'bg-neon-purple/20 text-white border-l-2 border-neon-purple'
+          : 'bg-orange-100/70 text-warm-text border-l-2 border-warm-accent'
         : isDark 
           ? 'text-gray-400 hover:bg-white/5 hover:text-white' 
           : 'text-warm-muted hover:bg-warm-hover hover:text-warm-text'}
@@ -557,8 +557,8 @@ const HireNavButton = ({ label, icon, active, onClick, isDark }) => (
 const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText, isDark }) => (
   <div className={`p-5 rounded-xl border transition-all group relative shadow-lg
     ${isDark 
-      ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 hover:shadow-neon-cyan/20' 
-      : 'bg-white/60 border-warm-border hover:border-warm-accent/50 hover:shadow-warm-accent/10'}`}>
+      ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 hover:shadow-neon-cyan/20'
+      : 'bg-orange-50/60 border-warm-border hover:border-warm-accent/50 hover:shadow-warm-accent/10'}`}>
       
     <div className="flex justify-between items-start pr-8">
       <h3 className={`font-bold text-base md:text-lg transition-colors
@@ -587,9 +587,9 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
         <button 
           onClick={(e) => { e.preventDefault(); onPlay(); }} 
           className={`flex items-center gap-2 px-3 py-1.5 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm
-            ${isDark 
-              ? 'bg-neon-purple/10 text-neon-purple border-neon-purple/30 hover:bg-neon-purple hover:text-white' 
-              : 'bg-purple-100/70 text-warm-accent border-purple-200 hover:bg-warm-accent hover:text-white'}`}
+            ${isDark
+              ? 'bg-neon-purple/10 text-neon-purple border-neon-purple/30 hover:bg-neon-purple hover:text-white'
+              : 'bg-orange-100/70 text-warm-accent border-orange-200 hover:bg-warm-accent hover:text-white'}`}
         >
           <Play size={12} fill="currentColor" /> {watchText}
         </button>
@@ -614,8 +614,8 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
               ? (t === 'Team Lead' || t === 'Scrum' 
                   ? 'bg-neon-purple/20 text-white border-neon-purple/30' 
                   : 'bg-black/40 text-gray-400 border-white/10')
-              : (t === 'Team Lead' || t === 'Scrum' 
-                  ? 'bg-purple-100/70 text-warm-accent border-purple-200' 
+              : (t === 'Team Lead' || t === 'Scrum'
+                  ? 'bg-orange-100/70 text-warm-accent border-orange-200'
                   : 'bg-warm-hover text-warm-muted border-warm-border')}`}
         >
           {t}

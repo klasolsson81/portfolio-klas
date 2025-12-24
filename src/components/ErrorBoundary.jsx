@@ -104,11 +104,11 @@ class ErrorBoundary extends React.Component {
         <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-700
           ${isDark
             ? 'bg-gradient-to-br from-slate-800 via-slate-950 to-black'
-            : 'bg-gradient-to-br from-orange-50 via-purple-50 to-pink-50'}`}>
+            : 'bg-gradient-to-br from-orange-50 via-amber-50 to-pink-50'}`}>
           <div className={`max-w-2xl w-full rounded-2xl p-8 shadow-2xl backdrop-blur-sm border transition-colors duration-300
             ${isDark
               ? 'bg-slate-900/50 border-red-500/30'
-              : 'bg-white/80 border-red-400/40'}`}>
+              : 'bg-orange-50/80 border-red-400/40'}`}>
             {/* Error Icon */}
             <div className="flex justify-center mb-6">
               <div className={`p-4 rounded-full ${isDark ? 'bg-red-500/10' : 'bg-red-100'}`}>
@@ -174,8 +174,8 @@ class ErrorBoundary extends React.Component {
                   onClick={this.handleReset}
                   className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg transition-all font-medium
                     ${isDark
-                      ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                      : 'bg-purple-500 hover:bg-purple-600 text-white shadow-md hover:shadow-lg'}`}
+                      ? 'bg-neon-purple hover:bg-neon-purple/80 text-white'
+                      : 'bg-warm-accent hover:bg-warm-accentDark text-white shadow-md hover:shadow-lg'}`}
                 >
                   <RefreshCw size={20} />
                   {t.buttons.reset}

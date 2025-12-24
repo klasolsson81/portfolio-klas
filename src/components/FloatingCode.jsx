@@ -33,7 +33,7 @@ const FloatingCode = ({ isDark }) => {
             className={`absolute font-mono text-4xl font-bold whitespace-nowrap
               ${isDark 
                 ? 'text-neon-cyan/20' 
-                : 'text-purple-700/25'}`}
+                : 'text-warm-accent/25'}`}
             style={{ 
               top: `${position}%`,
               textShadow: isDark 
