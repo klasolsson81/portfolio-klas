@@ -398,7 +398,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                 </h2>
 
                 {/* LIVE DEMOS - Featured Projects */}
-                <div className="space-y-3">
+                <div className="space-y-6">
                   <h3 className={`text-sm uppercase tracking-wider font-bold flex items-center gap-2 ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>
                     <span>🚀</span>
                     {lang === 'sv' ? 'Live Demos' : 'Live Demos'}
@@ -421,20 +421,19 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                   <LiveDemoCard
                     title="Sky High Adventures"
                     desc={lang === 'sv'
-                      ? "Interaktivt äventyrsspel byggt i C# med AI-genererad story. Spela direkt i webbläsaren via WebAssembly!"
-                      : "Interactive adventure game built in C# with AI-generated story. Play directly in browser via WebAssembly!"}
-                    tags={['C#', '.NET', 'WebAssembly', 'Game Dev', 'AI Story']}
-                    demoUrl="https://klasolsson81.github.io/SkyHighAdventures/"
+                      ? "Ett fartfyllt flygspel utvecklat med React och Phaser 3. Styr din pilot genom himlen, samla stjärnor och undvik hinder!"
+                      : "Fast-paced flight game built with React and Phaser 3. Control your pilot through the sky, collect stars and avoid obstacles!"}
+                    tags={['React', 'Phaser 3', 'Vite', 'JavaScript', 'Game Dev']}
+                    demoUrl="https://skyadventuregame.klasolsson.se/"
                     githubUrl="https://github.com/klasolsson81/sky-adventure-game"
                     image="/skyhigh-screenshot.png"
-                    onDetails={() => setActiveSlideshow({ title: "Sky High Adventures", slides: PROJECT_SLIDES.skyhigh })}
                     isDark={isDark}
                     lang={lang}
                   />
                 </div>
 
                 {/* CODE DEEP DIVES - Project Breakdowns */}
-                <div className={`space-y-3 pt-4 border-t ${isDark ? 'border-white/10' : 'border-orange-200/50'}`}>
+                <div className={`space-y-6 pt-8 mt-6 border-t-2 ${isDark ? 'border-white/20' : 'border-orange-300/60'}`}>
                   <h3 className={`text-sm uppercase tracking-wider font-bold flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
                     <span>💻</span>
                     {lang === 'sv' ? 'Koddjupdykningar' : 'Code Deep Dives'}
@@ -590,10 +589,10 @@ const HireNavButton = ({ label, icon, active, onClick, isDark }) => (
 );
 
 const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onDetails, detailsText, isDark }) => (
-  <div className={`p-5 rounded-xl border transition-all group relative shadow-lg
-    ${isDark 
-      ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 hover:shadow-neon-cyan/20'
-      : 'bg-orange-50/60 border-warm-border hover:border-warm-accent/50 hover:shadow-warm-accent/10'}`}>
+  <div className={`p-5 rounded-xl border-2 transition-all group relative shadow-xl
+    ${isDark
+      ? 'bg-gradient-to-br from-white/5 to-transparent border-white/20 hover:border-neon-cyan/60 hover:shadow-neon-cyan/30'
+      : 'bg-orange-50/60 border-orange-300/70 hover:border-warm-accent/70 hover:shadow-warm-accent/20'}`}>
       
     <div className="flex justify-between items-start pr-8">
       <h3 className={`font-bold text-base md:text-lg transition-colors
@@ -667,10 +666,10 @@ const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, onDetails,
   return (
     <>
       <div
-        className={`group relative rounded-xl overflow-hidden border transition-all duration-300 hover:scale-[1.02] cursor-pointer
+        className={`group relative rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-[1.02] cursor-pointer
           ${isDark
-            ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 shadow-lg hover:shadow-neon-cyan/20'
-            : 'bg-gradient-to-br from-orange-50/80 to-amber-50/60 border-orange-200/50 hover:border-warm-accent/60 shadow-md hover:shadow-warm-accent/10'}`}
+            ? 'bg-gradient-to-br from-white/5 to-transparent border-white/20 hover:border-neon-cyan/60 shadow-xl hover:shadow-neon-cyan/30'
+            : 'bg-gradient-to-br from-orange-50/80 to-amber-50/60 border-orange-300/70 hover:border-warm-accent/70 shadow-lg hover:shadow-warm-accent/20'}`}
         onClick={() => setIsExpanded(true)}
       >
 
