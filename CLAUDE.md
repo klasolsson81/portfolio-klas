@@ -1,6 +1,6 @@
 # Klas Olsson - Portfolio Website
 
-**Last Updated:** 2025-12-21
+**Last Updated:** 2025-12-24
 **Status:** Production (Deployed on Vercel)
 **URL:** https://klasolsson.se
 
@@ -142,6 +142,45 @@ const containerVariants = {
 ---
 
 ## Recent Changes
+
+### 2025-12-24 - Session 15 (Live Demos Showcase)
+
+**New Feature: Live Demos Section**
+
+**Problem:** Completed projects (RECON and Sky High Adventures) were buried in "Code Deep Dives" section, not prominently showcased as live demos.
+
+**Solution:** Created dedicated "Live Demos" section at top of Projects tab with feature cards.
+
+1. **New LiveDemoCard Component** ✅
+   - Screenshot/image display with fallback Rocket icon
+   - "Open Live Demo" primary CTA button (Rocket icon + text)
+   - GitHub code link as secondary action
+   - Tech stack tags with theme-aware styling
+   - Hover effects: scale-102, shadow transitions, gradient overlays
+   - Image error handling with automatic fallback to icon
+   - Bilingual descriptions (Swedish/English)
+
+2. **Projects Tab Restructured** ✅
+   - **"Live Demos"** (top section) - Featured cards for deployed projects
+     - RECON - B2B Sales Intelligence (Next.js, TypeScript, OpenAI, Vercel)
+     - Sky High Adventures (C#, .NET, WebAssembly, Game Dev)
+   - **"Code Deep Dives"** (bottom section) - Existing technical breakdowns
+   - Clear visual separation with border and section headings
+
+3. **Technical Implementation** ✅
+   - Added Rocket icon import from lucide-react
+   - Component placed at end of HeroStage.jsx
+   - Theme-aware styling (dark: neon-purple/cyan, light: warm-accent/terracotta)
+   - Maintains warm theme colors in light mode (orange-50, warm-accent)
+   - Responsive design (mobile-first)
+
+**User Benefit:** Easier access to live demos, clear distinction between deployed projects and code breakdowns.
+
+**Files Modified:** `HeroStage.jsx`
+
+**Commit:** `e80d2dd`
+
+---
 
 ### 2025-12-24 - Session 14 (Light Mode Warm Color Overhaul)
 
