@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
 import ChatUI from './ChatUI';
-import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download, Layers, Briefcase, Moon, Sun, TrendingUp } from 'lucide-react';
+import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download, Layers, Briefcase, Moon, Sun, TrendingUp, Rocket } from 'lucide-react';
 import GithubStats from './GithubStats';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
@@ -388,14 +388,55 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
             )}
 
             {section === 'projects' && (
-              <motion.div 
-                key="projects" 
+              <motion.div
+                key="projects"
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-                className="space-y-4 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full"
+                className="space-y-6 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full"
               >
-                <h2 className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
+                <h2 className={`text-xl md:text-2xl font-bold mb-2 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>
                   {t.titles.projects}
                 </h2>
+
+                {/* LIVE DEMOS - Featured Projects */}
+                <div className="space-y-3">
+                  <h3 className={`text-sm uppercase tracking-wider font-bold flex items-center gap-2 ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>
+                    <span>🚀</span>
+                    {lang === 'sv' ? 'Live Demos' : 'Live Demos'}
+                  </h3>
+
+                  <LiveDemoCard
+                    title="RECON - B2B Sales Intelligence"
+                    desc={lang === 'sv'
+                      ? "AI-driven B2B-analys som genererar säljinsikter i realtid. 70% snabbare än traditionella verktyg med multi-provider arkitektur."
+                      : "AI-powered B2B analysis generating sales insights in real-time. 70% faster than traditional tools with multi-provider architecture."}
+                    tags={['Next.js', 'TypeScript', 'OpenAI', 'Tavily API', 'Vercel']}
+                    demoUrl="https://recon.klasolsson.se"
+                    githubUrl="https://github.com/klasolsson81/recon"
+                    image="/recon-screenshot.png"
+                    isDark={isDark}
+                    lang={lang}
+                  />
+
+                  <LiveDemoCard
+                    title="Sky High Adventures"
+                    desc={lang === 'sv'
+                      ? "Interaktivt äventyrsspel byggt i C# med AI-genererad story. Spela direkt i webbläsaren via WebAssembly!"
+                      : "Interactive adventure game built in C# with AI-generated story. Play directly in browser via WebAssembly!"}
+                    tags={['C#', '.NET', 'WebAssembly', 'Game Dev', 'AI Story']}
+                    demoUrl="https://klasolsson81.github.io/SkyHighAdventures/"
+                    githubUrl="https://github.com/klasolsson81/SkyHighAdventures"
+                    image="/skyhigh-screenshot.png"
+                    isDark={isDark}
+                    lang={lang}
+                  />
+                </div>
+
+                {/* CODE DEEP DIVES - Project Breakdowns */}
+                <div className={`space-y-3 pt-4 border-t ${isDark ? 'border-white/10' : 'border-orange-200/50'}`}>
+                  <h3 className={`text-sm uppercase tracking-wider font-bold flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
+                    <span>💻</span>
+                    {lang === 'sv' ? 'Koddjupdykningar' : 'Code Deep Dives'}
+                  </h3>
 
                 <ProjectCard
                   title="RECON - B2B Sales Intelligence"
@@ -438,10 +479,11 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                 />
 
                 <div className={`mt-4 p-4 border-2 border-dashed rounded-xl text-center text-xs
-                  ${isDark 
-                    ? 'border-white/10 text-gray-500 bg-black/20' 
+                  ${isDark
+                    ? 'border-white/10 text-gray-500 bg-black/20'
                     : 'border-warm-border text-warm-subtle bg-warm-hover/50'}`}>
                   {t.projects.more}
+                </div>
                 </div>
               </motion.div>
             )}
@@ -621,6 +663,93 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
           {t}
         </span>
       ))}
+    </div>
+  </div>
+);
+
+// LiveDemoCard - Featured project card with screenshot and demo link
+const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, isDark, lang }) => (
+  <div className={`group relative rounded-xl overflow-hidden border transition-all duration-300 hover:scale-[1.02]
+    ${isDark
+      ? 'bg-gradient-to-br from-white/5 to-transparent border-white/10 hover:border-neon-cyan/50 shadow-lg hover:shadow-neon-cyan/20'
+      : 'bg-gradient-to-br from-orange-50/80 to-amber-50/60 border-orange-200/50 hover:border-warm-accent/60 shadow-md hover:shadow-warm-accent/10'}`}>
+
+    {/* Screenshot/Image */}
+    <div className={`relative h-32 md:h-40 overflow-hidden ${isDark ? 'bg-black/40' : 'bg-orange-100/50'}`}>
+      {image ? (
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+          onError={(e) => {
+            e.target.style.display = 'none';
+            e.target.nextSibling.style.display = 'flex';
+          }}
+        />
+      ) : null}
+      <div className={`absolute inset-0 flex items-center justify-center ${image ? 'hidden' : 'flex'}`}>
+        <Rocket className={`w-16 h-16 ${isDark ? 'text-neon-purple/30' : 'text-warm-accent/30'}`} />
+      </div>
+
+      {/* Overlay gradient */}
+      <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-t from-black/60 to-transparent' : 'bg-gradient-to-t from-orange-50/60 to-transparent'}`} />
+    </div>
+
+    {/* Content */}
+    <div className="p-4 md:p-5">
+      <h3 className={`font-bold text-base md:text-lg mb-2 transition-colors
+        ${isDark ? 'text-white group-hover:text-neon-cyan' : 'text-warm-text group-hover:text-warm-accent'}`}>
+        {title}
+      </h3>
+
+      <p className={`text-xs md:text-sm leading-relaxed mb-3
+        ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
+        {desc}
+      </p>
+
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-2 mb-3">
+        <a
+          href={demoUrl}
+          target="_blank"
+          rel="noreferrer"
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all shadow-md hover:shadow-lg hover:scale-105
+            ${isDark
+              ? 'bg-neon-purple text-white hover:bg-neon-purple/80'
+              : 'bg-warm-accent text-white hover:bg-warm-accentDark'}`}
+        >
+          <Rocket size={16} />
+          {lang === 'sv' ? 'Öppna Live Demo' : 'Open Live Demo'}
+        </a>
+
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noreferrer"
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs md:text-sm font-medium border transition-all hover:scale-105
+            ${isDark
+              ? 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white'
+              : 'bg-orange-50/50 border-orange-200 text-warm-muted hover:bg-orange-100 hover:text-warm-text'}`}
+        >
+          <Github size={16} />
+          {lang === 'sv' ? 'Kod' : 'Code'}
+        </a>
+      </div>
+
+      {/* Tech Stack Tags */}
+      <div className="flex flex-wrap gap-1.5">
+        {tags.map(tag => (
+          <span
+            key={tag}
+            className={`text-[10px] px-2 py-1 rounded-md font-mono
+              ${isDark
+                ? 'bg-black/40 text-gray-400 border border-white/10'
+                : 'bg-orange-100/50 text-warm-accent border border-orange-200/50'}`}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
     </div>
   </div>
 );
