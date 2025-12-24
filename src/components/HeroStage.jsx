@@ -411,7 +411,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                       : "AI-powered B2B analysis generating sales insights in real-time. 70% faster than traditional tools with multi-provider architecture."}
                     tags={['Next.js', 'TypeScript', 'OpenAI', 'Tavily API', 'Vercel']}
                     demoUrl="https://recon.klasolsson.se"
-                    githubUrl="https://github.com/klasolsson81/recon"
+                    githubUrl="https://github.com/klasolsson81/CheatSheet"
                     image="/recon-screenshot.png"
                     isDark={isDark}
                     lang={lang}
@@ -424,7 +424,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
                       : "Interactive adventure game built in C# with AI-generated story. Play directly in browser via WebAssembly!"}
                     tags={['C#', '.NET', 'WebAssembly', 'Game Dev', 'AI Story']}
                     demoUrl="https://klasolsson81.github.io/SkyHighAdventures/"
-                    githubUrl="https://github.com/klasolsson81/SkyHighAdventures"
+                    githubUrl="https://github.com/klasolsson81/sky-adventure-game"
                     image="/skyhigh-screenshot.png"
                     isDark={isDark}
                     lang={lang}
