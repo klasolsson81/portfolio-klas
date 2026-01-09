@@ -213,21 +213,26 @@ ${el.time}: ${analysis?.estimatedHours || '?'} ${el.hours}
 ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
 
     try {
-      await apiClient.post('/api/email', {
-        subject,
-        body: emailBody,
-        replyTo: formData.email,
-        senderName: formData.name
-      });
-      toast.success(t.status.successTitle);
-      setStatus('sent');
-      setIsSending(false);
-    } catch (err) {
-      // Specific error message for email failure (overrides interceptor toast)
-      toast.error(t.errors.mail);
-      setIsSending(false);
-    } 
-  };
+    await apiClient.post('/api/email', {
+      subject,
+      body: emailBody,
+      replyTo: formData.email,
+      senderName: formData.name,
+      // NYTT: Skicka med verifieringsdata till backend
+      verificationToken: analysis.verificationToken,
+      analysisData: {
+        status: analysis.status,
+        estimatedHours: analysis.estimatedHours
+      }
+    });
+    toast.success(t.status.successTitle);
+    setStatus('sent');
+  } catch (err) {
+    toast.error(t.errors.mail);
+  } finally {
+    setIsSending(false);
+  }
+};
 
   // Transparenta inputs för ljust läge
   const inputClass = `w-full rounded-lg p-3 outline-none transition-colors text-sm border appearance-none

@@ -1,7 +1,13 @@
 import OpenAI from 'openai';
+import crypto from 'crypto'; // Krävs för HMAC-token
+import { checkRateLimit, getClientIP } from '../lib/utils/rateLimit.js'; //
+import { sanitizeTextInput } from '../lib/validators/inputValidator.js'; //
+import { logger } from '../lib/utils/logger.js'; //
+import { RATE_LIMIT } from '../lib/config/constants.js'; //
+import { config } from '../lib/config/env.js'; //
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: config.openaiKey,
 });
 
 const RULES = `
@@ -346,26 +352,44 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { projectType, paymentType, amount, description } = req.body;
+  // 1. RATE LIMITING (Säkerhetstips 1)
+  const clientIP = getClientIP(req);
+  const rateLimitResult = checkRateLimit(clientIP, RATE_LIMIT.MAX_REQUESTS, RATE_LIMIT.WINDOW_MS);
 
-  // Validera att beskrivning finns
-  if (!description || description.trim().length < 10) {
+  if (!rateLimitResult.allowed) {
+    logger.warn('Rate limit exceeded in analyze.js', { ip: clientIP });
+    return res.status(429).json({ 
+      error: 'Too many requests',
+      message: 'För många förfrågningar. Vänta en minut.' 
+    });
+  }
+
+  const { projectType, paymentType, amount, description, email, name } = req.body;
+
+  // 2. SANITERING AV INPUT (Säkerhetstips 2)
+  // Vi tvättar beskrivningen och namnet innan det skickas till AI:n
+  const sanitizedDescription = sanitizeTextInput(description, 1000);
+  const sanitizedName = sanitizeTextInput(name, 100);
+
+  if (!sanitizedDescription || sanitizedDescription.trim().length < 10) {
     return res.status(400).json({ 
       error: 'Description required',
       message: 'Vänligen beskriv ditt projekt mer utförligt (minst 10 tecken).'
     });
   }
 
+  // DIN GAMLA FORMATERADE PROMPT - Men nu med saniterad data!
   const userPrompt = `
 INKOMMANDE FÖRFRÅGAN:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Namn: ${sanitizedName || 'Ej angett'}
 Typ av projekt: ${projectType || 'Ej angett'}
 Ersättningstyp vald av kund: ${paymentType || 'Ej angett'}
 Budgetförslag: ${amount ? amount + ' kr' : 'Ej angett / 0 kr'}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 PROJEKTBESKRIVNING:
-${description}
+${sanitizedDescription}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Analysera förfrågan enligt reglerna och svara med JSON.
@@ -385,34 +409,39 @@ Analysera förfrågan enligt reglerna och svara med JSON.
 
     const analysis = JSON.parse(completion.choices[0].message.content);
     
-    // Säkerställ att approved-fältet är korrekt baserat på status
-    analysis.approved = analysis.status === 'approved';
-    
-    // Ta bort interna noteringar innan vi skickar till klient
+    // 3. GENERERA VERIFIERINGSTOKEN (Säkerhetstips 3)
+    // Vi använder din reCAPTCHA secret som en privat nyckel för att signera svaret
+    const secret = process.env.RECAPTCHA_SECRET_KEY;
+    const tokenData = `${email}-${analysis.status}-${analysis.estimatedHours}`;
+    const verificationToken = crypto
+      .createHmac('sha256', secret)
+      .update(tokenData)
+      .digest('hex');
+
+    // Skapa svaret till klienten (raderar interna anteckningar)
     const clientResponse = {
       status: analysis.status,
-      approved: analysis.approved,
+      approved: analysis.status === 'approved',
       estimatedHours: analysis.estimatedHours,
       projectCategory: analysis.projectCategory,
       feedback: analysis.feedback,
       followUpQuestions: analysis.followUpQuestions,
-      isLIA: analysis.isLIA || false
+      isLIA: analysis.isLIA || false,
+      verificationToken // Denna skickas med tillbaka till frontend
     };
 
-    // Logga intern data för Klas (kan skickas till dashboard/email separat)
-    console.log('Internal analysis:', {
-      ...analysis,
-      timestamp: new Date().toISOString(),
-      rawInput: { projectType, paymentType, amount, description }
+    logger.info('AI Analysis completed and signed', { 
+      ip: clientIP, 
+      status: analysis.status 
     });
 
     res.status(200).json(clientResponse);
 
   } catch (error) {
-    console.error('AI Analysis Error:', error);
+    logger.error('AI Analysis Error', error, { ip: clientIP });
     res.status(500).json({ 
       error: 'AI analysis failed',
-      message: 'Något gick fel vid analysen. Försök igen eller kontakta Klas direkt.'
+      message: 'Något gick fel vid analysen. Försök igen.'
     });
   }
 }

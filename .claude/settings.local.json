@@ -16,7 +16,13 @@
       "Bash(npm run dev:*)",
       "Bash(git mv:*)",
       "Bash(test:*)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(npm run lint)",
+      "Bash(timeout 5 type:*)",
+      "Bash(git checkout:*)",
+      "Bash(node -e:*)",
+      "Bash(curl:*)",
+      "Bash(git stash:*)"
     ]
   }
 }
