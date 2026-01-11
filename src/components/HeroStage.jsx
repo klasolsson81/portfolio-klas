@@ -297,12 +297,12 @@ const itemVariants = {
     exit="hidden"
     className="space-y-6 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full"
   >
-    <motion.h2 
-      variants={itemVariants} 
-      className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}
-    >
-      {t.titles.whoami}
-    </motion.h2>
+<motion.h2 
+  variants={itemVariants} 
+  className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'animate-subtitle-shimmer' : 'light-subtitle-shimmer'}`}
+>
+  {t.titles.whoami}
+</motion.h2>
 
     <div className={`space-y-4 leading-relaxed text-sm md:text-base ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
       <motion.p variants={itemVariants}>
@@ -322,10 +322,9 @@ const itemVariants = {
 
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
                   <div>
-                    <h3 className={`text-xs font-bold mb-3 uppercase tracking-widest
-                      ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
-                      {t.about.factsTitle}
-                    </h3>
+<h3 className={`text-xs font-bold mb-3 uppercase tracking-widest ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
+  {t.about.factsTitle}
+</h3>
                     <ul className={`space-y-2 text-sm ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
                       <li className="flex items-baseline gap-2">
                         <span className={`${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>➤</span>
@@ -367,10 +366,9 @@ const itemVariants = {
                   </div>
 
                   <div>
-                    <h3 className={`text-xs font-bold mb-3 uppercase tracking-widest
-                      ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
-                      {t.about.stackTitle}
-                    </h3>
+<h3 className={`text-xs font-bold mb-3 uppercase tracking-widest ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
+  {t.about.stackTitle}
+</h3>
                     <div className="flex flex-wrap gap-2">
                       {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Three.js', 'Tailwind CSS', 'Framer Motion', 'Vite', 'Vercel', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
                         <span
