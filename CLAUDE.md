@@ -143,9 +143,13 @@ const containerVariants = {
 
 ## Recent Changes
 
-### 2026-01-11 - LIA Dates & Chat Localization Fix
-- **Updated LIA Dates:** Updated `chat.js` with correct periods: LIA 1 (2026-08-31 to 2026-11-06) and LIA 2 (2027-03-08 to 2027-06-11).
-- **Chat Welcome Fix:** Enhanced `ChatUI.jsx` to dynamically update the welcome message when switching languages.
+
+
+### 2026-01-11 - LIA Dates & UI/UX Polishing
+- **Updated LIA Dates:** Updated `chat.js` with new periods: LIA 1 (2026-08-31 to 2026-11-06) and LIA 2 (2027-03-08 to 2027-06-11).
+- **Mobile-Optimized GitHub Stats:** Redesigned `GithubStats.jsx` with month-based blocks, horizontal scroll, and sticky labels for better readability on small screens.
+- **Responsive Footer:** Changed footer in `App.jsx` from `fixed` to `relative` to prevent overlapping content on mobile.
+- **Chat Localization Fix:** Improved `ChatUI.jsx` logic to update the welcome message dynamically when switching languages.
 
 ### 2026-01-10 - Security Hardening & HMAC Verification
 - **Rate Limiting:** Implemented IP-based rate limiting on all POST endpoints (`analyze.js`, `email.js`) to prevent DoS and cost spikes.

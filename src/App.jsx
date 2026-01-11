@@ -48,7 +48,7 @@ function App() {
 
   return (
     // BG-TRANSPARENT för BÅDA teman - låter body CSS visa gradient-bakgrunden
-    <main className={`relative w-full min-h-screen overflow-hidden font-sans transition-colors duration-700
+    <main className={`relative w-full min-h-screen overflow-x-hidden font-sans transition-colors duration-700
       ${isDark
         ? 'bg-transparent selection:bg-neon-cyan selection:text-black'
         : 'bg-transparent selection:bg-purple-200 selection:text-purple-900'}`}>
@@ -81,20 +81,23 @@ function App() {
         lang={lang}
       />
 
-      <div className={`fixed bottom-2 w-full text-center text-sm z-[20] transition-colors duration-300 leading-relaxed
+      {/* Footer - Ändrad från fixed till relative för att undvika överlappning på mobil */}
+      <footer className={`relative py-12 w-full text-center text-sm z-[20] transition-colors duration-300 leading-relaxed
         ${isDark ? 'text-gray-400' : 'text-warm-text/60'}`}>
-        <span className="pointer-events-none">
-          &copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI
-        </span>
-        <span className="mx-2 pointer-events-none">•</span>
-        <a
-          href="/privacy-policy"
-          className={`pointer-events-auto underline hover:no-underline transition-all duration-200 font-medium
-            ${isDark ? 'hover:text-neon-cyan' : 'hover:text-purple-700'}`}
-        >
-          {lang === 'sv' ? 'Integritetspolicy' : 'Privacy Policy'}
-        </a>
-      </div>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
+          <span className="pointer-events-none">
+            &copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI
+          </span>
+          <span className="hidden md:inline mx-2 pointer-events-none">•</span>
+          <a
+            href="/privacy-policy"
+            className={`pointer-events-auto underline hover:no-underline transition-all duration-200 font-medium
+              ${isDark ? 'hover:text-neon-cyan' : 'hover:text-purple-700'}`}
+          >
+            {lang === 'sv' ? 'Integritetspolicy' : 'Privacy Policy'}
+          </a>
+        </div>
+      </footer>
 
       <Toaster 
         theme={isDark ? "dark" : "light"} 

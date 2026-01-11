@@ -236,3 +236,27 @@ body {
   background: linear-gradient(135deg, rgba(254, 228, 200, 0.95) 0%, rgba(255, 240, 220, 0.9) 100%);
   border-color: rgba(210, 105, 30, 0.5);
 }
+
+/* ===== HORISONTELL SCROLL FÖR MOBIL (GitHub Stats) ===== */
+.custom-scrollbar-horizontal::-webkit-scrollbar {
+  height: 4px; /* Tunnare för horisontell scroll */
+}
+
+.custom-scrollbar-horizontal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-horizontal::-webkit-scrollbar-thumb {
+  background: rgba(210, 105, 30, 0.2);
+  border-radius: 10px;
+}
+
+.dark .custom-scrollbar-horizontal::-webkit-scrollbar-thumb {
+  background: rgba(0, 243, 255, 0.2);
+}
+
+/* Förhindra att sidan hoppar vid scroll */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
