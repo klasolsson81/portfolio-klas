@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 /**
  * Custom GitHub Contributions Calendar
- * Fixat: Borttagen overflow-hidden tillåter tooltips att synas utan extra padding.
+ * Fixat: Dynamisk tooltip-positionering (upp/ner) och mer kompakt design.
  */
 const GithubStats = ({ isDark, lang = 'sv' }) => {
   const [contributions, setContributions] = useState([]);
@@ -108,8 +108,8 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
 
   if (loading || error) {
     return (
-      <div className={`mt-8 p-6 rounded-2xl border text-center ${isDark ? 'bg-black/30 border-white/10 text-gray-400' : 'bg-orange-50/40 border-orange-200/60 text-warm-accent'}`}>
-        <p className="animate-pulse font-mono text-xs">{loading ? (lang === 'sv' ? 'HÄMTAR DATA...' : 'LOADING DATA...') : (lang === 'sv' ? 'SYSTEMFEL' : 'SYSTEM ERROR')}</p>
+      <div className={`mt-4 p-6 rounded-2xl border text-center ${isDark ? 'bg-black/30 border-white/10 text-gray-400' : 'bg-orange-50/40 border-orange-200/60 text-warm-accent'}`}>
+        <p className="animate-pulse font-mono text-[10px]">{loading ? (lang === 'sv' ? 'HÄMTAR DATA...' : 'LOADING DATA...') : (lang === 'sv' ? 'SYSTEMFEL' : 'SYSTEM ERROR')}</p>
       </div>
     );
   }
@@ -118,40 +118,40 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
   const dayLabels = lang === 'sv' ? ['S', 'M', 'T', 'O', 'T', 'F', 'L'] : ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   return (
-    <div className={`mt-6 p-4 md:p-6 rounded-2xl transition-all duration-500 border w-full md:max-w-fit mx-auto relative group/card
+    <div className={`mt-4 p-4 md:p-5 rounded-2xl transition-all duration-500 border w-full md:max-w-fit mx-auto relative group/card
       ${isDark
         ? 'bg-black/30 border-white/10 backdrop-blur-lg shadow-[0_0_30px_-10px_rgba(147,51,234,0.3)] hover:border-neon-cyan/50'
         : 'bg-gradient-to-br from-orange-50/90 via-amber-50/80 to-yellow-50/70 backdrop-blur-lg border-orange-200/50 shadow-xl hover:border-orange-300/80'}`}>
 
       <div className="flex items-center justify-between mb-2 relative z-10 px-1">
-        <h3 className={`text-[10px] md:text-xs uppercase tracking-[0.15em] flex items-center gap-2 font-bold
+        <h3 className={`text-[9px] md:text-[10px] uppercase tracking-[0.15em] flex items-center gap-2 font-bold
           ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
-          <span className={`text-sm md:text-lg ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>⚡</span>
+          <span className={`text-xs md:text-base ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>⚡</span>
           {lang === 'sv' ? 'KODAKTIVITET' : 'CODING ACTIVITY'}
         </h3>
-        <div className={`text-[9px] md:text-[10px] font-bold px-2 py-0.5 md:px-3 md:py-1 rounded-full backdrop-blur-sm border
+        <div className={`text-[8px] md:text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm border
           ${isDark ? 'bg-cyan-950/30 text-cyan-400 border-cyan-800/50' : 'bg-orange-100/50 text-warm-accent border-orange-200/60'}`}>
           <span className="font-mono">{totalContributions}</span> {lang === 'sv' ? 'bidrag' : 'contribs'}
         </div>
       </div>
 
-      {/* Kalender - overflow-x-auto behålls men vi tillåter tooltips att synas uppåt */}
-      <div className="flex justify-start relative z-10 overflow-x-auto pt-8 pb-2 custom-scrollbar-horizontal select-none">
-        <div className="inline-flex gap-3 md:gap-5 items-end min-w-max px-1">
+      {/* Kalender - Ingen overflow-hidden här för att tillåta tooltips utanför kortet */}
+      <div className="flex justify-start relative z-10 overflow-x-auto pt-2 pb-2 custom-scrollbar-horizontal select-none">
+        <div className="inline-flex gap-3 md:gap-4 items-end min-w-max px-1">
           
-          <div className={`sticky left-0 z-30 flex flex-col gap-[3px] md:gap-[4px] pb-[3px] h-[78px] md:h-[98px] justify-between font-mono pr-2
+          <div className={`sticky left-0 z-30 flex flex-col gap-[3px] md:gap-[4px] pb-[2px] h-[78px] md:h-[98px] justify-between font-mono pr-2
             ${isDark ? 'text-cyan-400/70' : 'text-warm-accent/70'}`}>
             {dayLabels.map((day, idx) => (
-              <div key={idx} className={`w-3 md:w-4 text-[8px] md:text-[9px] font-bold text-right leading-none ${(idx === 1 || idx === 3 || idx === 5) ? 'opacity-100' : 'opacity-30'}`}>
+              <div key={idx} className={`w-3 md:w-4 text-[7px] md:text-[8px] font-bold text-right leading-none ${(idx === 1 || idx === 3 || idx === 5) ? 'opacity-100' : 'opacity-30'}`}>
                 {day}
               </div>
             ))}
           </div>
 
-          <div className="flex gap-3 md:gap-4">
+          <div className="flex gap-2 md:gap-3">
             {months.map((month) => (
-              <div key={month.key} className="flex flex-col gap-2 md:gap-3 group/month hover:z-30">
-                <div className={`text-[8px] md:text-[10px] font-black text-center uppercase tracking-wide bg-clip-text text-transparent
+              <div key={month.key} className="flex flex-col gap-1 md:gap-2 group/month hover:z-30">
+                <div className={`text-[7px] md:text-[9px] font-black text-center uppercase tracking-wide bg-clip-text text-transparent
                   ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-orange-600 to-amber-600'}`}>
                   {month.name}
                 </div>
@@ -162,11 +162,15 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
                       {week.map((day, dIdx) => {
                         if (!day) return <div key={dIdx} className="w-2 h-2 md:w-[10px] md:h-[10px]" />;
                         const colorStyle = getColorStyle(day.level);
+                        
+                        // Dynamisk position: dIdx < 3 (Sön, Mån, Tis) är översta halvan
+                        const isTopHalf = dIdx < 3;
+
                         return (
                           <div
                             key={dIdx}
-                            className={`group relative w-2 h-2 md:w-[10px] md:h-[10px] rounded-[1.5px] md:rounded-[2px] border transition-all duration-300 cursor-pointer
-                              hover:scale-150 hover:z-50
+                            className={`group relative w-2 h-2 md:w-[10px] md:h-[10px] rounded-[1px] md:rounded-[2px] border transition-all duration-200 cursor-pointer
+                              hover:scale-125 hover:z-50
                               ${isDark ? 'hover:border-cyan-300' : 'hover:border-orange-400'}`}
                             style={{
                               backgroundColor: colorStyle.bg,
@@ -174,15 +178,15 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
                               boxShadow: colorStyle.shadow
                             }}
                           >
-                            {/* Tooltip - z-[70] garanterar att den syns över allt */}
-                            <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 rounded-md text-[10px] font-bold whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 z-[70] scale-90 group-hover:scale-100
+                            {/* Kompakt Tooltip med dynamisk placering */}
+                            <div className={`absolute ${isTopHalf ? 'top-full mt-2' : 'bottom-full mb-2'} left-1/2 -translate-x-1/2 px-2 py-1 rounded md:rounded-md text-[8px] md:text-[9px] font-bold whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 z-[70] scale-90 group-hover:scale-100
                               ${isDark 
-                                ? 'bg-gray-900/95 text-cyan-300 border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.4)] backdrop-blur-xl' 
-                                : 'bg-white/95 text-warm-text border border-orange-300/50 shadow-xl backdrop-blur-xl'}`}>
-                              <div className="font-mono text-[9px] opacity-70 mb-0.5">{formatDate(day.date)}</div>
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-base">{day.count}</span>
-                                <span className="font-medium tracking-tight">{lang === 'sv' ? 'bidrag' : 'contributions'}</span>
+                                ? 'bg-gray-950/95 text-cyan-300 border border-cyan-500/30 shadow-lg backdrop-blur-xl' 
+                                : 'bg-white/95 text-warm-text border border-orange-300/50 shadow-md backdrop-blur-xl'}`}>
+                              <div className="font-mono text-[7px] md:text-[8px] opacity-70">{formatDate(day.date)}</div>
+                              <div className="flex items-center gap-1 mt-0.5">
+                                <span className="text-[10px] md:text-xs">{day.count}</span>
+                                <span className="font-medium opacity-90">{lang === 'sv' ? 'bidrag' : 'contribs'}</span>
                               </div>
                             </div>
                           </div>
@@ -197,20 +201,20 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="flex items-center justify-center gap-2 mt-2 relative z-10">
-        <span className={`text-[8px] md:text-[9px] font-bold tracking-wider uppercase ${isDark ? 'text-gray-500' : 'text-warm-accent/60'}`}>Less</span>
-        <div className={`flex gap-1 md:gap-1.5 p-1 rounded-full backdrop-blur-sm border ${isDark ? 'bg-black/20 border-white/5' : 'bg-orange-50/30 border-orange-200/30'}`}>
+      {/* Kompakt Legend */}
+      <div className="flex items-center justify-center gap-2 mt-1 relative z-10">
+        <span className={`text-[7px] md:text-[8px] font-bold tracking-wider uppercase ${isDark ? 'text-gray-600' : 'text-warm-accent/50'}`}>Less</span>
+        <div className="flex gap-1 p-0.5 rounded-full border border-white/5 bg-black/5">
           {[0, 1, 2, 3, 4].map(level => {
             const colorStyle = getColorStyle(level);
             return (
-              <div key={level} className="w-2 h-2 md:w-[10px] md:h-[10px] rounded-[1.5px] md:rounded-[2px] border transition-all duration-300 hover:scale-125"
-                style={{ backgroundColor: colorStyle.bg, borderColor: colorStyle.border, boxShadow: colorStyle.shadow }}
+              <div key={level} className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-[1px] border"
+                style={{ backgroundColor: colorStyle.bg, borderColor: colorStyle.border }}
               />
             );
           })}
         </div>
-        <span className={`text-[8px] md:text-[9px] font-bold tracking-wider uppercase ${isDark ? 'text-gray-500' : 'text-warm-accent/60'}`}>More</span>
+        <span className={`text-[7px] md:text-[8px] font-bold tracking-wider uppercase ${isDark ? 'text-gray-600' : 'text-warm-accent/50'}`}>More</span>
       </div>
     </div>
   );
