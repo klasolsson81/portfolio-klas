@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 /**
  * Custom GitHub Contributions Calendar
- * Mobiloptimerad med horisontell scroll och sticky labels.
+ * Fixat: Tooltips visas nu korrekt för alla rader genom ökad padding och z-index logik.
  */
 const GithubStats = ({ isDark, lang = 'sv' }) => {
   const [contributions, setContributions] = useState([]);
@@ -118,16 +118,12 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
   const dayLabels = lang === 'sv' ? ['S', 'M', 'T', 'O', 'T', 'F', 'L'] : ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   return (
-    <div className={`mt-8 p-4 md:p-7 rounded-2xl transition-all duration-500 border w-full md:max-w-fit mx-auto relative overflow-hidden group/card
+    <div className={`mt-8 p-4 md:p-7 pt-10 md:pt-12 rounded-2xl transition-all duration-500 border w-full md:max-w-fit mx-auto relative group/card
       ${isDark
         ? 'bg-black/30 border-white/10 backdrop-blur-lg shadow-[0_0_30px_-10px_rgba(147,51,234,0.3)] hover:border-neon-cyan/50'
         : 'bg-gradient-to-br from-orange-50/90 via-amber-50/80 to-yellow-50/70 backdrop-blur-lg border-orange-200/50 shadow-xl hover:border-orange-300/80'}`}>
 
-      {isDark && (
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent -translate-y-full group-hover/card:translate-y-full transition-transform duration-[2000ms] z-0"></div>
-      )}
-
-      <div className="flex items-center justify-between mb-4 relative z-10">
+      <div className="flex items-center justify-between mb-6 relative z-10 px-1">
         <h3 className={`text-[10px] md:text-xs uppercase tracking-[0.15em] flex items-center gap-2 font-bold
           ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
           <span className={`text-sm md:text-lg ${isDark ? 'text-neon-cyan' : 'text-warm-accent'}`}>⚡</span>
@@ -139,13 +135,12 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
         </div>
       </div>
 
-      {/* Kalender med horisontell scroll för mobil */}
-      <div className="flex justify-start relative z-10 overflow-x-auto pb-4 custom-scrollbar-horizontal select-none">
+      {/* Kalender - pt-12 ger utrymme för tooltips på översta raden */}
+      <div className="flex justify-start relative z-10 overflow-x-auto pt-12 pb-4 custom-scrollbar-horizontal select-none">
         <div className="inline-flex gap-3 md:gap-5 items-end min-w-max px-1">
           
-          {/* Veckodags-etiketter (Sticky till vänster vid scroll) */}
-          <div className={`sticky left-0 z-20 flex flex-col gap-[3px] md:gap-[4px] pb-[3px] h-[78px] md:h-[98px] justify-between font-mono pr-2
-            ${isDark ? 'text-cyan-400/70' : 'text-warm-accent/70'}`}>
+          <div className={`sticky left-0 z-30 flex flex-col gap-[3px] md:gap-[4px] pb-[3px] h-[78px] md:h-[98px] justify-between font-mono pr-2
+            ${isDark ? 'bg-[#0a0b1e]/80 text-cyan-400/70' : 'bg-[#F5E6D3]/80 text-warm-accent/70'} backdrop-blur-sm`}>
             {dayLabels.map((day, idx) => (
               <div key={idx} className={`w-3 md:w-4 text-[8px] md:text-[9px] font-bold text-right leading-none ${(idx === 1 || idx === 3 || idx === 5) ? 'opacity-100' : 'opacity-30'}`}>
                 {day}
@@ -153,10 +148,9 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
             ))}
           </div>
 
-          {/* Månadsblock */}
           <div className="flex gap-3 md:gap-4">
             {months.map((month) => (
-              <div key={month.key} className="flex flex-col gap-2 md:gap-3">
+              <div key={month.key} className="flex flex-col gap-2 md:gap-3 group/month hover:z-30">
                 <div className={`text-[8px] md:text-[10px] font-black text-center uppercase tracking-wide bg-clip-text text-transparent
                   ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-orange-600 to-amber-600'}`}>
                   {month.name}
@@ -164,7 +158,7 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
                 
                 <div className="flex gap-[3px] md:gap-[4px]">
                   {month.weeks.map((week, wIdx) => (
-                    <div key={wIdx} className="flex flex-col gap-[3px] md:gap-[4px]">
+                    <div key={wIdx} className="flex flex-col gap-[3px] md:gap-[4px] group/week hover:z-40">
                       {week.map((day, dIdx) => {
                         if (!day) return <div key={dIdx} className="w-2 h-2 md:w-[10px] md:h-[10px]" />;
                         const colorStyle = getColorStyle(day.level);
@@ -172,7 +166,7 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
                           <div
                             key={dIdx}
                             className={`group relative w-2 h-2 md:w-[10px] md:h-[10px] rounded-[1.5px] md:rounded-[2px] border transition-all duration-300 cursor-pointer
-                              hover:scale-150 hover:z-20
+                              hover:scale-150 hover:z-50
                               ${isDark ? 'hover:border-cyan-300' : 'hover:border-orange-400'}`}
                             style={{
                               backgroundColor: colorStyle.bg,
@@ -180,8 +174,8 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
                               boxShadow: colorStyle.shadow
                             }}
                           >
-                            {/* Tooltip */}
-                            <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1.5 rounded-md text-[10px] font-bold whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 z-30 scale-90 group-hover:scale-100
+                            {/* Tooltip - Fixad position och lager */}
+                            <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1.5 rounded-md text-[10px] font-bold whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 z-[60] scale-90 group-hover:scale-100
                               ${isDark 
                                 ? 'bg-gray-900/95 text-cyan-300 border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.4)] backdrop-blur-xl' 
                                 : 'bg-white/95 text-warm-text border border-orange-300/50 shadow-xl backdrop-blur-xl'}`}>
@@ -207,13 +201,12 @@ const GithubStats = ({ isDark, lang = 'sv' }) => {
       {/* Legend */}
       <div className="flex items-center justify-center gap-2 mt-4 md:mt-7 relative z-10">
         <span className={`text-[8px] md:text-[9px] font-bold tracking-wider uppercase ${isDark ? 'text-gray-500' : 'text-warm-accent/60'}`}>Less</span>
-        <div className="flex gap-1 md:gap-1.5 p-1 rounded-full backdrop-blur-sm border ${isDark ? 'bg-black/20 border-white/5' : 'bg-orange-50/30 border-orange-200/30'}">
+        <div className={`flex gap-1 md:gap-1.5 p-1 rounded-full backdrop-blur-sm border ${isDark ? 'bg-black/20 border-white/5' : 'bg-orange-50/30 border-orange-200/30'}`}>
           {[0, 1, 2, 3, 4].map(level => {
             const colorStyle = getColorStyle(level);
             return (
               <div key={level} className="w-2 h-2 md:w-[10px] md:h-[10px] rounded-[1.5px] md:rounded-[2px] border transition-all duration-300 hover:scale-125"
                 style={{ backgroundColor: colorStyle.bg, borderColor: colorStyle.border, boxShadow: colorStyle.shadow }}
-                title={level === 0 ? '0' : level === 1 ? '1-2' : level === 2 ? '3-5' : level === 3 ? '6-10' : '10+'}
               />
             );
           })}
