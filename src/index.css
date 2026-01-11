@@ -141,4 +141,30 @@ canvas, .background-visuals {
   box-shadow: 0 8px 25px rgba(0, 243, 255, 0.4);
 }
 
+
 .overflow-x-auto { scrollbar-width: thin; }
+
+/* Minimalistisk Lila Scrollbar för "Min resa" */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px; /* Gör den mycket tunn */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* Gör bakgrunden genomskinlig för en "svävande" känsla */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #a855f7; /* Din lila neonfärg (purple-500) */
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0); /* Skapar lite luft */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #c084fc; /* Ljusare lila vid hovring (purple-400) */
+}
+
+/* Firefox-stöd */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #a855f7 transparent;
+}
