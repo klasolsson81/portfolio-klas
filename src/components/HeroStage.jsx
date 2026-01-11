@@ -69,14 +69,15 @@ const itemVariants = {
         isDark={isDark}
       />
 
-      <motion.div 
-        layout
-        className={`w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[95vh] md:h-[850px] transition-all duration-500 relative z-10
-          ${isDark
-            ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl'
-            : 'bg-orange-50/50 backdrop-blur-2xl border border-orange-200/50 shadow-xl shadow-orange-400/10'}`}
-        style={{ borderRadius: 24 }}
-      >
+
+<motion.div 
+  layout
+  className={`w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[88vh] md:h-full transition-all duration-500 relative z-10
+    ${isDark
+      ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl'
+      : 'bg-orange-50/50 backdrop-blur-2xl border border-orange-200/50 shadow-xl shadow-orange-400/10'}`}
+  style={{ borderRadius: 24 }}
+>
         {/* MOBIL HEADER - Kompakt och ren */}
         <div className={`md:hidden p-3 border-b ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
           {/* Rad 1: Foto + Namn + Settings */}

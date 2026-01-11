@@ -6,12 +6,20 @@
   color-scheme: dark;
 }
 
-/* Fix för att ta bort onödig scroll på desktop */
+/* ===== GRUNDLÄGGANDE LAYOUT-FIXAR ===== */
 html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   width: 100%;
+}
+
+/* På desktop låser vi höjden till exakt skärmen för att stödja flex-layouten i App.jsx */
+@media (min-width: 768px) {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
 }
 
 /* ===== MÖRKT TEMA - ANIMERAD CYBER GRADIENT ===== */
@@ -26,10 +34,10 @@ html, body {
     #0a0b1e 100%
   );
   background-size: 400% 400%;
-  background-attachment: fixed;
+  background-attachment: fixed; /* Fixerar bakgrunden så den aldrig klipps */
   animation: dark-gradient-shift 25s ease infinite;
   color: #e5e7eb;
-  min-height: 100dvh; /* Använder dvh för att undvika scroll-problem */
+  min-height: 100dvh;
 }
 
 @keyframes dark-gradient-shift {
@@ -64,7 +72,19 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* ===== SCROLLBARS (Globala) ===== */
+/* ===== FIX FÖR BAKGRUNDSANIMATIONER (Noder, kod-regn etc.) ===== */
+/* Denna regel ser till att animationerna bakom kortet aldrig klipps av footern */
+canvas, 
+.background-visuals {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0 !important;
+  pointer-events: none;
+}
+
+/* ===== SCROLLBARS ===== */
 .dark ::-webkit-scrollbar { width: 6px; }
 .dark ::-webkit-scrollbar-track { background: #0a0b1e; }
 .dark ::-webkit-scrollbar-thumb { background: #bd00ff; border-radius: 3px; }
@@ -73,7 +93,6 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(210, 105, 30, 0.5); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(210, 105, 30, 0.7); }
 
 /* ===== GLASSMORPHISM ===== */
 .glass-card {
@@ -127,43 +146,23 @@ body {
   animation: text-shimmer 6s linear infinite;
 }
 
-.animate-section-gradient {
-  background: linear-gradient(to right, #9CA3AF 0%, #00f3ff 25%, #bd00ff 50%, #00f3ff 75%, #9CA3AF 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  background-size: 300% auto;
-  animation: text-shimmer 7s linear infinite;
-}
-
-.light-section-gradient {
-  background: linear-gradient(to right, #6B5B52 0%, #D2691E 25%, #FF9800 50%, #D2691E 75%, #6B5B52 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  background-size: 300% auto;
-  animation: text-shimmer 7s linear infinite;
-}
-
 /* ===== GITHUB STATS - Horisontell scroll fix ===== */
 .custom-scrollbar-horizontal {
   overflow-x: auto;
   display: flex;
-  direction: rtl; /* Startar scrollen till höger */
+  direction: rtl; 
   -webkit-overflow-scrolling: touch;
 }
 
 .custom-scrollbar-horizontal > * {
-  direction: ltr; /* Återställer innehåll till vänster-till-höger */
+  direction: ltr;
 }
 
 /* ===== ADAPTIV AI-KNAPP (btn-ai-glow) ===== */
-
-/* Standard: Ljust läge (Solar AI) */
 .btn-ai-glow {
   background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
   background-size: 200% auto;
-  color: #3E2723; /* Mörkbrun text för bäst kontrast i ljust läge */
+  color: #3E2723;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -181,10 +180,9 @@ body {
   background-position: right center;
 }
 
-/* Mörkt läge override (Cyber AI) */
 .dark .btn-ai-glow {
   background: linear-gradient(135deg, #00f3ff 0%, #bd00ff 100%);
-  color: white; /* Vit text i mörkt läge */
+  color: white;
   box-shadow: 0 4px 15px rgba(0, 243, 255, 0.3);
 }
 
@@ -192,7 +190,6 @@ body {
   box-shadow: 0 8px 25px rgba(0, 243, 255, 0.5), 0 0 40px rgba(189, 0, 255, 0.2);
 }
 
-/* Gemensam "skan-effekt" vid hover */
 .btn-ai-glow::after {
   content: '';
   position: absolute;

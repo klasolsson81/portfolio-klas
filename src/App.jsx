@@ -47,25 +47,27 @@ function App() {
   const toggleLang = () => setLang(l => l === 'sv' ? 'en' : 'sv');
 
   return (
-    // BG-TRANSPARENT för BÅDA teman - låter body CSS visa gradient-bakgrunden
-    <main className={`relative w-full min-h-screen overflow-x-hidden font-sans transition-colors duration-700
+    <main className={`relative w-full min-h-screen md:h-screen md:flex md:flex-col overflow-x-hidden font-sans transition-colors duration-700
       ${isDark
         ? 'bg-transparent selection:bg-neon-cyan selection:text-black'
         : 'bg-transparent selection:bg-purple-200 selection:text-purple-900'}`}>
 
-      <ErrorBoundary componentName="NodeNetwork" isDark={isDark}>
-        <Suspense fallback={<div className="fixed inset-0" />}>
-          <NodeNetwork isDark={isDark} />
-        </Suspense>
-      </ErrorBoundary>
+      {/* Wrapper för huvudinnehållet som tar upp allt tillgängligt utrymme */}
+      <div className="flex-1 relative flex flex-col min-h-0">
+        <ErrorBoundary componentName="NodeNetwork" isDark={isDark}>
+          <Suspense fallback={<div className="fixed inset-0" />}>
+            <NodeNetwork isDark={isDark} />
+          </Suspense>
+        </ErrorBoundary>
 
-      <ErrorBoundary componentName="FloatingCode" isDark={isDark}>
-        <FloatingCode isDark={isDark} />
-      </ErrorBoundary>
+        <ErrorBoundary componentName="FloatingCode" isDark={isDark}>
+          <FloatingCode isDark={isDark} />
+        </ErrorBoundary>
 
-      <ErrorBoundary componentName="HeroStage" isDark={isDark} showHomeButton>
-        <HeroStage isDark={isDark} toggleTheme={toggleTheme} lang={lang} toggleLang={toggleLang} />
-      </ErrorBoundary>
+        <ErrorBoundary componentName="HeroStage" isDark={isDark} showHomeButton>
+          <HeroStage isDark={isDark} toggleTheme={toggleTheme} lang={lang} toggleLang={toggleLang} />
+        </ErrorBoundary>
+      </div>
 
       {/* PWA Install Prompt */}
       <InstallPrompt isDark={isDark} lang={lang} />
@@ -81,8 +83,8 @@ function App() {
         lang={lang}
       />
 
-      {/* Footer - Ändrad från fixed till relative för att undvika överlappning på mobil */}
-      <footer className={`relative py-12 w-full text-center text-sm z-[20] transition-colors duration-300 leading-relaxed
+      {/* Footer - Nu med reducerad padding och korrekt positionering för att slippa scroll */}
+      <footer className={`relative py-6 md:py-8 w-full text-center text-sm z-[20] transition-colors duration-300 leading-relaxed
         ${isDark ? 'text-gray-400' : 'text-warm-text/60'}`}>
         <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
           <span className="pointer-events-none">
