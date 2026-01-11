@@ -8,15 +8,15 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster } from 'sonner';
 
-// VIKTIGT: Vi lägger till .js här för att hjälpa Vercels byggverktyg
-import { TRANSLATIONS } from './translations.js';
+// FIX: Ändrad sökväg för att matcha din filstruktur i image_25d109.png
+import { TRANSLATIONS } from './components/data/translations.js';
 
 function App() {
   const [isDark, setIsDark] = useState(true);
   const [lang, setLang] = useState('sv');
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
-  // Språkhantering
+  // Språkhantering baserat på translations.js
   const t = TRANSLATIONS[lang];
 
   useEffect(() => {
