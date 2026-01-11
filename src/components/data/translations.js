@@ -17,8 +17,8 @@ export const TRANSLATIONS = {
       hire: "Anlita mig"
     },
     about: {
-      intro1: "Driven Systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på kod och arkitektur.",
-      intro2: "Jag kombinerar djup .NET-kunskap med modern AI-utveckling. Jag är inte rädd för nya språk och använder AI för att snabbt sätta mig in i nya tekniker vid behov.",
+      intro1: "Passionerad systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på modern kod och arkitektur.",
+      intro2: "Jag kombinerar djup kunskap inom backend med modern AI-utveckling. Jag drivs av att ständigt lära mig nya språk och använder AI som en hävstång för att snabbt bemästra nya tekniker.",
       stackTitle: "Tech Stack",
       factsTitle: "Personligt",
       facts: { age: "Ålder", city: "Bor i", lang: "Språk", family: "Familj" },
@@ -44,8 +44,8 @@ export const TRANSLATIONS = {
       hire: "Hire Me"
     },
     about: {
-      intro1: "Driven System Developer focusing on .NET. Currently on leave of absence to fully commit to code and architecture.",
-      intro2: "Combining deep .NET knowledge with modern AI development. I'm adaptable and leverage AI to rapidly master new languages or frameworks when projects require it.",
+      intro1: "Passionate System Developer with a focus on .NET. Currently on a leave of absence to dedicate myself fully to modern code and architecture.",
+      intro2: "I combine deep backend expertise with modern AI development. Driven by a constant desire to learn, I leverage AI as a catalyst to rapidly master new technologies.",
       stackTitle: "Tech Stack",
       factsTitle: "Personal",
       facts: { age: "Age", city: "Location", lang: "Languages", family: "Family" },
