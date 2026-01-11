@@ -104,11 +104,7 @@ canvas,
 }
 
 /* ===== ANIMATIONER & GRADIENTER ===== */
-@keyframes text-shimmer {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+
 
 .animate-text-gradient {
   background: linear-gradient(to right, #ffffff 20%, #00f3ff 30%, #bd00ff 70%, #ffffff 80%);
@@ -128,6 +124,7 @@ canvas,
   animation: text-shimmer 5s linear infinite;
 }
 
+/* Denna används nu för huvudrubriker */
 .animate-subtitle-shimmer {
   background: linear-gradient(to right, #00f3ff 0%, #bd00ff 50%, #00f3ff 100%);
   -webkit-background-clip: text;
@@ -144,6 +141,24 @@ canvas,
   color: transparent;
   background-size: 200% auto;
   animation: text-shimmer 6s linear infinite;
+}
+
+.animate-section-gradient {
+  background: linear-gradient(to right, #00f3ff 0%, #bd00ff 50%, #00f3ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: text-shimmer 7s linear infinite;
+}
+
+.light-section-gradient {
+  background: linear-gradient(to right, #D2691E 0%, #FF9800 50%, #D2691E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: text-shimmer 7s linear infinite;
 }
 
 /* ===== GITHUB STATS - Horisontell scroll fix ===== */
