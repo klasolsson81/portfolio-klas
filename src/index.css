@@ -29,7 +29,7 @@ html, body {
   background-attachment: fixed;
   animation: dark-gradient-shift 25s ease infinite;
   color: #e5e7eb;
-  min-height: 100dvh; /* Uppdaterat till dvh */
+  min-height: 100dvh;
 }
 
 @keyframes dark-gradient-shift {
@@ -54,7 +54,7 @@ body {
   background-attachment: fixed;
   animation: gradient-shift 20s ease infinite;
   color: #1A1E29;
-  min-height: 100dvh; /* Uppdaterat till dvh */
+  min-height: 100dvh;
   transition: color 0.3s ease;
 }
 
@@ -84,33 +84,13 @@ body {
   box-shadow: 0 8px 32px rgba(210, 105, 30, 0.1), 0 0 0 1px rgba(255, 230, 210, 0.5);
 }
 
-.glass-card-warm {
-  background: linear-gradient(135deg, rgba(255, 245, 238, 0.85) 0%, rgba(255, 235, 220, 0.75) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 220, 195, 0.6);
-}
-
-/* ===== ANIMATIONER ===== */
-@keyframes organic-pulse {
-  0% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
-  50% { border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; opacity: 0.9; transform: scale(1.05); filter: blur(15px); }
-  100% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; opacity: 0.6; transform: scale(1); filter: blur(10px); }
-}
-
-.organic-border {
-  animation: organic-pulse 6s ease-in-out infinite alternate;
-  background: linear-gradient(45deg, #bd00ff, #00f3ff, #bd00ff);
-  background-size: 200% 200%;
-}
-
+/* ===== ANIMATIONER & GRADIENTER ===== */
 @keyframes text-shimmer {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Alla dina text-gradienter återställda */
 .animate-text-gradient {
   background: linear-gradient(to right, #ffffff 20%, #00f3ff 30%, #bd00ff 70%, #ffffff 80%);
   -webkit-background-clip: text;
@@ -147,83 +127,54 @@ body {
   animation: text-shimmer 6s linear infinite;
 }
 
-.animate-section-gradient {
-  background: linear-gradient(to right, #9CA3AF 0%, #00f3ff 25%, #bd00ff 50%, #00f3ff 75%, #9CA3AF 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  background-size: 300% auto;
-  animation: text-shimmer 7s linear infinite;
-}
-
-.light-section-gradient {
-  background: linear-gradient(to right, #6B5B52 0%, #D2691E 25%, #FF9800 50%, #D2691E 75%, #6B5B52 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  background-size: 300% auto;
-  animation: text-shimmer 7s linear infinite;
-}
-
-/* ===== CUSTOM SCROLLBARS ===== */
-.custom-scrollbar::-webkit-scrollbar { width: 4px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(210, 105, 30, 0.3); border-radius: 2px; }
-.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(189, 0, 255, 0.3); }
-
-/* GITHUB STATS - Horisontell scroll fix */
+/* ===== GITHUB STATS - Horisontell scroll fix ===== */
 .custom-scrollbar-horizontal {
   overflow-x: auto;
   display: flex;
-  direction: rtl; /* Starta scrollen till höger */
+  direction: rtl;
   -webkit-overflow-scrolling: touch;
 }
 
 .custom-scrollbar-horizontal > * {
-  direction: ltr; /* Återställ innehåll till vänster-till-höger */
+  direction: ltr;
 }
 
-.custom-scrollbar-horizontal::-webkit-scrollbar { height: 4px; }
-.custom-scrollbar-horizontal::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar-horizontal::-webkit-scrollbar-thumb { background: rgba(210, 105, 30, 0.2); border-radius: 10px; }
-.dark .custom-scrollbar-horizontal::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.2); }
+/* ===== ADAPTIV AI-KNAPP (btn-ai-glow) ===== */
 
-/* Övriga effekter */
-.warm-shadow { box-shadow: 0 4px 6px -1px rgba(210, 105, 30, 0.08), 0 10px 20px -5px rgba(255, 200, 150, 0.25), 0 0 0 1px rgba(255, 230, 210, 0.5); }
-.tech-border-light { border: 1px solid rgba(210, 105, 30, 0.25); }
-.hover-glow-light:hover { box-shadow: 0 0 20px rgba(210, 105, 30, 0.2), 0 0 40px rgba(210, 105, 30, 0.1); }
-.tech-tag-light { background: linear-gradient(135deg, rgba(255, 237, 213, 0.9) 0%, rgba(255, 245, 230, 0.8) 100%); border: 1px solid rgba(210, 105, 30, 0.3); color: #5D4037; }
-.tech-tag-light:hover { background: linear-gradient(135deg, rgba(254, 228, 200, 0.95) 0%, rgba(255, 240, 220, 0.9) 100%); border-color: rgba(210, 105, 30, 0.5); }
-
-.overflow-x-auto { scrollbar-width: thin; }
-
-/* ===== AI-KNAPP (CYBER STYLE) ===== */
+/* Standard: Ljust läge (Solar AI) */
 .btn-ai-glow {
-  background: linear-gradient(135deg, #00f3ff 0%, #bd00ff 100%);
+  background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
   background-size: 200% auto;
-  color: white;
-  font-weight: 600;
+  color: #3E2723; /* Mörk text för kontrast */
+  font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   border: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
   position: relative;
   overflow: hidden;
 }
 
 .btn-ai-glow:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(0, 243, 255, 0.5), 0 0 50px rgba(189, 0, 255, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 140, 0, 0.4);
   background-position: right center;
 }
 
-.btn-ai-glow:active {
-  transform: translateY(0);
+/* Mörkt läge override (Cyber AI) */
+.dark .btn-ai-glow {
+  background: linear-gradient(135deg, #00f3ff 0%, #bd00ff 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 243, 255, 0.3);
 }
 
-/* En subtil "skan-effekt" som går över knappen */
+.dark .btn-ai-glow:hover {
+  box-shadow: 0 8px 25px rgba(0, 243, 255, 0.5), 0 0 40px rgba(189, 0, 255, 0.2);
+}
+
+/* Gemensam "skan-effekt" vid hover */
 .btn-ai-glow::after {
   content: '';
   position: absolute;
@@ -231,13 +182,17 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2);
   transform: rotate(45deg);
-  transition: all 0.5s ease;
+  transition: all 0.6s ease;
   pointer-events: none;
+  opacity: 0;
 }
 
 .btn-ai-glow:hover::after {
   left: 100%;
   top: 100%;
+  opacity: 1;
 }
+
+.overflow-x-auto { scrollbar-width: thin; }

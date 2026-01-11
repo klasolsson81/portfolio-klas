@@ -305,10 +305,14 @@ const HireMe = ({ lang, isDark }) => {
           <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} />
 
           {/* Den nya "Analysera med AI"-knappen som använder CSS-klassen btn-ai-glow */}
-          <button type="submit" className={`w-full btn-ai-glow py-4 flex items-center justify-center gap-2 transform transition-all hover:scale-[1.01] ${!isDark ? 'shadow-lg shadow-orange-200' : ''}`}>
-            <Sparkles size={20} className="text-white" />
-            <span className="text-white">{t.buttons.analyze}</span>
-          </button>
+<button 
+  type="submit" 
+  className="w-full btn-ai-glow py-4 flex items-center justify-center gap-2 transform transition-all hover:scale-[1.01]"
+>
+  {/* Ikonen och texten ärver nu färgen från knappen (brun i ljust läge, vit i mörkt) */}
+  <Sparkles size={20} /> 
+  <span>{t.buttons.analyze}</span>
+</button>
         </form>
       )}
 
