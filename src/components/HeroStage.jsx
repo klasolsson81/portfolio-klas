@@ -304,20 +304,20 @@ const itemVariants = {
   {t.titles.whoami}
 </motion.h2>
 
-    <div className={`space-y-4 leading-relaxed text-sm md:text-base ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
-      <motion.p variants={itemVariants}>
-        <span className={`font-bold ${isDark ? 'text-white' : 'text-warm-text'}`}>
-          {/* DELAR NU VID PUNKT+MELLANSLAG FÖR ATT KLARA .NET */}
-          {t.about.intro1.split('. ')[0]}.
-        </span>
-        {' '}{t.about.intro1.split('. ').slice(1).join('. ')}
-      </motion.p>
-      
-      <motion.p 
-        variants={itemVariants}
-        dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', `<span class="${isDark ? 'text-neon-cyan' : 'text-warm-accent'} font-semibold">n8n</span>`) }} 
-      />
-    </div>
+<div className={`space-y-4 leading-relaxed text-sm md:text-base ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
+  <motion.p variants={itemVariants}>
+    <span className={`font-bold ${isDark ? 'text-white' : 'text-warm-text'}`}>
+      {/* Delar nu vid punkt+mellanslag för att INTE krascha på .NET */}
+      {t.about.intro1.split('. ')[0]}.
+    </span>
+    {' '}{t.about.intro1.split('. ').slice(1).join('. ')}
+  </motion.p>
+  
+  <motion.p 
+    variants={itemVariants}
+    dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', `<span class="${isDark ? 'text-neon-cyan' : 'text-warm-accent'} font-semibold">n8n</span>`) }} 
+  />
+</div>
     
 
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
@@ -369,19 +369,27 @@ const itemVariants = {
 <h3 className={`text-xs font-bold mb-3 uppercase tracking-widest ${isDark ? 'animate-section-gradient' : 'light-section-gradient'}`}>
   {t.about.stackTitle}
 </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Three.js', 'Tailwind CSS', 'Framer Motion', 'Vite', 'Vercel', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map(tag => (
-                        <span
-                          key={tag}
-                          className={`px-2.5 py-1.5 rounded-lg text-xs font-mono cursor-default transition-all duration-200 hover:scale-105 active:scale-95
-                            ${isDark
-                              ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:bg-neon-purple/20 hover:shadow-md'
-                              : 'bg-orange-100/70 border border-orange-200 text-warm-accent hover:bg-orange-100 hover:shadow-sm'}`}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+
+<div className="flex flex-wrap gap-2">
+  {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Three.js', 'Tailwind CSS', 'Framer Motion', 'Vite', 'Vercel', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map((tag, idx) => (
+    <motion.span
+      key={tag}
+      variants={itemVariants}
+      whileHover={{ 
+        scale: 1.1, 
+        y: -3, 
+        transition: { type: "spring", stiffness: 400, damping: 10 } 
+      }}
+      whileTap={{ scale: 0.95 }}
+      className={`px-3 py-1.5 rounded-lg text-xs font-mono cursor-default transition-all duration-300
+        ${isDark
+          ? 'bg-neon-purple/10 border border-neon-purple/30 text-neon-cyan hover:border-neon-cyan hover:shadow-[0_0_15px_rgba(0,243,255,0.3)]'
+          : 'bg-orange-100/70 border border-orange-200 text-warm-accent hover:border-warm-accent hover:shadow-[0_0_15px_rgba(210,105,30,0.2)]'}`}
+    >
+      {tag}
+    </motion.span>
+  ))}
+</div>
                   </div>
                 </div>
 

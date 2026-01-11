@@ -55,59 +55,54 @@ body {
 }
 
 /* ===== TEXT-ANIMATIONER (Här är fixen för Klas Olsson & Rubrikerna) ===== */
+
 @keyframes shimmer {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
-/* För namnet: Klas Olsson */
 .animate-text-gradient {
-  background: linear-gradient(to right, #00f3ff, #bd00ff, #ffffff, #00f3ff, #bd00ff);
+  background: linear-gradient(90deg, #00f3ff, #bd00ff, #ffffff, #bd00ff, #00f3ff);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  background-size: 300% auto;
   animation: shimmer 8s linear infinite;
 }
 
-/* För rubriken: Vem är jag? */
-.animate-subtitle-shimmer {
-  background: linear-gradient(to right, #00f3ff, #bd00ff, #ffffff, #bd00ff, #00f3ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  background-size: 300% auto;
-  animation: shimmer 6s linear infinite;
-}
-
-/* För Personligt & Tech Stack */
-.animate-section-gradient {
-  background: linear-gradient(to right, #00f3ff, #ffffff, #bd00ff, #00f3ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  background-size: 300% auto;
-  animation: shimmer 10s linear infinite;
-}
-
-/* Ljust läge motsvarigheter */
-.light-mode-gradient {
-  background: linear-gradient(to right, #5D4037, #D2691E, #FF9800, #D2691E);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.animate-subtitle-shimmer, .animate-section-gradient {
+  background: linear-gradient(90deg, #00f3ff, #bd00ff, #00f3ff, #bd00ff, #00f3ff);
   background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   animation: shimmer 5s linear infinite;
 }
 
-.light-subtitle-shimmer, .light-section-gradient {
-  background: linear-gradient(to right, #D2691E, #FF9800, #D2691E);
+/* Ljust läge - Varmare och proffsigare */
+.light-mode-gradient {
+  background: linear-gradient(90deg, #5D4037, #D2691E, #FF9800, #D2691E, #5D4037);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  background-size: 200% auto;
   animation: shimmer 6s linear infinite;
+}
+
+.light-subtitle-shimmer, .light-section-gradient {
+  background: linear-gradient(90deg, #D2691E, #FF9800, #D2691E, #FF9800, #D2691E);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+
+/* Fix för bakgrundsobjekt så de täcker hela skärmen bakom footern */
+canvas, .background-visuals {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
 }
 
 /* ===== ÖVRIGT (Scrollbar, Knappar etc) ===== */
