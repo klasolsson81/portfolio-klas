@@ -17,8 +17,10 @@ export const TRANSLATIONS = {
       hire: "Anlita mig"
     },
     about: {
-      intro1: "Passionerad systemutvecklare med fokus på .NET. Just nu tjänstledig för att satsa helhjärtat på modern kod och arkitektur.",
-      intro2: "Jag kombinerar djup kunskap inom backend med modern AI-utveckling. Jag drivs av att ständigt lära mig nya språk och använder AI som en hävstång för att snabbt bemästra nya tekniker.",
+      // SEO: Inkluderar yrkesroll + stad i första meningen för lokal relevans
+      intro1: "Erfaren .NET-utvecklare i Göteborg med passion för C# och modern arkitektur. Just nu satsar jag helhjärtat på att bygga framtidens digitala lösningar genom skalbar kod och stabil systemdesign.",
+      // SEO: Väver in "IT-konsult", "backend" och "AI-integration"
+      intro2: "I min roll som backend-utvecklare och IT-konsult kombinerar jag djup teknisk expertis med modern AI-utveckling. Jag använder AI som en strategisk hävstång för att effektivisera komplexa utvecklingsprojekt och leverera högkvalitativa system som gör skillnad.",
       stackTitle: "Tech Stack",
       factsTitle: "Personligt",
       facts: { age: "Ålder", city: "Bor i", lang: "Språk", family: "Familj" },
@@ -44,8 +46,10 @@ export const TRANSLATIONS = {
       hire: "Hire Me"
     },
     about: {
-      intro1: "Passionate System Developer with a focus on .NET. Currently on a leave of absence to dedicate myself fully to modern code and architecture.",
-      intro2: "I combine deep backend expertise with modern AI development. Driven by a constant desire to learn, I leverage AI as a catalyst to rapidly master new technologies.",
+      // SEO: English keywords for international recruiters
+      intro1: "Experienced .NET Developer in Gothenburg with a passion for C# and software architecture. I am currently dedicated to building next-generation digital solutions through robust code and scalable design.",
+      // SEO: High-value terms like "IT consultant", "Backend" and "AI integration"
+      intro2: "As a backend developer and IT consultant, I bridge the gap between traditional system architecture and innovative AI integration. I leverage AI as a strategic catalyst to drive efficiency and deliver high-performance software engineering projects.",
       stackTitle: "Tech Stack",
       factsTitle: "Personal",
       facts: { age: "Age", city: "Location", lang: "Languages", family: "Family" },
