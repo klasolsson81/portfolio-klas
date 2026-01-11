@@ -286,32 +286,38 @@ const itemVariants = {
         >
           <AnimatePresence mode="wait">
             
-            {section === 'about' && (
-              <motion.div 
-                key="about" 
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-6 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full"
-              >
-<motion.h2 
-  variants={itemVariants} 
-  className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}
->
-  {t.titles.whoami}
-</motion.h2>
 
-<div className={`space-y-4 leading-relaxed text-sm md:text-base ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
-  <motion.p variants={itemVariants}>
-    <span className={`font-bold ${isDark ? 'text-white' : 'text-warm-text'}`}>
-      {t.about.intro1.split('.')[0]}.
-    </span>
-    {' '}{t.about.intro1.split('.').slice(1).join('.')}
-  </motion.p>
-  
-  <motion.p 
-    variants={itemVariants}
-    dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', `<span class="${isDark ? 'text-neon-cyan' : 'text-warm-accent'} font-semibold">n8n</span>`) }} 
-  />
-</div>
+{section === 'about' && (
+  <motion.div 
+    key="about" 
+    variants={containerVariants} // AKTIVERAR ANIMATIONEN
+    initial="hidden"
+    animate="visible"
+    exit="hidden"
+    className="space-y-6 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full"
+  >
+    <motion.h2 
+      variants={itemVariants} 
+      className={`text-xl md:text-2xl font-bold mb-4 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}
+    >
+      {t.titles.whoami}
+    </motion.h2>
+
+    <div className={`space-y-4 leading-relaxed text-sm md:text-base ${isDark ? 'text-gray-300' : 'text-warm-muted'}`}>
+      <motion.p variants={itemVariants}>
+        <span className={`font-bold ${isDark ? 'text-white' : 'text-warm-text'}`}>
+          {/* DELAR NU VID PUNKT+MELLANSLAG FÖR ATT KLARA .NET */}
+          {t.about.intro1.split('. ')[0]}.
+        </span>
+        {' '}{t.about.intro1.split('. ').slice(1).join('. ')}
+      </motion.p>
+      
+      <motion.p 
+        variants={itemVariants}
+        dangerouslySetInnerHTML={{ __html: t.about.intro2.replace('n8n', `<span class="${isDark ? 'text-neon-cyan' : 'text-warm-accent'} font-semibold">n8n</span>`) }} 
+      />
+    </div>
+    
 
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
                   <div>

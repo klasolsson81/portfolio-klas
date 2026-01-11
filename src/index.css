@@ -29,7 +29,7 @@ html, body {
   background-attachment: fixed;
   animation: dark-gradient-shift 25s ease infinite;
   color: #e5e7eb;
-  min-height: 100dvh;
+  min-height: 100dvh; /* Använder dvh för att undvika scroll-problem */
 }
 
 @keyframes dark-gradient-shift {
@@ -64,7 +64,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* ===== SCROLLBARS ===== */
+/* ===== SCROLLBARS (Globala) ===== */
 .dark ::-webkit-scrollbar { width: 6px; }
 .dark ::-webkit-scrollbar-track { background: #0a0b1e; }
 .dark ::-webkit-scrollbar-thumb { background: #bd00ff; border-radius: 3px; }
@@ -127,16 +127,34 @@ body {
   animation: text-shimmer 6s linear infinite;
 }
 
+.animate-section-gradient {
+  background: linear-gradient(to right, #9CA3AF 0%, #00f3ff 25%, #bd00ff 50%, #00f3ff 75%, #9CA3AF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 300% auto;
+  animation: text-shimmer 7s linear infinite;
+}
+
+.light-section-gradient {
+  background: linear-gradient(to right, #6B5B52 0%, #D2691E 25%, #FF9800 50%, #D2691E 75%, #6B5B52 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 300% auto;
+  animation: text-shimmer 7s linear infinite;
+}
+
 /* ===== GITHUB STATS - Horisontell scroll fix ===== */
 .custom-scrollbar-horizontal {
   overflow-x: auto;
   display: flex;
-  direction: rtl;
+  direction: rtl; /* Startar scrollen till höger */
   -webkit-overflow-scrolling: touch;
 }
 
 .custom-scrollbar-horizontal > * {
-  direction: ltr;
+  direction: ltr; /* Återställer innehåll till vänster-till-höger */
 }
 
 /* ===== ADAPTIV AI-KNAPP (btn-ai-glow) ===== */
@@ -145,7 +163,7 @@ body {
 .btn-ai-glow {
   background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
   background-size: 200% auto;
-  color: #3E2723; /* Mörk text för kontrast */
+  color: #3E2723; /* Mörkbrun text för bäst kontrast i ljust läge */
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -166,7 +184,7 @@ body {
 /* Mörkt läge override (Cyber AI) */
 .dark .btn-ai-glow {
   background: linear-gradient(135deg, #00f3ff 0%, #bd00ff 100%);
-  color: white;
+  color: white; /* Vit text i mörkt läge */
   box-shadow: 0 4px 15px rgba(0, 243, 255, 0.3);
 }
 
