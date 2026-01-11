@@ -512,8 +512,12 @@ const FilterChip = ({ tag, isActive, onClick, isDark }) => (
 const DevTimeline = ({ lang, isDark }) => {
   const [activeFilters, setActiveFilters] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
-  const [showAll, setShowAll] = useState(false);
+  // Vi byter ut showAll mot ett antal (visibleCount)
+  const [visibleCount, setVisibleCount] = useState(10);
   const [sortOrder, setSortOrder] = useState('newest');
+  
+  // Referens för vår "laddnings-vakt" längst ner
+  const loaderRef = useRef(null);
 
   const allTags = useMemo(() => getAllTags(TIMELINE_EVENTS), []);
 
@@ -535,21 +539,35 @@ const DevTimeline = ({ lang, isDark }) => {
     return sorted;
   }, [activeFilters, sortOrder]);
 
-  const displayedEvents = showAll ? filteredEvents : filteredEvents.slice(0, 10);
+  // Antal händelser som visas baserat på visibleCount
+  const displayedEvents = filteredEvents.slice(0, visibleCount);
 
-  const toggleFilter = (tag) => {
-    setActiveFilters(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+  // Intersection Observer logik
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting && visibleCount < filteredEvents.length) {
+          // Simulera en kort laddningstid för animationens skull
+          setTimeout(() => {
+            setVisibleCount(prev => Math.min(prev + 5, filteredEvents.length));
+          }, 300);
+        }
+      },
+      { threshold: 0.1 }
     );
-  };
 
-  const clearFilters = () => setActiveFilters([]);
-  
-  const toggleSortOrder = () => {
-    setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest');
-  };
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [visibleCount, filteredEvents.length]);
+
+  // Återställ count när filter ändras
+  useEffect(() => {
+    setVisibleCount(10);
+  }, [activeFilters, sortOrder]);
 
   const t = {
     title: { sv: 'Min resa', en: 'My Journey' },
@@ -641,7 +659,7 @@ const DevTimeline = ({ lang, isDark }) => {
         )}
       </AnimatePresence>
 
-      {/* Tidslinje */}
+{/* Tidslinje */}
       <div className="md:flex-1 md:min-h-0 md:overflow-y-auto md:pr-2 custom-scrollbar">
         {displayedEvents.length > 0 ? (
           <>
@@ -652,39 +670,28 @@ const DevTimeline = ({ lang, isDark }) => {
                   event={event} 
                   lang={lang} 
                   isDark={isDark}
-                  index={index}
+                  // Index används här för animationsfördröjning
+                  index={index % 10} 
                 />
               ))}
             </AnimatePresence>
 
-            {/* Visa mer/mindre - UPPDATERAD */}
-            {filteredEvents.length > 10 && (
-              <div className="pt-4 pl-8 md:pl-12">
-                <button
-                  onClick={() => setShowAll(!showAll)}
-                  className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-all
-                    ${isDark
-                      ? 'bg-neon-purple/10 text-neon-purple border border-neon-purple/30 hover:bg-neon-purple/20'
-                      : 'bg-orange-500/10 text-warm-accent border border-orange-300/50 hover:bg-orange-500/20'}`}
-                >
-                  {showAll ? (
-                    <>
-                      <ChevronUp size={16} />
-                      {t.showLess[lang]}
-                    </>
-                  ) : (
-                    <>
-                      <ChevronDown size={16} />
-                      {t.showMore[lang]} ({filteredEvents.length - 10})
-                    </>
-                  )}
-                </button>
+            {/* "Laddnings-vakt" och animerad indikator */}
+            {visibleCount < filteredEvents.length && (
+              <div 
+                ref={loaderRef} 
+                className="py-8 flex justify-center"
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  className={`w-2 h-2 rounded-full ${isDark ? 'bg-neon-purple' : 'bg-warm-accent'}`}
+                />
               </div>
             )}
           </>
         ) : (
           <div className={`text-center py-12 ${isDark ? 'text-gray-500' : 'text-warm-muted'}`}>
-            <Filter size={32} className="mx-auto mb-3 opacity-50" />
             <p>{t.noResults[lang]}</p>
           </div>
         )}
