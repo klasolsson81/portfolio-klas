@@ -143,6 +143,16 @@ const containerVariants = {
 
 ## Recent Changes
 
+### 2026-01-11 - LIA Dates & Chat Localization Fix
+- **Updated LIA Dates:** Updated `chat.js` with correct periods: LIA 1 (2026-08-31 to 2026-11-06) and LIA 2 (2027-03-08 to 2027-06-11).
+- **Chat Welcome Fix:** Enhanced `ChatUI.jsx` to dynamically update the welcome message when switching languages.
+
+### 2026-01-10 - Security Hardening & HMAC Verification
+- **Rate Limiting:** Implemented IP-based rate limiting on all POST endpoints (`analyze.js`, `email.js`) to prevent DoS and cost spikes.
+- **Input Sanitization:** Added `sanitizeTextInput` to project descriptions in `analyze.js` to prevent prompt injection.
+- **HMAC Trust Chain:** Created a cryptographic verification flow where `analyze.js` signs results and `email.js` verifies the token, preventing unauthorized use of the email API.
+- **Git Cleanup:** Updated `.gitignore` to exclude local `.claude/` settings and temporary system files.
+
 ### 2025-12-24 - Session 16 (Sky High Adventures Update & Visual Improvements)
 
 **Project Updates & Enhanced Card Separation**

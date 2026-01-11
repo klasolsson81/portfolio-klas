@@ -30,15 +30,16 @@ const ChatUI = ({ lang, isDark }) => {
   const textareaRef = useRef(null);
 
   // Show welcome message if no history exists or language changes
-  useEffect(() => {
-    if (messages.length === 0) {
-      const welcomeText = lang === 'sv'
-        ? "Tjena! Hur är läget? Fråga mig om vad som helst - mina projekt, kod, eller varför jag blev utvecklare!"
-        : "Hey! What's up? Ask me anything - my projects, code, or why I became a developer!";
+useEffect(() => {
+  const welcomeSve = "Tjena! Hur är läget? Fråga mig om vad som helst - mina projekt, kod, eller varför jag blev utvecklare!";
+  const welcomeEng = "Hey! What's up? Ask me anything - my projects, code, or why I became a developer!";
 
-      setMessages([{ role: 'assistant', content: welcomeText }]);
-    }
-  }, [lang, messages.length]);
+  // Om chatten är tom, eller om den bara innehåller välkomstmeddelandet (längd 1)
+  if (messages.length === 0 || (messages.length === 1 && (messages[0].content === welcomeSve || messages[0].content === welcomeEng))) {
+    const welcomeText = lang === 'sv' ? welcomeSve : welcomeEng;
+    setMessages([{ role: 'assistant', content: welcomeText }]);
+  }
+}, [lang]); // Vi lyssnar på lang-ändringar
 
   // Save messages to sessionStorage (cleared on browser close)
   useEffect(() => {
