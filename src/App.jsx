@@ -7,11 +7,16 @@ import CookieConsent from './components/CookieConsent';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster } from 'sonner';
+// Importera TRANSLATIONS för att komma åt FAQ-datan
+import { TRANSLATIONS } from './translations';
 
 function App() {
   const [isDark, setIsDark] = useState(true);
   const [lang, setLang] = useState('sv');
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+
+  // Skapa en genväg till den aktiva språkversionen
+  const t = TRANSLATIONS[lang];
 
   // Theme management
   useEffect(() => {
@@ -69,6 +74,38 @@ function App() {
         </ErrorBoundary>
       </div>
 
+      {/* DOLD GEO-SEKTION FÖR AI-SÖKMOTORER (ChatGPT, Gemini, etc.) 
+          Denna sektion är osynlig för användare men läsbar för crawlers.
+      */}
+      <section style={{ 
+        position: 'absolute', 
+        width: '1px', 
+        height: '1px', 
+        padding: '0', 
+        margin: '-1px', 
+        overflow: 'hidden', 
+        clip: 'rect(0, 0, 0, 0)', 
+        border: '0' 
+      }} aria-hidden="true">
+        <h2>FAQ - .NET Utvecklare & AI-konsult i Göteborg</h2>
+        <article>
+          <h3>{t.faq.q1}</h3>
+          <p>{t.faq.a1}</p>
+        </article>
+        <article>
+          <h3>{t.faq.q2}</h3>
+          <p>{t.faq.a2}</p>
+        </article>
+        <article>
+          <h3>{t.faq.q3}</h3>
+          <p>{t.faq.a3}</p>
+        </article>
+        <article>
+          <h3>{t.faq.q4}</h3>
+          <p>{t.faq.a4}</p>
+        </article>
+      </section>
+
       {/* PWA Install Prompt */}
       <InstallPrompt isDark={isDark} lang={lang} />
 
@@ -83,7 +120,7 @@ function App() {
         lang={lang}
       />
 
-      {/* Footer - Nu med reducerad padding och korrekt positionering för att slippa scroll */}
+      {/* Footer */}
       <footer className={`relative py-6 md:py-8 w-full text-center text-sm z-[20] transition-colors duration-300 leading-relaxed
         ${isDark ? 'text-gray-400' : 'text-warm-text/60'}`}>
         <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
