@@ -81,12 +81,17 @@ function App() {
       <CookieConsent isDark={isDark} lang={lang} />
       <PrivacyPolicy isOpen={showPrivacyPolicy} onClose={() => setShowPrivacyPolicy(false)} isDark={isDark} lang={lang} />
 
+
       <footer className={`relative py-6 md:py-8 w-full text-center text-sm z-[20] transition-colors duration-300
         ${isDark ? 'text-gray-400' : 'text-warm-text/60'}`}>
-        <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
-          <span>&copy; {new Date().getFullYear()} Klas Olsson • Built with React, Three.js & AI</span>
-          <span className="hidden md:inline mx-2">•</span>
-          <a href="/privacy-policy" className="underline hover:no-underline font-medium">
+        <div className="flex items-center justify-center gap-2">
+          <span>&copy; {new Date().getFullYear()} Klas Olsson</span>
+          <span className="mx-1 opacity-50">•</span>
+          <a 
+            href="/privacy-policy" 
+            className={`underline hover:no-underline transition-colors duration-200
+              ${isDark ? 'hover:text-neon-cyan' : 'hover:text-purple-700'}`}
+          >
             {lang === 'sv' ? 'Integritetspolicy' : 'Privacy Policy'}
           </a>
         </div>
