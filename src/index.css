@@ -196,3 +196,48 @@ body {
 .tech-tag-light:hover { background: linear-gradient(135deg, rgba(254, 228, 200, 0.95) 0%, rgba(255, 240, 220, 0.9) 100%); border-color: rgba(210, 105, 30, 0.5); }
 
 .overflow-x-auto { scrollbar-width: thin; }
+
+/* ===== AI-KNAPP (CYBER STYLE) ===== */
+.btn-ai-glow {
+  background: linear-gradient(135deg, #00f3ff 0%, #bd00ff 100%);
+  background-size: 200% auto;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ai-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(0, 243, 255, 0.5), 0 0 50px rgba(189, 0, 255, 0.3);
+  background-position: right center;
+}
+
+.btn-ai-glow:active {
+  transform: translateY(0);
+}
+
+/* En subtil "skan-effekt" som går över knappen */
+.btn-ai-glow::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(45deg);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
+.btn-ai-glow:hover::after {
+  left: 100%;
+  top: 100%;
+}

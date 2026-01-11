@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Loader2, CheckCircle, XCircle, Briefcase, Send, User, Mail } from 'lucide-react';
+import { Loader2, CheckCircle, XCircle, Briefcase, Send, User, Mail, Sparkles } from 'lucide-react'; // Tillagd Sparkles
 import apiClient from '../../lib/api/client';
 import { toast } from 'sonner';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -152,23 +152,16 @@ const HireMe = ({ lang, isDark }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Execute reCAPTCHA
     try {
       const recaptchaToken = await recaptchaRef.current.executeAsync();
-      recaptchaRef.current.reset(); // Reset for next submission
-
-      // Verify reCAPTCHA token with our backend
-      const verifyResponse = await apiClient.post('/api/verify-recaptcha', {
-        token: recaptchaToken
-      });
+      recaptchaRef.current.reset();
+      const verifyResponse = await apiClient.post('/api/verify-recaptcha', { token: recaptchaToken });
 
       if (!verifyResponse.data.success) {
         toast.error(t.errors.captcha);
         return;
       }
 
-      // reCAPTCHA verified, proceed with AI analysis
       setStatus('analyzing');
       try {
         const res = await apiClient.post('/api/analyze', formData);
@@ -176,71 +169,42 @@ const HireMe = ({ lang, isDark }) => {
         setStatus(res.data.approved ? 'approved' : 'rejected');
       } catch (err) {
         setStatus('idle');
-        // Specific error message for AI analysis failure (overrides interceptor toast)
         toast.error(t.errors.ai);
       }
     } catch (recaptchaError) {
-      // reCAPTCHA execution or verification failed
       toast.error(t.errors.captcha);
-      console.error('reCAPTCHA error:', recaptchaError);
     }
   };
 
   const sendRealEmail = async () => { 
     setIsSending(true); 
-    
     const el = t.emailLabels;
     const subject = `Ny förfrågan från ${formData.name}: ${formData.projectType}`;
-    
-    const emailBody = `${el.header}
-
-${el.sender}:
-${el.name}: ${formData.name}
-${el.email}: ${formData.email}
-${el.type}: ${formData.orgType}
-
-${el.project}:
-${el.projectType}: ${formData.projectType}
-${el.payment}: ${formData.paymentType}${formData.amount ? `\n${el.budget}: ${formData.amount} kr` : ''}
-
-${el.description}:
-${formData.description}
-
----
-
-${el.aiAssessment}:
-${el.time}: ${analysis?.estimatedHours || '?'} ${el.hours}
-${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
+    const emailBody = `${el.header}\n\n${el.sender}:\n${el.name}: ${formData.name}\n${el.email}: ${formData.email}\n${el.type}: ${formData.orgType}\n\n${el.project}:\n${el.projectType}: ${formData.projectType}\n${el.payment}: ${formData.paymentType}${formData.amount ? `\n${el.budget}: ${formData.amount} kr` : ''}\n\n${el.description}:\n${formData.description}\n\n---\n\n${el.aiAssessment}:\n${el.time}: ${analysis?.estimatedHours || '?'} ${el.hours}\n${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
 
     try {
-    await apiClient.post('/api/email', {
-      subject,
-      body: emailBody,
-      replyTo: formData.email,
-      senderName: formData.name,
-      // NYTT: Skicka med verifieringsdata till backend
-      verificationToken: analysis.verificationToken,
-      analysisData: {
-        status: analysis.status,
-        estimatedHours: analysis.estimatedHours
-      }
-    });
-    toast.success(t.status.successTitle);
-    setStatus('sent');
-  } catch (err) {
-    toast.error(t.errors.mail);
-  } finally {
-    setIsSending(false);
-  }
-};
+      await apiClient.post('/api/email', {
+        subject,
+        body: emailBody,
+        replyTo: formData.email,
+        senderName: formData.name,
+        verificationToken: analysis.verificationToken,
+        analysisData: { status: analysis.status, estimatedHours: analysis.estimatedHours }
+      });
+      toast.success(t.status.successTitle);
+      setStatus('sent');
+    } catch (err) {
+      toast.error(t.errors.mail);
+    } finally {
+      setIsSending(false);
+    }
+  };
 
-  // Transparenta inputs för ljust läge
   const inputClass = `w-full rounded-lg p-3 outline-none transition-colors text-sm border appearance-none
     ${isDark 
       ? 'bg-[#1a1b2e] border-white/10 text-white placeholder-gray-600 focus:border-neon-purple'
       : 'bg-orange-50/50 backdrop-blur-sm border-orange-200/50 text-warm-text placeholder-orange-400 focus:border-warm-accent'}`;
 
-  // Warm labels for light mode
   const labelClass = `block text-[10px] uppercase mb-1 font-bold tracking-wider transition-colors
     ${isDark ? 'text-gray-400' : 'text-warm-accent'}`;
 
@@ -254,20 +218,7 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
         <p className={`max-w-md mb-8 leading-relaxed transition-colors ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
           {t.status.successMsg} <strong>{formData.email}</strong> {t.status.soon}
         </p>
-        
-        <button
-          onClick={() => {
-            setStatus('idle');
-            setFormData({
-              name: '',
-              email: '',
-              orgType: t.options.org[0],
-              projectType: t.options.types[0],
-              paymentType: t.options.payment[0],
-              amount: '',
-              description: ''
-            });
-          }} 
+        <button onClick={() => { setStatus('idle'); setFormData({ name: '', email: '', orgType: t.options.org[0], projectType: t.options.types[0], paymentType: t.options.payment[0], amount: '', description: '' }); }} 
           className="px-8 py-3 bg-transparent border border-green-500/30 text-green-500 hover:bg-green-500/10 hover:border-green-500 hover:text-green-600 rounded-full font-medium transition-all"
         >
           {t.buttons.new}
@@ -280,18 +231,17 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
     <div className="w-full flex flex-col p-1 pb-10"> 
       <h2 className={`text-2xl font-bold mb-2 ${isDark ? 'text-neon-purple' : 'text-warm-accent'}`}>{t.title}</h2>
       
-      {/* Transparent disclaimer box */}
+      {/* Disclaimer-box: Lila i mörkt läge, Varm bärnsten i ljust läge */}
       <div className={`border p-4 rounded-lg mb-6 text-xs leading-relaxed flex gap-3 items-start shadow-sm transition-colors
         ${isDark 
-          ? 'bg-amber-500/10 border-amber-500/30 text-amber-100/90' 
+          ? 'bg-neon-purple/5 border-neon-purple/20 text-gray-300' 
           : 'bg-amber-100/40 backdrop-blur-sm border-amber-300/50 text-amber-800'}`}>
-         <Briefcase className="text-amber-500 shrink-0 mt-0.5" size={18} />
+         <Briefcase className={isDark ? "text-neon-purple shrink-0 mt-0.5" : "text-amber-500 shrink-0 mt-0.5"} size={18} />
          <p>{t.disclaimer}</p>
       </div>
 
       {status === 'idle' && (
         <form onSubmit={handleSubmit} className="space-y-4">
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>{t.labels.name}</label>
@@ -312,16 +262,9 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
           <div>
              <label className={labelClass}>{t.labels.who}</label>
              <div className="flex gap-4 flex-wrap">
-               {t.options.org.map((type, index) => (
+               {t.options.org.map((type) => (
                  <label key={type} className={`flex items-center gap-2 cursor-pointer text-sm transition-colors ${isDark ? 'text-gray-300' : 'text-warm-text'}`}>
-                    <input
-                      type="radio"
-                      name="orgType"
-                      value={type}
-                      checked={formData.orgType === type}
-                      onChange={e => setFormData({...formData, orgType: type})}
-                      className="accent-warm-accent" 
-                    />
+                    <input type="radio" name="orgType" value={type} checked={formData.orgType === type} onChange={() => setFormData({...formData, orgType: type})} className={isDark ? "accent-neon-purple" : "accent-warm-accent"} />
                     {type}
                  </label>
                ))}
@@ -346,7 +289,6 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
               </select>
               <div className={`absolute right-3 top-[32px] pointer-events-none text-xs ${isDark ? 'text-gray-500' : 'text-orange-400'}`}>▼</div>
             </div>
-            
             {formData.paymentType === t.options.payment[0] && (
               <div className="flex-1">
                 <label className={labelClass}>{t.labels.budget}</label>
@@ -360,15 +302,12 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
             <textarea className={`${inputClass} h-24 resize-none`} placeholder={t.placeholders.desc} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} required />
           </div>
 
-          {/* Invisible reCAPTCHA v3 */}
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            size="invisible"
-            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-          />
+          <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} />
 
-          <button type="submit" className="w-full bg-gradient-to-r from-warm-accent to-warm-accentDark text-white py-3 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(210,105,30,0.4)] transition-all flex items-center justify-center gap-2 transform hover:scale-[1.01]">
-            <Briefcase size={20} /> {t.buttons.analyze}
+          {/* Den nya "Analysera med AI"-knappen som använder CSS-klassen btn-ai-glow */}
+          <button type="submit" className={`w-full btn-ai-glow py-4 flex items-center justify-center gap-2 transform transition-all hover:scale-[1.01] ${!isDark ? 'shadow-lg shadow-orange-200' : ''}`}>
+            <Sparkles size={20} className="text-white" />
+            <span className="text-white">{t.buttons.analyze}</span>
           </button>
         </form>
       )}
@@ -401,7 +340,6 @@ ${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
           <button onClick={() => setStatus('idle')} className={`w-full py-3 rounded-xl font-bold transition-all border ${isDark ? 'bg-white/10 text-white border-white/10 hover:bg-white/20' : 'bg-orange-50/30 backdrop-blur-sm text-warm-text border-orange-200/50 hover:bg-orange-50/50'}`}>{t.buttons.change}</button>
         </div>
       )}
-
     </div>
   );
 };
