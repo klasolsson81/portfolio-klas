@@ -181,41 +181,55 @@ canvas, .background-visuals {
 
 .overflow-x-auto { scrollbar-width: thin; }
 
-/* ===== LAPTOP OPTIMERING (Kompakt vy för 1080p skärmar) ===== */
-@media (min-width: 1024px) and (max-height: 950px) {
-  /* Minska marginalen för hela kortet */
+/* ===== AGGRESSIV LAPTOP OPTIMERING (För 1080p fönster) ===== */
+@media (min-width: 1024px) and (max-height: 920px) {
+  /* Minska marginalen för huvudbehållaren */
   .hero-card-container {
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
   }
 
-  /* Minska inre padding i glaskortet */
+  /* Tvinga huvudkortet att vara mer kompakt */
   .glass-card-main {
-    padding: 1.5rem !important;
+    padding: 1.25rem !important;
+    gap: 1rem !important;
   }
 
-  /* Tighta till sektionstitlar och text */
-  h2.section-title {
+  /* Minska profilbildens storlek i sidobaren */
+  .sidebar-profile-img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  /* Tighta till intro-texten */
+  .intro-text {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
     margin-bottom: 0.75rem !important;
-    font-size: 1.25rem !important;
   }
 
-  p.intro-text {
-    font-size: 0.875rem !important;
-    line-height: 1.5 !important;
-    margin-bottom: 1rem !important;
+  /* Minska storleken på rubriker */
+  h2.section-title {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.5rem !important;
   }
 
-  /* Minska avstånd i sidebar-menyn */
-  .sidebar-nav-item {
-    padding-top: 0.4rem !important;
-    padding-bottom: 0.4rem !important;
-    margin-bottom: 0.25rem !important;
+  /* Minska grid-avstånd för personligt/tech stack */
+  .stats-grid-container {
+    gap: 0.75rem !important;
   }
 
-  /* Minska storleken på GitHub-grafen ytterligare */
+  /* Skala ner GitHub-grafen (den tar mest plats vertikalt) */
   .github-stats-card {
-    margin-top: 1rem !important;
-    padding: 1rem !important;
+    transform: scale(0.9);
+    transform-origin: top center;
+    margin-top: -0.5rem !important;
+    margin-bottom: -1rem !important;
+  }
+
+  /* Minska padding i navigationen */
+  .sidebar-nav-item {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.85rem !important;
   }
 }

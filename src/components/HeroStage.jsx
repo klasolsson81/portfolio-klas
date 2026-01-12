@@ -72,7 +72,7 @@ const itemVariants = {
 
 <motion.div 
   layout
-  className={`w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[88vh] md:h-full transition-all duration-500 relative z-10
+  className={`glass-card-main w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[88vh] md:h-full transition-all duration-500 relative z-10
     ${isDark
       ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl'
       : 'bg-orange-50/50 backdrop-blur-2xl border border-orange-200/50 shadow-xl shadow-orange-400/10'}`}
@@ -201,7 +201,9 @@ const itemVariants = {
               : 'bg-gradient-to-br from-orange-100/30 via-transparent to-amber-50/20'}`}
           ></div>
           
-          <ProfilePhoto isDark={isDark} />
+         <div className="sidebar-profile-img">
+  <ProfilePhoto isDark={isDark} />
+</div>
           
           <motion.div layout className="mt-4 text-left z-10">
             <h1 className={`text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight bg-clip-text text-transparent pb-1 whitespace-nowrap
@@ -393,7 +395,9 @@ const itemVariants = {
                   </div>
                 </div>
 
-                <GithubStats isDark={isDark} lang={lang} />
+                <div className="github-stats-card">
+  <GithubStats isDark={isDark} lang={lang} />
+</div>
               </motion.div>
             )}
 
