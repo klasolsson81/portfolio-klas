@@ -8,7 +8,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster } from 'sonner';
 
-// FIX: Ändrad sökväg för att matcha din filstruktur i image_25d109.png
+// Import för översättningar från din specifika mappstruktur
 import { TRANSLATIONS } from './components/data/translations.js';
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
   // Språkhantering baserat på translations.js
   const t = TRANSLATIONS[lang];
 
+  // Hantering av mörkt/ljust tema
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
@@ -27,6 +28,7 @@ function App() {
     }
   }, [isDark]);
 
+  // Automatisk språkdetektering
   useEffect(() => {
     const userLang = navigator.language || navigator.userLanguage;
     if (!userLang.startsWith('sv')) {
@@ -34,6 +36,7 @@ function App() {
     }
   }, []);
 
+  // Fångar klick på integritetspolicy-länkar
   useEffect(() => {
     const handlePrivacyClick = (e) => {
       if (e.target.getAttribute('href') === '/privacy-policy') {
@@ -52,7 +55,9 @@ function App() {
     <main className={`relative w-full min-h-screen md:h-screen md:flex md:flex-col overflow-x-hidden font-sans transition-colors duration-700
       ${isDark ? 'bg-transparent selection:bg-neon-cyan selection:text-black' : 'bg-transparent selection:bg-purple-200 selection:text-purple-900'}`}>
 
-      <div className="flex-1 relative flex flex-col min-h-0">
+      {/* hero-card-container används för att tighta till avstånd på 1080p skärmar via index.css 
+      */}
+      <div className="hero-card-container flex-1 relative flex flex-col min-h-0">
         <ErrorBoundary componentName="NodeNetwork" isDark={isDark}>
           <Suspense fallback={<div className="fixed inset-0" />}>
             <NodeNetwork isDark={isDark} />
@@ -68,7 +73,7 @@ function App() {
         </ErrorBoundary>
       </div>
 
-      {/* DOLD GEO-SEKTION FÖR AI-SÖKMOTORER */}
+      {/* DOLD GEO-SEKTION FÖR AI-SÖKMOTORER (SEO-optimering) */}
       <section style={{ position: 'absolute', width: '1px', height: '1px', padding: '0', margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', border: '0' }} aria-hidden="true">
         <h2>FAQ - .NET Utvecklare & AI-konsult i Göteborg</h2>
         <article><h3>{t.faq.q1}</h3><p>{t.faq.a1}</p></article>
@@ -81,15 +86,15 @@ function App() {
       <CookieConsent isDark={isDark} lang={lang} />
       <PrivacyPolicy isOpen={showPrivacyPolicy} onClose={() => setShowPrivacyPolicy(false)} isDark={isDark} lang={lang} />
 
-
-      <footer className={`relative py-6 md:py-8 w-full text-center text-sm z-[20] transition-colors duration-300
+      {/* Footer - Optimerad för minimal scroll på laptop */}
+      <footer className={`relative py-3 md:py-4 w-full text-center text-xs z-[20] transition-colors duration-300
         ${isDark ? 'text-gray-400' : 'text-warm-text/60'}`}>
-        <div className="flex items-center justify-center gap-2">
-          <span>&copy; {new Date().getFullYear()} Klas Olsson</span>
-          <span className="mx-1 opacity-50">•</span>
+        <div className="flex items-center justify-center gap-4">
+          <span className="opacity-80">&copy; {new Date().getFullYear()} Klas Olsson</span>
+          <span className="opacity-30">•</span>
           <a 
             href="/privacy-policy" 
-            className={`underline hover:no-underline transition-colors duration-200
+            className={`underline hover:no-underline transition-colors duration-200 font-medium
               ${isDark ? 'hover:text-neon-cyan' : 'hover:text-purple-700'}`}
           >
             {lang === 'sv' ? 'Integritetspolicy' : 'Privacy Policy'}
