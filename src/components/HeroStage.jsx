@@ -168,7 +168,7 @@ const itemVariants = {
         {/* DESKTOP: Vänster sidopanel (dold på mobil) */}
         <motion.div 
           layout 
-          className={`hidden md:flex p-6 md:w-1/3 border-r flex-col items-start relative overflow-y-auto custom-scrollbar shrink-0
+          className={`desktop-sidebar hidden md:flex p-6 md:w-1/3 border-r flex-col items-start relative overflow-y-auto custom-scrollbar shrink-0
             ${isDark ? 'border-white/10 bg-black/20' : 'border-orange-200/30 bg-orange-50/20'}`}
         >          
           <div className="flex w-full justify-end gap-3 mb-2 relative z-20">
