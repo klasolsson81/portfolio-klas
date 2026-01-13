@@ -143,6 +143,32 @@ const containerVariants = {
 
 ## Recent Changes
 
+# Projektstatus & Recent Changes - 2026-01-13
+
+## Senaste uppdateringar
+
+### 1. Prestanda & Core Web Vitals (Fokus: INP)
+* **Åtgärdat INP (Interaction to Next Paint):** Tidigare värde på 552ms (Poor) identifierades via Vercel Speed Insights.
+* **CSS-optimering:** Tog bort `background-attachment: fixed` i `index.css` då det orsakade tunga repaints vid scroll. Ersatte med ett hårdvaruaccelererat `::before`-lager med `translateZ(0)` för mjukare prestanda på mobiler.
+* **Performance Sensor:** Implementerat `isLowPowerMode` i `App.jsx` som detekterar svaga enheter (Android/Save-Data) eller "Reduced Motion"-inställningar för att automatiskt skala ner tunga animationer.
+* **Lazy Loading:** Konverterat alla tunga komponenter (`NodeNetwork`, `FloatingCode`, `ChatUI`, `DevTimeline`, etc.) till `React.lazy` med `Suspense`-wrappers för att minska initial JavaScript-payload och CPU-tryck vid start.
+* **Adaptiv Animation:** Optimerat huvudbehållaren i `HeroStage.jsx` med `layout={!isLowPowerMode}` för att eliminera tunga layout-beräkningar på enheter med begränsad kraft.
+
+
+
+### 2. Lokal SEO & AEO (AI Engine Optimization)
+* **Google Business Profile:** Optimerat profilen med 10+ specifika tjänster (t.ex. .NET-utveckling, AI-integration) inklusive sökoptimerade beskrivningar på svenska och engelska.
+* **Google Updates:** Publicerat första inlägget ("Nu är jag live i Göteborg!") för att öka profilens "färskhet" och relevans för Google och AI-sökmotorer.
+* **Entitets-koppling:** Synkroniserat den dolda FAQ-sektionen i `App.jsx` med tjänstebeskrivningarna på Google för att stärka auktoriteten kring nyckelorden ".NET 8" och "AI-integration".
+
+### 3. Arkitektur & Integritet
+* **Conditional Analytics:** Uppdaterat `main.jsx` så att Vercel Analytics och SpeedInsights endast laddas efter att användaren gett samtycke via `CookieConsent`.
+* **Global Anpassning:** Baserat på statistik (52% Android, betydande trafik från Indien/Bangladesh) är gränssnittet nu optimerat för att fungera på varierande nätverkskvalitet utan att tappa modern tech-känsla.
+
+## Att tänka på vid nästa session
+* Fortsätt använda `isLowPowerMode`-proppen för alla nya visuellt tunga funktioner.
+* Prioritera `React.lazy` för komponenter som inte är synliga "above the fold".
+* Vid uppdatering av tech-stack, spegla alltid förändringen i Google Business Profile-tjänsterna för att bibehålla AEO-synkronisering.
 
 
 ### 2026-01-11 - LIA Dates & UI/UX Polishing
