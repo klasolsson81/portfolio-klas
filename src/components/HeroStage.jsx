@@ -1,44 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, Suspense } from 'react'; // La till Suspense
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
-import ChatUI from './ChatUI';
 import { Code, Terminal, User, Github, Linkedin, Mail, Languages, ExternalLink, Play, X, Download, Layers, Briefcase, Moon, Sun, TrendingUp, Rocket } from 'lucide-react';
-import GithubStats from './GithubStats';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
-import ProjectSlideshow from './ProjectSlideshow';
-import HireMe from './HireMe';
-import DevTimeline from './DevTimeline';
+
+// VIKTIGT: Byt till Lazy Loading för att inte blockera sidan vid start
+const ChatUI = React.lazy(() => import('./ChatUI'));
+const GithubStats = React.lazy(() => import('./GithubStats'));
+const ProjectSlideshow = React.lazy(() => import('./ProjectSlideshow'));
+const HireMe = React.lazy(() => import('./HireMe'));
+const DevTimeline = React.lazy(() => import('./DevTimeline'));
 
 // Data imports
 import { PROJECT_SLIDES, detectiveVideo } from './data/projectSlides.jsx';
 import { TRANSLATIONS, calculateAge } from './data/translations';
 
-const HeroStage = ({ isDark, toggleTheme, lang, toggleLang }) => {
+// Ta emot isLowPowerMode som prop
+const HeroStage = ({ isDark, toggleTheme, lang, toggleLang, isLowPowerMode = false }) => {
   const [section, setSection] = useState('about');
   const [activeVideo, setActiveVideo] = useState(null);
   const [activeSlideshow, setActiveSlideshow] = useState(null);
 
   const t = TRANSLATIONS[lang];
   const myAge = calculateAge('1981-02-04');
-  // Lägg till dessa varianter för staggered animation
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 } // Vänta 0.2s mellan varje rad
-  }
-};
 
-const itemVariants = {
-  hidden: { opacity: 0, x: -10 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
-};
+  // Stäng av tunga stagger-effekter om low power mode är på
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: isLowPowerMode ? 0 : 0.2 } 
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: isLowPowerMode ? 0 : -10 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
+  };
 
   return (
     <div className="min-h-screen md:flex md:items-center md:justify-center p-3 md:p-8 relative z-10">
       
-      <AnimatePresence>
+<AnimatePresence>
         {activeVideo && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -46,38 +50,24 @@ const itemVariants = {
             onClick={() => setActiveVideo(null)}
           >
             <div className="relative w-full max-w-4xl bg-black rounded-xl overflow-hidden border border-neon-purple/50 shadow-2xl shadow-neon-purple/20" onClick={e => e.stopPropagation()}>
-              <button
-                onClick={() => setActiveVideo(null)}
-                className="absolute top-4 right-4 z-10 text-white hover:text-neon-cyan bg-black/50 rounded-full p-2 transition-colors"
-                aria-label="Stäng video"
-              >
-                <X size={24} />
-              </button>
-              <video controls autoPlay className="w-full h-auto max-h-[80vh]">
-                <source src={activeVideo} type="video/mp4" />
-              </video>
+              <button onClick={() => setActiveVideo(null)} className="absolute top-4 right-4 z-10 text-white hover:text-neon-cyan bg-black/50 rounded-full p-2 transition-colors"><X size={24} /></button>
+              <video controls autoPlay className="w-full h-auto max-h-[80vh]"><source src={activeVideo} type="video/mp4" /></video>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <ProjectSlideshow 
-        isOpen={!!activeSlideshow}
-        onClose={() => setActiveSlideshow(null)}
-        slides={activeSlideshow?.slides}
-        title={activeSlideshow?.title}
-        isDark={isDark}
-      />
+      <Suspense fallback={null}>
+        <ProjectSlideshow isOpen={!!activeSlideshow} onClose={() => setActiveSlideshow(null)} slides={activeSlideshow?.slides} title={activeSlideshow?.title} isDark={isDark} />
+      </Suspense>
 
-
-<motion.div 
-  layout
-  className={`glass-card-main w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[88vh] md:h-full transition-all duration-500 relative z-10
-    ${isDark
-      ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl'
-      : 'bg-orange-50/50 backdrop-blur-2xl border border-orange-200/50 shadow-xl shadow-orange-400/10'}`}
-  style={{ borderRadius: 24 }}
->
+      <motion.div 
+        // HÄR ÄR NYCKELN TILL PRESTANDAN: Stäng av tunga layout-beräkningar på svaga enheter
+        layout={!isLowPowerMode}
+        className={`glass-card-main w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row md:max-h-[88vh] md:h-full transition-all duration-500 relative z-10
+          ${isDark ? 'bg-neon-darkbg/80 backdrop-blur-xl border border-white/10 shadow-2xl' : 'bg-orange-50/50 backdrop-blur-2xl border border-orange-200/50 shadow-xl shadow-orange-400/10'}`}
+        style={{ borderRadius: 24 }}
+      >
         {/* MOBIL HEADER - Kompakt och ren */}
         <div className={`md:hidden p-3 border-b ${isDark ? 'border-white/10' : 'border-warm-border'}`}>
           {/* Rad 1: Foto + Namn + Settings */}

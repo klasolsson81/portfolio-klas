@@ -21,31 +21,50 @@ html, body {
   }
 }
 
-/* ===== MÖRKT TEMA - ANIMERAD CYBER GRADIENT ===== */
-.dark body {
-  background: linear-gradient(135deg, #0a0b1e 0%, #0d0a1f 20%, #150a24 40%, #0a0b1e 60%, #0f0a20 80%, #0a0b1e 100%);
+/* ===== OPTIMERAD BAKGRUNDS-RENDERING (INP-FIX) ===== */
+/* Vi använder ett separat lager (::before) med GPU-acceleration istället för "background-attachment: fixed" */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Detta tvingar mobiler att använda grafikkortet för bakgrunden = Mycket snabbare */
+  transform: translateZ(0); 
+  will-change: background-position;
   background-size: 400% 400%;
-  background-attachment: fixed;
+  transition: background 0.7s ease;
+}
+
+/* Mörkt tema (Standard) - Animerad Cyber Gradient */
+.dark body::before {
+  background: linear-gradient(135deg, #0a0b1e 0%, #0d0a1f 20%, #150a24 40%, #0a0b1e 60%, #0f0a20 80%, #0a0b1e 100%);
   animation: dark-gradient-shift 25s ease infinite;
+}
+
+/* Ljust tema - Solar Tech */
+body::before {
+  background: linear-gradient(135deg, #F5E6D3 0%, #FFECD2 15%, #FFD9B3 30%, #FFCC99 50%, #FFE0B2 70%, #FFECD2 85%, #F5E6D3 100%);
+  animation: gradient-shift 20s ease infinite;
+}
+
+/* Grundinställningar för textfärg och höjd */
+.dark body {
   color: #e5e7eb;
   min-height: 100dvh;
 }
 
+body {
+  color: #1A1E29;
+  min-height: 100dvh;
+  transition: color 0.3s ease;
+}
+
+/* ===== ANIMATIONER ===== */
 @keyframes dark-gradient-shift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-
-/* ===== LJUST TEMA - SOLAR TECH ===== */
-body {
-  background: linear-gradient(135deg, #F5E6D3 0%, #FFECD2 15%, #FFD9B3 30%, #FFCC99 50%, #FFE0B2 70%, #FFECD2 85%, #F5E6D3 100%);
-  background-size: 400% 400%;
-  background-attachment: fixed;
-  animation: gradient-shift 20s ease infinite;
-  color: #1A1E29;
-  min-height: 100dvh;
-  transition: color 0.3s ease;
 }
 
 @keyframes gradient-shift {
@@ -54,12 +73,12 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* ===== TEXT-ANIMATIONER ===== */
 @keyframes shimmer {
   0% { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
 
+/* ===== TEXT-EFFEKTER ===== */
 .animate-text-gradient {
   background: linear-gradient(90deg, #00f3ff, #bd00ff, #ffffff, #bd00ff, #00f3ff);
   background-size: 200% auto;
@@ -97,7 +116,7 @@ body {
   animation: shimmer 5s linear infinite;
 }
 
-/* Fix för bakgrundsobjekt */
+/* Fix för bakgrundsobjekt (Three.js canvas) */
 canvas, .background-visuals {
   position: fixed !important;
   inset: 0 !important;
