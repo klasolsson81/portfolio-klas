@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt', // ÄNDRAD: Hindrar automatisk "dubbel-refresh"
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'CV_Klas_Olsson.pdf', 'og-image.png'],
       manifest: {
         name: 'Klas Olsson - Portfolio',
@@ -52,9 +52,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        // Increase file size limit for larger screenshots (default: 2 MB)
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
-        // Cache strategies
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2}'],
         runtimeCaching: [
           {
@@ -62,13 +60,8 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] }
             }
           },
           {
@@ -76,13 +69,8 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'gstatic-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] }
             }
           },
           {
@@ -90,19 +78,14 @@ export default defineConfig({
             handler: 'NetworkFirst',
             options: {
               cacheName: 'github-api-cache',
-              expiration: {
-                maxEntries: 20,
-                maxAgeSeconds: 60 * 60 // 1 hour
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
+              expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 },
+              cacheableResponse: { statuses: [0, 200] }
             }
           }
         ]
       },
       devOptions: {
-        enabled: true, // Enable in dev for testing
+        enabled: true,
         type: 'module'
       }
     })

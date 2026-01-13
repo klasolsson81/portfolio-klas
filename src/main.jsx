@@ -4,45 +4,48 @@ import App from './App.jsx'
 import 'flag-icons/css/flag-icons.min.css';
 import './index.css'
 
-// Importera Vercels verktyg
+// Importera verktyg och toast-notiser
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/react"
-
-// Importera PWA service worker registrering
 import { registerSW } from 'virtual:pwa-register'
+import { toast } from 'sonner' // Se till att sonner är installerad
 
-// Registrera service worker med auto-uppdatering
+// Registrera service worker med manuell prompt (fixar dubbel-refresh)
 const updateSW = registerSW({
   onNeedRefresh() {
-    // Only log in development
+    // Visa en snygg notis istället för att tvinga fram en omladdning direkt
+    toast('Ny version tillgänglig!', {
+      description: 'Uppdatera för att få de senaste prestandafixarna.',
+      duration: Infinity, // Stannar tills användaren agerar
+      action: {
+        label: 'Uppdatera',
+        onClick: () => updateSW(true) // Utför uppdateringen manuellt
+      },
+    });
+
     if (import.meta.env.DEV) {
-      console.log('PWA: New content available, will update on next visit');
+      console.log('PWA: New content available, prompt shown to user');
     }
   },
   onOfflineReady() {
-    // Only log in development
     if (import.meta.env.DEV) {
       console.log('PWA: App ready to work offline');
     }
   },
   onRegistered(registration) {
-    // Only log in development
     if (import.meta.env.DEV) {
-      console.log('PWA: Service worker registered', registration);
+      console.log('PWA: Service worker registered');
     }
   },
   onRegisterError(error) {
-    // Always log errors (important for production debugging)
     console.error('PWA: Service worker registration failed', error);
   }
 })
 
-// Conditional Analytics component (only loads if consent given)
 const ConditionalAnalytics = () => {
   const [hasConsent, setHasConsent] = useState(false);
 
   useEffect(() => {
-    // Check initial consent
     const checkConsent = () => {
       const consent = localStorage.getItem('cookie-consent');
       setHasConsent(consent === 'accepted');
@@ -50,11 +53,9 @@ const ConditionalAnalytics = () => {
 
     checkConsent();
 
-    // Listen for consent changes (use named function for better debugging)
     const handleConsentChange = () => checkConsent();
     window.addEventListener('cookie-consent-changed', handleConsentChange);
 
-    // Cleanup listener on unmount
     return () => {
       window.removeEventListener('cookie-consent-changed', handleConsentChange);
     };
@@ -73,9 +74,6 @@ const ConditionalAnalytics = () => {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
-
-    {/* Här laddas statistiken och prestandamätningen (endast med samtycke) */}
     <ConditionalAnalytics />
-
   </React.StrictMode>,
 )
