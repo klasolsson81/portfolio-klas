@@ -148,6 +148,17 @@ const EVENT_TYPES = {
 // =====================================================
 const TIMELINE_EVENTS = [
   {
+    date: "2026-01-21",
+    type: "project",
+    title: { sv: "IFK Manager 2026 – Databashantering", en: "IFK Manager 2026 – Database Management" },
+    description: {
+      sv: "Ett omfattande managementsystem byggt i .NET 10 med SQL Server Express. Implementerade avancerad databaslogik med SQL-triggers för audit-loggning, repository-mönster och komplexa relationer via EF Core. Gränssnittet skapades med Spectre.Console för en modern terminalupplevelse.",
+      en: "A comprehensive management system built in .NET 10 with SQL Server Express. Implemented advanced database logic using SQL triggers for audit logging, the repository pattern, and complex relations via EF Core. The interface was created with Spectre.Console for a modern terminal experience."
+    },
+    tags: ["C#", ".NET 10", "SQL Server", "EF Core", "Architecture", "Spectre.Console"],
+    grade: "VG"
+  },  
+  {
     date: "2025-12-18",
     type: "course_complete",
     title: { sv: "OOP Grund – VG", en: "OOP Fundamentals – Distinction" },
