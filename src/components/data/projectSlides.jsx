@@ -2,6 +2,7 @@ import React from 'react';
 
 // VIDEO
 import detectiveVideo from '../../assets/video.mp4';
+import miniAtsVideo from '../../assets/miniATS/demo.mov';
 
 // DETECTIVE IMAGES
 import detectiveImg1 from '../../assets/detective-1.png';
@@ -13,6 +14,13 @@ import fitnessImg1 from '../../assets/fitness-1.png';
 import fitnessImg2 from '../../assets/fitness-2.png';
 import fitnessImg3 from '../../assets/fitness-3.png';
 import fitnessImg4 from '../../assets/fitness-4.png';
+
+// MINI ATS IMAGES
+import miniAtsLogin from '../../assets/miniATS/login.png';
+import miniAtsAdminDashboard from '../../assets/miniATS/admindashboard.png';
+import miniAtsKunddashboard from '../../assets/miniATS/kunddashboard.png';
+import miniAtsKanban from '../../assets/miniATS/kanban.png';
+import miniAtsLoggar from '../../assets/miniATS/loggar.png';
 
 export const PROJECT_SLIDES = {
   detective: [
@@ -134,7 +142,49 @@ export const PROJECT_SLIDES = {
       type: "learning",
       content: <p>Efter att projektet var klart körde jag en <strong>omfattande code review</strong> över 5 sessioner. Identifierade 15 issues (4 critical, 4 high, 4 medium, 3 low) och fixade alla systematiskt. Det lärde mig vikten av strukturerad kodgranskning, säkerhetsvalidering och att prioritera efter severity. Resultatet: ⭐⭐⭐⭐⭐ (5/5) kodkvalitet.</p>
     }
+  ],
+  miniAts: [
+    {
+      title: "Projektöversikt",
+      type: "intro",
+      content: <p><strong>Mini ATS</strong> är ett komplett Applicant Tracking System för rekryteringsteam. Byggt med <strong>Next.js 16</strong>, <strong>TypeScript</strong> och <strong>Supabase</strong> med fokus på multi-tenant arkitektur, säkerhet och modern UX med glassmorphism-design.</p>,
+      image: miniAtsLogin
+    },
+    {
+      title: "Admin Dashboard",
+      type: "solution",
+      content: <p><strong>Admin-portalen</strong> ger plattformsadministratörer full kontroll över tenants och användare. Här kan man skapa nya kunder, hantera användare, se impersonation-loggar och granska audit trails. Separata vyer för admin vs customer säkerställer tydlig rollseparation.</p>,
+      image: miniAtsAdminDashboard
+    },
+    {
+      title: "Kund Dashboard",
+      type: "intro",
+      content: <p><strong>Kund-dashboarden</strong> visar KPI:er för aktiva jobb, kandidater i pipeline och senaste aktivitet. Quick Actions ger snabb åtkomst till vanliga uppgifter. Designen använder glassmorphism med gradient-accenter för en modern, professionell känsla.</p>,
+      image: miniAtsKunddashboard
+    },
+    {
+      title: "Kanban Pipeline",
+      type: "code",
+      content: <p>Hjärtat i systemet är <strong>Kanban-boarden</strong> med drag-and-drop för kandidater genom 7 rekryteringssteg. Byggt med <code>@dnd-kit</code> för smooth interactions. Optimistiska uppdateringar ger instant feedback medan synkronisering sker i bakgrunden.</p>,
+      image: miniAtsKanban
+    },
+    {
+      title: "Säkerhet: Multi-tenant RLS",
+      type: "problem",
+      content: <p>Den största utmaningen var att implementera <strong>Row-Level Security</strong> för komplett dataisolering mellan tenants. Varje SQL-query filtreras automatiskt via Postgres RLS-policies med hjälpfunktioner som <code>current_tenant_id()</code> och <code>is_admin()</code>.</p>
+    },
+    {
+      title: "Audit Logging",
+      type: "learning",
+      content: <p><strong>Impersonation-loggar</strong> spårar när admins agerar som kunder för support. <strong>Audit logs</strong> fångar alla användar- och tenant-händelser. IP-adresser, user agents och tidsstämplar lagras för compliance och felsökning.</p>,
+      image: miniAtsLoggar
+    },
+    {
+      title: "Tech Stack & Arkitektur",
+      type: "code",
+      content: <p>Projektet använder <strong>Next.js 16 App Router</strong> med Server Actions för alla mutationer. <strong>Supabase</strong> för databas och auth. <strong>next-intl</strong> för i18n (svenska/engelska). <strong>Zod</strong> för validering. <strong>TailwindCSS</strong> med custom glassmorphism-komponenter.</p>
+    }
   ]
 };
 
-export { detectiveVideo };
+export { detectiveVideo, miniAtsVideo };

@@ -13,7 +13,7 @@ const HireMe = React.lazy(() => import('./HireMe'));
 const DevTimeline = React.lazy(() => import('./DevTimeline'));
 
 // Data imports
-import { PROJECT_SLIDES, detectiveVideo } from './data/projectSlides.jsx';
+import { PROJECT_SLIDES, detectiveVideo, miniAtsVideo } from './data/projectSlides.jsx';
 import { TRANSLATIONS, calculateAge } from './data/translations';
 
 // Ta emot isLowPowerMode som prop
@@ -363,7 +363,7 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang, isLowPowerMode = fal
 </h3>
 
 <div className="flex flex-wrap gap-2">
-  {['C#', '.NET 8', 'SQL Server', 'Entity Framework', 'React', 'Three.js', 'Tailwind CSS', 'Framer Motion', 'Vite', 'Vercel', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map((tag, idx) => (
+  {['C#', '.NET 10', 'SQL Server', 'Entity Framework', 'Next.js', 'TypeScript', 'React', 'Supabase', 'Three.js', 'Tailwind CSS', 'Framer Motion', 'Vercel', 'Azure', 'Docker', 'Git', 'n8n', 'AI Integration'].map((tag, idx) => (
     <motion.span
       key={tag}
       variants={itemVariants}
@@ -442,6 +442,22 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang, isLowPowerMode = fal
                     githubUrl="https://github.com/klasolsson81/CheatSheet"
                     image="/recon-screenshot.png"
                     onDetails={() => setActiveSlideshow({ title: "RECON - B2B Sales Intelligence", slides: PROJECT_SLIDES.recon })}
+                    isDark={isDark}
+                    lang={lang}
+                  />
+
+                  <LiveDemoCard
+                    title="Mini ATS"
+                    desc={lang === 'sv'
+                      ? "Komplett multi-tenant rekryteringssystem med Kanban pipeline, admin-portal och audit-loggning. Row-Level Security för dataisolering."
+                      : "Complete multi-tenant recruitment system with Kanban pipeline, admin portal and audit logging. Row-Level Security for data isolation."}
+                    tags={['Next.js 16', 'TypeScript', 'Supabase', 'RLS', 'TailwindCSS']}
+                    demoUrl="https://mini-ats-jade.vercel.app"
+                    githubUrl="https://github.com/klasolsson81/mini-ats"
+                    image="/miniats-screenshot.png"
+                    videoSrc={miniAtsVideo}
+                    onPlay={() => setActiveVideo(miniAtsVideo)}
+                    onDetails={() => setActiveSlideshow({ title: "Mini ATS - Applicant Tracking System", slides: PROJECT_SLIDES.miniAts })}
                     isDark={isDark}
                     lang={lang}
                   />
@@ -688,7 +704,7 @@ const ProjectCard = ({ title, desc, tags, link, videoSrc, onPlay, watchText, onD
 );
 
 // LiveDemoCard - Featured project card with screenshot and demo link
-const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, onDetails, isDark, lang }) => {
+const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, videoSrc, onPlay, onDetails, isDark, lang }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   return (
@@ -763,6 +779,22 @@ const LiveDemoCard = ({ title, desc, tags, demoUrl, githubUrl, image, onDetails,
           <Github size={16} />
           {lang === 'sv' ? 'Kod' : 'Code'}
         </a>
+
+        {videoSrc && onPlay && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onPlay();
+            }}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs md:text-sm font-medium border transition-all hover:scale-105
+              ${isDark
+                ? 'bg-neon-cyan/10 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan hover:text-black'
+                : 'bg-orange-100/50 border-orange-300 text-warm-accent hover:bg-warm-accent hover:text-white'}`}
+          >
+            <Play size={16} />
+            {lang === 'sv' ? 'Se Demo' : 'Watch Demo'}
+          </button>
+        )}
 
         {onDetails && (
           <button

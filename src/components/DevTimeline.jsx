@@ -148,6 +148,17 @@ const EVENT_TYPES = {
 // =====================================================
 const TIMELINE_EVENTS = [
   {
+    date: "2026-01-28",
+    type: "project",
+    title: { sv: "Mini ATS – Multi-tenant Rekryteringssystem", en: "Mini ATS – Multi-tenant Recruitment System" },
+    description: {
+      sv: "Ett komplett Applicant Tracking System byggt med Next.js 16, TypeScript och Supabase. Multi-tenant arkitektur med Row-Level Security för dataisolering. Kanban pipeline med drag-and-drop, admin-portal med impersonation och audit-loggning. Glassmorphism-design med i18n (svenska/engelska).",
+      en: "A complete Applicant Tracking System built with Next.js 16, TypeScript and Supabase. Multi-tenant architecture with Row-Level Security for data isolation. Kanban pipeline with drag-and-drop, admin portal with impersonation and audit logging. Glassmorphism design with i18n (Swedish/English)."
+    },
+    tags: ["Next.js", "TypeScript", "Supabase", "RLS", "Kanban", "i18n"],
+    link: "https://mini-ats-jade.vercel.app"
+  },
+  {
     date: "2026-01-21",
     type: "project",
     title: { sv: "IFK Manager 2026 – Databashantering", en: "IFK Manager 2026 – Database Management" },
