@@ -433,6 +433,20 @@ const HeroStage = ({ isDark, toggleTheme, lang, toggleLang, isLowPowerMode = fal
                   </h3>
 
                   <LiveDemoCard
+                    title="KalasKoll"
+                    desc={lang === 'sv'
+                      ? "Mitt största projekt — en komplett webapp för barnkalas-inbjudningar med AI-genererade kort, digital OSA via mobilen och GDPR-säkrad allergihantering. Byggt för mitt eget behov: 20 förskolebarn, noll kaos."
+                      : "My biggest project — a complete webapp for kids' party invitations with AI-generated cards, mobile RSVP and GDPR-compliant allergy handling. Built from a real need: 20 preschoolers, zero chaos."}
+                    tags={['Next.js 16', 'TypeScript', 'Supabase', 'Three.js', 'AI', 'GDPR']}
+                    demoUrl="https://kalaskoll.se"
+                    githubUrl="https://github.com/klasolsson81/kalaskoll"
+                    image="/kalaskoll-screenshot.png"
+                    onDetails={() => setActiveSlideshow({ title: "KalasKoll — Smarta Inbjudningar för Barnkalas", slides: PROJECT_SLIDES.kalaskoll })}
+                    isDark={isDark}
+                    lang={lang}
+                  />
+
+                  <LiveDemoCard
                     title="RECON - B2B Sales Intelligence"
                     desc={lang === 'sv'
                       ? "AI-driven B2B-analys som genererar säljinsikter i realtid. 70% snabbare än traditionella verktyg med multi-provider arkitektur."

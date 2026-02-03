@@ -148,6 +148,17 @@ const EVENT_TYPES = {
 // =====================================================
 const TIMELINE_EVENTS = [
   {
+    date: "2026-02-03",
+    type: "project",
+    title: { sv: "KalasKoll — Barnkalas-app med AI & GDPR", en: "KalasKoll — Kids' Party App with AI & GDPR" },
+    description: {
+      sv: "Mitt största och mest personliga projekt. En komplett svensk webapp för barnkalas-inbjudningar med AI-genererade kort (Replicate Flux / DALL-E 3), digital OSA via mobilen, realtids-gästlista och GDPR-säkrad allergihantering (AES-256-GCM). Byggt med Next.js 16, TypeScript, Supabase, Three.js och glassmorphism-design. 133 enhetstester + 41 E2E-tester.",
+      en: "My biggest and most personal project. A complete Swedish webapp for kids' party invitations with AI-generated cards (Replicate Flux / DALL-E 3), mobile RSVP, real-time guest list and GDPR-compliant allergy handling (AES-256-GCM). Built with Next.js 16, TypeScript, Supabase, Three.js and glassmorphism design. 133 unit tests + 41 E2E tests."
+    },
+    tags: ["Next.js", "TypeScript", "Supabase", "Three.js", "AI", "GDPR"],
+    link: "https://kalaskoll.se"
+  },
+  {
     date: "2026-01-28",
     type: "project",
     title: { sv: "Mini ATS – Multi-tenant Rekryteringssystem", en: "Mini ATS – Multi-tenant Recruitment System" },

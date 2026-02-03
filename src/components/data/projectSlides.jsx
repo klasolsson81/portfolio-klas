@@ -22,7 +22,56 @@ import miniAtsKunddashboard from '../../assets/miniATS/kunddashboard.png';
 import miniAtsKanban from '../../assets/miniATS/kanban.png';
 import miniAtsLoggar from '../../assets/miniATS/loggar.png';
 
+// KALASKOLL IMAGES
+import kalaskollLanding from '../../assets/kalasfix/landingpage.png';
+import kalaskollDashboard from '../../assets/kalasfix/dashboard.png';
+import kalaskollKalas from '../../assets/kalasfix/kalas.png';
+import kalaskollGuestlist from '../../assets/kalasfix/guestlist.png';
+import kalaskollRsvp from '../../assets/kalasfix/RSVP.png';
+
 export const PROJECT_SLIDES = {
+  kalaskoll: [
+    {
+      title: "Projektöversikt",
+      type: "intro",
+      content: <p><strong>KalasKoll</strong> föddes ur ett verkligt behov — min son Alexander fyllde 6 år och vi skulle bjuda in 20 förskolebarn. Att hålla koll på vilka som kommer, allergier och kontaktuppgifter via SMS, lappar och anteckningar blev snabbt kaotiskt. Så jag byggde en hel webapp för det. Det här är mitt största och mest personliga projekt.</p>,
+      image: kalaskollLanding
+    },
+    {
+      title: "Dashboard & Kalashantering",
+      type: "solution",
+      content: <p>Föräldern skapar ett kalas med datum, plats och tema, och väljer sedan mellan <strong>9 illustrerade gratismallar</strong> eller en <strong>AI-genererad inbjudan</strong> (Replicate Flux / DALL-E 3). Inbjudan kan delas via e-post, delningslänk eller skrivas ut med QR-kod. Allt samlas i en dashboard med realtidsuppdaterad gästlista.</p>,
+      image: kalaskollDashboard
+    },
+    {
+      title: "Kalasdetaljer & Inbjudningskort",
+      type: "intro",
+      content: <p>Varje kalas har en detaljsida med inbjudningskort (mall eller AI), barnfoto med beskärningsverktyg och ramval, samt en <strong>delningshubb</strong> för att skicka inbjudningar via e-post, SMS (premium) eller QR-kod. Gästerna behöver inget konto — de klickar på länken och svarar direkt.</p>,
+      image: kalaskollKalas
+    },
+    {
+      title: "Gästlista i Realtid",
+      type: "code",
+      content: <p>Gästlistan uppdateras live via <strong>Supabase Realtime</strong>. Föräldern ser direkt vilka som tackat ja eller nej, kontaktuppgifter och allergier (krypterade med AES-256-GCM). Manuell gästhantering finns också — lägg till, redigera och ta bort gäster direkt i listan.</p>,
+      image: kalaskollGuestlist
+    },
+    {
+      title: "Mobil OSA-sida (RSVP)",
+      type: "solution",
+      content: <p>99% av gästerna svarar via mobilen. OSA-sidan är byggd <strong>mobile-first</strong> med stora touch-targets, allergi-checkboxar med GDPR-samtycke och bekräftelsemail via Resend. Redigering sker via en kryptografisk edit-token — ingen inloggning krävs.</p>,
+      image: kalaskollRsvp
+    },
+    {
+      title: "Säkerhet & GDPR",
+      type: "problem",
+      content: <p>Allergidata är hälsodata under <strong>GDPR artikel 9</strong> — det kräver uttryckligt samtycke och extra skydd. All allergiinfo krypteras med AES-256-GCM, lagras separat med Row-Level Security och <strong>raderas automatiskt 7 dagar efter kalaset</strong>. Rate limiting via Upstash Redis skyddar mot missbruk.</p>
+    },
+    {
+      title: "Tech Stack & Arkitektur",
+      type: "code",
+      content: <p>Byggt med <strong>Next.js 16</strong> (App Router), <strong>TypeScript</strong>, <strong>Supabase</strong> (PostgreSQL, Auth, Storage, Realtime), <strong>Tailwind CSS 4</strong> med glassmorphism-tema, <strong>Three.js</strong> för 3D-ballonger på landningssidan, <strong>Replicate Flux</strong> + <strong>DALL-E 3</strong> för AI-bilder, <strong>46elks</strong> för SMS och <strong>Resend</strong> för e-post. 133 enhetstester (Vitest) och 41 E2E-tester (Playwright).</p>
+    }
+  ],
   detective: [
     {
       title: "Projektöversikt",
