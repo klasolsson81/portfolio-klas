@@ -12,22 +12,25 @@ const TRANSLATIONS = {
       labels: {
         help: "VAD BEHÖVER DU HJÄLP MED?",
         payment: "ERSÄTTNING?",
-        budget: "BUDGET (CA KR)",
+        budgetType: "BUDGETTYP",
+        budget: "BELOPP",
         desc: "BESKRIVNING",
         name: "DITT NAMN",
         email: "DIN EMAIL",
         who: "VEM ÄR DU?"
       },
       placeholders: {
-        budget: "t.ex. 5000",
+        budgetTotal: "t.ex. 50 000",
+        budgetHourly: "t.ex. 500",
         desc: "Vad behöver du hjälp med? Beskriv kort...",
         name: "Förnamn Efternamn",
         email: "namn@exempel.se"
-      }, 
-      options: { 
-        types: ["Hemsida (Enkel)", "Hemsida (Avancerad)", "Systemutveckling / Backend", "AI Integration / Automation", "Annat"], 
-        payment: ["Betalt", "Pro Bono (Gratis/Erfarenhet)"], 
-        org: ["Privatperson", "Företag", "Rekryterare"] 
+      },
+      options: {
+        types: ["Hemsida (Enkel)", "Hemsida (Avancerad)", "Systemutveckling / Backend", "AI Integration / Automation", "Annat"],
+        payment: ["Betalt", "Pro Bono (Gratis/Erfarenhet)"],
+        org: ["Privatperson", "Företag", "Rekryterare"],
+        budgetType: ["Totalbudget (kr)", "Timpris (kr/h)"]
       }, 
       buttons: { 
         analyze: "Analysera med AI", 
@@ -75,22 +78,25 @@ const TRANSLATIONS = {
       labels: {
         help: "WHAT DO YOU NEED HELP WITH?",
         payment: "COMPENSATION?",
-        budget: "BUDGET (APPROX SEK)",
+        budgetType: "BUDGET TYPE",
+        budget: "AMOUNT",
         desc: "DESCRIPTION",
         name: "YOUR NAME",
         email: "YOUR EMAIL",
         who: "WHO ARE YOU?"
       },
       placeholders: {
-        budget: "e.g. 5000",
+        budgetTotal: "e.g. 50 000",
+        budgetHourly: "e.g. 500",
         desc: "What do you need help with? Describe briefly...",
         name: "Firstname Lastname",
         email: "name@example.com"
-      }, 
-      options: { 
-        types: ["Website (Simple)", "Website (Advanced)", "System Development / Backend", "AI Integration / Automation", "Other"], 
-        payment: ["Paid", "Pro Bono (Free/Experience)"], 
-        org: ["Individual", "Company", "Recruiter"] 
+      },
+      options: {
+        types: ["Website (Simple)", "Website (Advanced)", "System Development / Backend", "AI Integration / Automation", "Other"],
+        payment: ["Paid", "Pro Bono (Free/Experience)"],
+        org: ["Individual", "Company", "Recruiter"],
+        budgetType: ["Total budget (SEK)", "Hourly rate (SEK/h)"]
       }, 
       buttons: { 
         analyze: "Analyze with AI", 
@@ -143,6 +149,7 @@ const HireMe = ({ lang, isDark }) => {
     orgType: t.options.org[0],
     projectType: t.options.types[0],
     paymentType: t.options.payment[0],
+    budgetType: t.options.budgetType[0],
     amount: '',
     description: ''
   });
@@ -180,7 +187,8 @@ const HireMe = ({ lang, isDark }) => {
     setIsSending(true); 
     const el = t.emailLabels;
     const subject = `Ny förfrågan från ${formData.name}: ${formData.projectType}`;
-    const emailBody = `${el.header}\n\n${el.sender}:\n${el.name}: ${formData.name}\n${el.email}: ${formData.email}\n${el.type}: ${formData.orgType}\n\n${el.project}:\n${el.projectType}: ${formData.projectType}\n${el.payment}: ${formData.paymentType}${formData.amount ? `\n${el.budget}: ${formData.amount} kr` : ''}\n\n${el.description}:\n${formData.description}\n\n---\n\n${el.aiAssessment}:\n${el.time}: ${analysis?.estimatedHours || '?'} ${el.hours}\n${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
+    const budgetLabel = formData.amount ? `${formData.amount} kr${formData.budgetType === t.options.budgetType[1] ? '/h' : ' (total)'}` : '';
+    const emailBody = `${el.header}\n\n${el.sender}:\n${el.name}: ${formData.name}\n${el.email}: ${formData.email}\n${el.type}: ${formData.orgType}\n\n${el.project}:\n${el.projectType}: ${formData.projectType}\n${el.payment}: ${formData.paymentType}${budgetLabel ? `\n${el.budget}: ${budgetLabel}` : ''}\n\n${el.description}:\n${formData.description}\n\n---\n\n${el.aiAssessment}:\n${el.time}: ${analysis?.estimatedHours || '?'} ${el.hours}\n${el.feedback}: "${analysis?.feedback || 'N/A'}"`;
 
     try {
       await apiClient.post('/api/email', {
@@ -218,7 +226,7 @@ const HireMe = ({ lang, isDark }) => {
         <p className={`max-w-md mb-8 leading-relaxed transition-colors ${isDark ? 'text-gray-400' : 'text-warm-muted'}`}>
           {t.status.successMsg} <strong>{formData.email}</strong> {t.status.soon}
         </p>
-        <button onClick={() => { setStatus('idle'); setFormData({ name: '', email: '', orgType: t.options.org[0], projectType: t.options.types[0], paymentType: t.options.payment[0], amount: '', description: '' }); }} 
+        <button onClick={() => { setStatus('idle'); setFormData({ name: '', email: '', orgType: t.options.org[0], projectType: t.options.types[0], paymentType: t.options.payment[0], budgetType: t.options.budgetType[0], amount: '', description: '' }); }} 
           className="px-8 py-3 bg-transparent border border-green-500/30 text-green-500 hover:bg-green-500/10 hover:border-green-500 hover:text-green-600 rounded-full font-medium transition-all"
         >
           {t.buttons.new}
@@ -289,13 +297,22 @@ const HireMe = ({ lang, isDark }) => {
               </select>
               <div className={`absolute right-3 top-[32px] pointer-events-none text-xs ${isDark ? 'text-gray-500' : 'text-orange-400'}`}>▼</div>
             </div>
-            {formData.paymentType === t.options.payment[0] && (
+          </div>
+          {formData.paymentType === t.options.payment[0] && (
+            <div className="flex gap-4">
+              <div className="flex-1 relative">
+                <label className={labelClass}>{t.labels.budgetType}</label>
+                <select className={inputClass} value={formData.budgetType} onChange={e => setFormData({...formData, budgetType: e.target.value})}>
+                  {t.options.budgetType.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+                <div className={`absolute right-3 top-[32px] pointer-events-none text-xs ${isDark ? 'text-gray-500' : 'text-orange-400'}`}>▼</div>
+              </div>
               <div className="flex-1">
                 <label className={labelClass}>{t.labels.budget}</label>
-                <input type="number" className={inputClass} placeholder={t.placeholders.budget} value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} />
+                <input type="number" className={inputClass} placeholder={formData.budgetType === t.options.budgetType[0] ? t.placeholders.budgetTotal : t.placeholders.budgetHourly} value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} />
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           <div>
             <label className={labelClass}>{t.labels.desc}</label>

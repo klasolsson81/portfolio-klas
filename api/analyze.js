@@ -376,7 +376,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const { projectType, paymentType, amount, description, email, name } = req.body;
+  const { projectType, paymentType, budgetType, amount, description, email, name } = req.body;
 
   // 2. SANITERING AV INPUT (Säkerhetstips 2)
   // Vi tvättar beskrivningen och namnet innan det skickas till AI:n
@@ -397,7 +397,7 @@ INKOMMANDE FÖRFRÅGAN:
 Namn: ${sanitizedName || 'Ej angett'}
 Typ av projekt: ${projectType || 'Ej angett'}
 Ersättningstyp vald av kund: ${paymentType || 'Ej angett'}
-Budgetförslag: ${amount ? amount + ' kr' : 'Ej angett / 0 kr'}
+Budgetförslag: ${amount ? amount + (budgetType && budgetType.includes('/h') ? ' kr/h (timpris)' : ' kr (totalbudget)') : 'Ej angett / 0 kr'}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 PROJEKTBESKRIVNING:
