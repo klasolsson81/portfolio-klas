@@ -143,9 +143,33 @@ const containerVariants = {
 
 ## Recent Changes
 
-# Projektstatus & Recent Changes - 2026-01-13
+# Projektstatus & Recent Changes - 2026-02-06
 
 ## Senaste uppdateringar
+
+### 2026-02-06 - AI Prompt Update (chat.js & analyze.js)
+
+**Problem:** AI-prompterna gav en föråldrad bild av Klas som "bara en .NET-student" trots att han nu bygger hela produkter (KalasKoll, Yobber V2, Mini ATS). Analyze.js nekade projekt baserat på svårighetsgrad trots att Klas nu klarar avancerade system.
+
+**Ändringar i `api/chat.js` (KLAS_INSTRUCTIONS):**
+- Uppdaterad ålder: 44 → 45
+- Ny projektlista: KalasKoll (SaaS, live), Yobber V2 (Devotion Ventures), Mini ATS, RECON, Sky High Adventures
+- Alexander uppdaterad: 5 → snart 6
+- Breddat "Vad jag kan": Fullstack-produktutveckling, Supabase, TypeScript, Playwright, shadcn/ui, Replicate
+- Nämner Devotion Ventures och konsultjobb
+- Ny ton: produktbyggare istället för nybörjarstudent
+
+**Ändringar i `api/analyze.js` (RULES):**
+- KLAS SITUATION: Nämner 7+ produktionsprojekt, Devotion Ventures, konsultjobb
+- TEKNISK KOMPETENS: STARK utökad med Next.js, TypeScript, Supabase, Playwright, Vitest, shadcn/ui, Vercel. GRUNDLÄGGANDE: React Native, Replicate, Resend, 46elks, Upstash Redis
+- SCENARIO C: Godkänn stora projekt om ersättningen matchar (svårighetsgrad är inte skäl att neka)
+- SCENARIO H: Uppdaterade projektreferenser (KalasKoll, Yobber V2, Mini ATS, RECON, Sky High Adventures)
+- Intern timrate: 400 → 550 kr/h (rekommendation 500-600)
+- Out-of-scope: "fullstack-produktutvecklare" istället för "fokuserar på .NET och React"
+- UTANFÖR SCOPE: React Native borttagen (nu grundläggande), Flutter borttagen
+
+**Files Modified:** `api/chat.js`, `api/analyze.js`
+**Commit:** `8830538`
 
 ### 1. Prestanda & Core Web Vitals (Fokus: INP)
 * **Åtgärdat INP (Interaction to Next Paint):** Tidigare värde på 552ms (Poor) identifierades via Vercel Speed Insights.
