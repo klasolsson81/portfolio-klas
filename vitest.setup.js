@@ -40,5 +40,20 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
 
+// Mock sessionStorage with in-memory storage (used by ChatUI)
+const sessionStorageMock = (() => {
+  let store = {};
+  return {
+    getItem: (key) => store[key] || null,
+    setItem: (key, value) => { store[key] = value; },
+    removeItem: (key) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
+
+Object.defineProperty(window, 'sessionStorage', {
+  value: sessionStorageMock,
+});
+
 // Mock scrollIntoView (used by ChatUI)
 Element.prototype.scrollIntoView = () => {};

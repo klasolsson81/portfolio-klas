@@ -10,6 +10,14 @@ vi.mock('../../lib/api/client', () => ({
   },
 }));
 
+// Mock ReactMarkdown to render plain text (avoids paragraph wrapping issues)
+vi.mock('react-markdown', () => ({
+  default: ({ children }) => <>{children}</>,
+}));
+
+// Mock image import
+vi.mock('../../assets/aiklas.png', () => ({ default: 'aiklas.png' }));
+
 describe('ChatUI Component', () => {
   const defaultProps = {
     lang: 'sv',
@@ -17,19 +25,20 @@ describe('ChatUI Component', () => {
   };
 
   beforeEach(() => {
-    // Clear localStorage before each test
+    // Clear sessionStorage before each test (ChatUI uses sessionStorage, not localStorage)
+    sessionStorage.clear();
     localStorage.clear();
   });
 
   describe('Rendering', () => {
     it('should render welcome message in Swedish', () => {
       render(<ChatUI {...defaultProps} />);
-      expect(screen.getByText(/Tjena! Hur är läget\?/i)).toBeInTheDocument();
+      expect(screen.getByText(/Tjena! Hur är läget/i)).toBeInTheDocument();
     });
 
     it('should render welcome message in English', () => {
       render(<ChatUI {...defaultProps} lang="en" />);
-      expect(screen.getByText(/Hey! What's up\?/i)).toBeInTheDocument();
+      expect(screen.getByText(/Hey! What's up/i)).toBeInTheDocument();
     });
 
     it('should render chat input', () => {
@@ -73,7 +82,6 @@ describe('ChatUI Component', () => {
     it('should show clear button when multiple messages exist', async () => {
       render(<ChatUI {...defaultProps} />);
 
-      // Add a user message to make messages.length > 1
       const input = screen.getByPlaceholderText(/Skriv din fråga här/i);
       const buttons = screen.getAllByRole('button');
       const submitButton = buttons.find(btn => btn.type === 'submit');
@@ -81,7 +89,6 @@ describe('ChatUI Component', () => {
       fireEvent.change(input, { target: { value: 'Test message' } });
       fireEvent.click(submitButton);
 
-      // Clear button should appear when messages.length > 1
       await waitFor(() => {
         const clearButton = screen.getByTitle(/Rensa historik/i);
         expect(clearButton).toBeInTheDocument();
@@ -89,25 +96,23 @@ describe('ChatUI Component', () => {
     });
 
     it('should clear messages when clear button clicked', async () => {
+      // Pre-load with saved messages so clear button is visible immediately
+      const savedMessages = [
+        { role: 'assistant', content: 'Tjena! Hur är läget?' },
+        { role: 'user', content: 'Hej!' },
+        { role: 'assistant', content: 'Allt bra!' },
+      ];
+      sessionStorage.setItem('klasPortfolio_chatHistory', JSON.stringify(savedMessages));
+
       render(<ChatUI {...defaultProps} />);
 
-      // Add a user message first
-      const input = screen.getByPlaceholderText(/Skriv din fråga här/i);
-      const buttons = screen.getAllByRole('button');
-      const submitButton = buttons.find(btn => btn.type === 'submit');
+      // Clear button should be visible
+      const clearButton = screen.getByTitle(/Rensa historik/i);
+      fireEvent.click(clearButton);
 
-      fireEvent.change(input, { target: { value: 'Test message' } });
-      fireEvent.click(submitButton);
-
-      // Wait for clear button and click it
+      // After clear, user messages should be gone
       await waitFor(() => {
-        const clearButton = screen.getByTitle(/Rensa historik/i);
-        fireEvent.click(clearButton);
-      });
-
-      // Should still show welcome message after clear
-      await waitFor(() => {
-        expect(screen.getByText(/Tjena! Hur är läget\?/i)).toBeInTheDocument();
+        expect(screen.queryByText('Allt bra!')).not.toBeInTheDocument();
       });
     });
   });
@@ -122,17 +127,17 @@ describe('ChatUI Component', () => {
     it('should apply light theme classes', () => {
       const { container } = render(<ChatUI {...defaultProps} isDark={false} />);
       const chatContainer = container.firstChild;
-      expect(chatContainer.className).toContain('bg-white/30');
+      expect(chatContainer.className).toContain('bg-orange-50/30');
     });
   });
 
-  describe('localStorage Integration', () => {
-    it('should load messages from localStorage on mount', () => {
+  describe('sessionStorage Integration', () => {
+    it('should load messages from sessionStorage on mount', () => {
       const savedMessages = [
         { role: 'assistant', content: 'Hej!' },
         { role: 'user', content: 'Hej tillbaka!' },
       ];
-      localStorage.setItem('klasPortfolio_chatHistory', JSON.stringify(savedMessages));
+      sessionStorage.setItem('klasPortfolio_chatHistory', JSON.stringify(savedMessages));
 
       render(<ChatUI {...defaultProps} />);
 
@@ -140,13 +145,13 @@ describe('ChatUI Component', () => {
       expect(screen.getByText('Hej tillbaka!')).toBeInTheDocument();
     });
 
-    it('should handle corrupted localStorage data', () => {
-      localStorage.setItem('klasPortfolio_chatHistory', 'invalid-json');
+    it('should handle corrupted sessionStorage data', () => {
+      sessionStorage.setItem('klasPortfolio_chatHistory', 'invalid-json');
 
       render(<ChatUI {...defaultProps} />);
 
       // Should show welcome message as fallback
-      expect(screen.getByText(/Tjena! Hur är läget\?/i)).toBeInTheDocument();
+      expect(screen.getByText(/Tjena! Hur är läget/i)).toBeInTheDocument();
     });
   });
 });
