@@ -171,6 +171,50 @@ const containerVariants = {
 **Files Modified:** `api/chat.js`, `api/analyze.js`
 **Commit:** `8830538`
 
+### 2026-02-06 - Budget Type Selector (HireMe)
+
+**Problem:** Budgetfältet i "Anlita mig"-formuläret hade orealistisk placeholder ("t.ex. 5000") och saknade möjlighet att ange timpris vs totalbudget.
+
+**Ändringar:**
+- Ny budgettyp-dropdown: "Totalbudget (kr)" / "Timpris (kr/h)" (tvåspråkig)
+- Dynamisk placeholder: `50 000` (total) eller `500` (timpris)
+- Budget-fälten gömda vid "Pro Bono" (oförändrat beteende)
+- `api/analyze.js`: Läser `budgetType` och visar "kr/h (timpris)" eller "kr (totalbudget)" i AI-prompten
+- E-postmeddelande inkluderar budgettyp (t.ex. "500 kr/h" eller "150 000 kr (total)")
+
+**Live-verifiering:**
+- Analyze API med timpris (500 kr/h) → Godkänt, 40h estimat
+- Analyze API med totalbudget (150 000 kr) → Godkänt, 80h estimat
+- Scenario C (stort projekt + skälig budget) → Godkänner korrekt
+
+**Files Modified:** `src/components/HireMe.jsx`, `api/analyze.js`
+**Commit:** `f60e50b`
+
+### 2026-02-06 - Comprehensive Test Suite (40 → 98 tests)
+
+**Problem:** Bara 2 testsuiter (40 tester) fanns. ChatUI-tester var trasiga (använde localStorage istället för sessionStorage, felaktig CSS-klass efter warm theme-uppdatering).
+
+**Nya testfiler:**
+- `src/components/__tests__/HireMe.test.jsx` (20 tester) — Budget type-väljare, placeholder-switch, Pro Bono-toggle, teman, formulärvalidering, tvåspråkighet
+- `lib/utils/__tests__/rateLimit.test.js` (12 tester) — Rate limiting, IP-extraktion (x-forwarded-for, x-real-ip, cf-connecting-ip), cleanup, IP-isolation
+- `lib/config/__tests__/constants.test.js` (22 tester) — Config-sanity, z-index-hierarki, HTTP-statuskoder, tvåspråkiga felmeddelanden, GPT-config
+
+**Fixade befintliga tester:**
+- `ChatUI.test.jsx`: sessionStorage-mock (var localStorage), uppdaterad light theme-klass (`bg-white/30` → `bg-orange-50/30`), ReactMarkdown-mock, fixad clear history-timing
+- `vitest.setup.js`: Lade till sessionStorage-mock
+
+**Testresultat:** 5 suiter, 98 tester, alla gröna
+| Suite | Tester |
+|-------|--------|
+| HireMe.test.jsx | 20 |
+| ChatUI.test.jsx | 14 |
+| inputValidator.test.js | 25 |
+| rateLimit.test.js | 12 |
+| constants.test.js | 22 |
+
+**Files Modified:** `vitest.setup.js`, `src/components/__tests__/ChatUI.test.jsx`, `src/components/__tests__/HireMe.test.jsx`, `lib/utils/__tests__/rateLimit.test.js`, `lib/config/__tests__/constants.test.js`
+**Commit:** `18abcb4`
+
 ### 1. Prestanda & Core Web Vitals (Fokus: INP)
 * **Åtgärdat INP (Interaction to Next Paint):** Tidigare värde på 552ms (Poor) identifierades via Vercel Speed Insights.
 * **CSS-optimering:** Tog bort `background-attachment: fixed` i `index.css` då det orsakade tunga repaints vid scroll. Ersatte med ett hårdvaruaccelererat `::before`-lager med `translateZ(0)` för mjukare prestanda på mobiler.
