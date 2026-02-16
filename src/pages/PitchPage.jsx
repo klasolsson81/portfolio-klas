@@ -210,7 +210,18 @@ export default function PitchPage() {
   useEffect(() => {
     const originalTitle = document.title;
     document.title = "Klas Olsson \u2014 Fullstack Developer | Infinet Code AB";
-    return () => { document.title = originalTitle; };
+    // Override index.css overflow:hidden on html/body (desktop)
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    html.style.overflow = "auto";
+    body.style.overflow = "auto";
+    return () => {
+      document.title = originalTitle;
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+    };
   }, []);
 
   useEffect(() => { setTimeout(() => setLoaded(true), 200); }, []);
