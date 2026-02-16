@@ -234,8 +234,8 @@ export default function PitchPage() {
   const techStack = ["React", "TypeScript", ".NET / C#", "Supabase", "OpenAI API", "Vercel", "GitHub CI/CD", "TailwindCSS"];
 
   const projects = [
-    { name: "KalasKoll", desc: "Viral app f\u00f6r barnkalas-inbjudningar. 60 000+ LinkedIn-visningar, 50+ aktiva anv\u00e4ndare. Fr\u00e5n id\u00e9 till deploy \u2014 solo.", color: "59,130,246", link: "https://kalaskoll.se", github: "https://github.com/klasolsson81/kalaskoll" },
-    { name: "Yobber V2", desc: "Rekryteringsplattform \u00e5t Devotion Ventures. OAuth, AI-matchning via OpenAI, Kanban-pipeline, e-postinfrastruktur. Ensam utvecklare.", color: "139,92,246", link: "https://www.yobber.website/", github: null },
+    { name: "KalasKoll", desc: "Viral app för barnkalas-inbjudningar. 60 000+ LinkedIn-visningar, 50+ aktiva användare. Från idé till deploy — solo.", color: "59,130,246", link: "https://kalaskoll.se", github: "https://github.com/klasolsson81/kalaskoll" },
+    { name: "Yobber V2", desc: "Rekryteringsplattform åt Devotion Ventures. OAuth, AI-matchning via OpenAI, Kanban-pipeline, e-postinfrastruktur. Ensam utvecklare.", color: "139,92,246", link: "https://www.yobber.website/", github: null },
     { name: "klasolsson.se", desc: "AI-driven portfoliosida med integrerad chatt och projektanalys. Min digitala bas.", color: "6,182,212", link: "https://klasolsson.se", github: "https://github.com/klasolsson81/portfolio-klas" },
   ];
 
@@ -326,7 +326,7 @@ export default function PitchPage() {
               fontWeight: 600, marginBottom: 28,
               opacity: loaded ? 1 : 0, transition: "opacity 1s ease 0.3s",
             }}>
-              FULLSTACK DEVELOPER &nbsp;•&nbsp; ANS\u00d6KAN
+              FULLSTACK DEVELOPER &nbsp;•&nbsp; ANSÖKAN
             </div>
 
             {/* Photo with spinning border */}
@@ -425,11 +425,11 @@ export default function PitchPage() {
               <GlassCard delay={900} glowColor="16,185,129" animated style={{ marginBottom: 20, textAlign: "center", borderColor: "rgba(16,185,129,0.25)" }}>
                 <div style={{ fontSize: 32, marginBottom: 10 }}>💰</div>
                 <div style={{ fontSize: 22, fontWeight: 800, color: "#10b981", marginBottom: 10, letterSpacing: -0.5 }}>
-                  Ingen l\u00f6nekostnad
+                  Ingen lönekostnad
                 </div>
                 <div style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.7, maxWidth: 500, margin: "0 auto" }}>
-                  Mitt omst\u00e4llningsst\u00f6d t\u00e4cker mig ekonomiskt. Du f\u00e5r en fullstack-utvecklare som levererar
-                  — <span style={{ color: "#e2e8f0", fontWeight: 600 }}>utan att det kostar dig en krona i l\u00f6n</span>.
+                  Mitt omställningsstöd täcker mig ekonomiskt. Du får en fullstack-utvecklare som levererar
+                  — <span style={{ color: "#e2e8f0", fontWeight: 600 }}>utan att det kostar dig en krona i lön</span>.
                 </div>
               </GlassCard>
             </TiltCard>
@@ -439,9 +439,9 @@ export default function PitchPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
             {[
               { value: views.toLocaleString("sv-SE") + "+", label: "LinkedIn-visningar", icon: "👁" },
-              { value: users + "+", label: "Aktiva anv\u00e4ndare", icon: "👥" },
-              { value: years + " \u00e5r", label: "Yrkeserfarenhet", icon: "💼" },
-              { value: "0 kr", label: "L\u00f6nekostnad", icon: "✅" },
+              { value: users + "+", label: "Aktiva användare", icon: "👥" },
+              { value: years + " år", label: "Yrkeserfarenhet", icon: "💼" },
+              { value: "0 kr", label: "Lönekostnad", icon: "✅" },
             ].map((s, i) => (
               <RevealOnScroll key={i} delay={i * 100}>
                 <TiltCard>
@@ -467,8 +467,8 @@ export default function PitchPage() {
               </div>
               <div style={{ fontSize: 15, color: "#cbd5e1", lineHeight: 1.8 }}>
                 Jag bygger inte skolprojekt — jag bygger{" "}
-                <span style={{ color: "#fff", fontWeight: 700 }}>riktiga produkter med riktiga anv\u00e4ndare</span>.
-                Fr\u00e5n id\u00e9 till deploy, fullstack, hela kedjan. React + TypeScript i frontend, .NET/C# och Supabase i backend, AI-integration via OpenAI.
+                <span style={{ color: "#fff", fontWeight: 700 }}>riktiga produkter med riktiga användare</span>.
+                Från idé till deploy, fullstack, hela kedjan. React + TypeScript i frontend, .NET/C# och Supabase i backend, AI-integration via OpenAI.
               </div>
             </GlassCard>
           </RevealOnScroll>
@@ -543,17 +543,17 @@ export default function PitchPage() {
               <GlassCard delay={2700} glowColor="139,92,246" animated style={{ marginBottom: 20, borderColor: "rgba(139,92,246,0.25)" }}>
                 <div style={{ fontSize: 32, marginBottom: 10, textAlign: "center" }}>🤖</div>
                 <div style={{ fontSize: 17, fontWeight: 800, color: "#a78bfa", marginBottom: 10, textAlign: "center" }}>
-                  Claude Max som Gift — min enda \u00f6nskan
+                  Claude Max som Gift — min enda önskan
                 </div>
                 <div style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.7, textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
-                  Ist\u00e4llet f\u00f6r l\u00f6n: en{" "}
+                  Istället för lön: en{" "}
                   <a href="https://claude.ai/upgrade" target="_blank" rel="noopener noreferrer"
                     style={{ color: "#a78bfa", textDecoration: "none", borderBottom: "1px solid rgba(139,92,246,0.4)", fontWeight: 600 }}>
-                    gift-prenumeration p\u00e5 Claude Max
+                    gift-prenumeration på Claude Max
                   </a>{" "}
-                  ($100/m\u00e5n). Det AI-verktyg jag anv\u00e4nder dagligen f\u00f6r att leverera snabbare, stabilare och mer genomarbetad kod.
+                  ($100/mån). Det AI-verktyg jag använder dagligen för att leverera snabbare, stabilare och mer genomarbetad kod.
                   <span style={{ display: "block", marginTop: 10, color: "#cbd5e1", fontWeight: 600, fontSize: 15 }}>
-                    3 m\u00e5nader = ca 3 200 kr. Din totala investering.
+                    3 månader = ca 3 200 kr. Din totala investering.
                   </span>
                 </div>
               </GlassCard>
@@ -568,7 +568,7 @@ export default function PitchPage() {
                 <span style={{ fontSize: 15, fontWeight: 700, color: "#eab308" }}>Heads up</span>
               </div>
               <div style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.7 }}>
-                Beh\u00f6ver avsluta samarbetet med Devotion Ventures p\u00e5 ett snyggt och professionellt s\u00e4tt — ca 2–3 veckor. Sedan <span style={{ color: "#e2e8f0", fontWeight: 600 }}>100% tillg\u00e4nglig</span>.
+                Behöver avsluta samarbetet med Devotion Ventures på ett snyggt och professionellt sätt — ca 2–3 veckor. Sedan <span style={{ color: "#e2e8f0", fontWeight: 600 }}>100% tillgänglig</span>.
               </div>
             </GlassCard>
           </RevealOnScroll>
