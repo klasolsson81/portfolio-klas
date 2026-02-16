@@ -284,6 +284,22 @@ export default function PitchPage() {
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0a0e17; }
     ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+
+    .pitch-title { font-size: 60px; }
+    .pitch-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    .pitch-stat-value { font-size: 24px; }
+    .pitch-header-subtitle { font-size: 11px; letter-spacing: 8px; }
+
+    @media (max-width: 640px) {
+      .pitch-title { font-size: 36px !important; }
+      .pitch-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+      .pitch-stat-value { font-size: 18px !important; }
+      .pitch-header-subtitle { font-size: 9px !important; letter-spacing: 4px !important; }
+      .pitch-photo-wrapper { width: 120px !important; height: 120px !important; }
+      .pitch-photo-img { width: 110px !important; height: 110px !important; }
+      .pitch-tech-badge { padding: 6px 12px !important; font-size: 12px !important; }
+      .pitch-social-link { padding: 8px 14px !important; font-size: 13px !important; }
+    }
   `;
 
   return (
@@ -332,8 +348,8 @@ export default function PitchPage() {
 
           {/* ─── HEADER ─── */}
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <div style={{
-              fontSize: 11, letterSpacing: 8, color: "rgba(59,130,246,0.6)",
+            <div className="pitch-header-subtitle" style={{
+              color: "rgba(59,130,246,0.6)",
               fontWeight: 600, marginBottom: 28,
               opacity: loaded ? 1 : 0, transition: "opacity 1s ease 0.3s",
             }}>
@@ -341,7 +357,7 @@ export default function PitchPage() {
             </div>
 
             {/* Photo with spinning border */}
-            <div style={{
+            <div className="pitch-photo-wrapper" style={{
               width: 160, height: 160, borderRadius: "50%", margin: "0 auto 28px",
               position: "relative", animation: loaded ? "float 6s ease-in-out infinite" : "none",
               opacity: loaded ? 1 : 0, transform: loaded ? "scale(1)" : "scale(0.5)",
@@ -360,7 +376,7 @@ export default function PitchPage() {
                 filter: "blur(30px)", opacity: 0.35,
                 animation: "glow-pulse 4s ease-in-out infinite",
               }} />
-              <img src={`data:image/jpeg;base64,${PHOTO_BASE64}`} alt="Klas Olsson"
+              <img className="pitch-photo-img" src={`data:image/jpeg;base64,${PHOTO_BASE64}`} alt="Klas Olsson"
                 style={{
                   width: 150, height: 150, borderRadius: "50%", objectFit: "cover",
                   position: "relative", zIndex: 2, border: "4px solid #0f172a",
@@ -370,10 +386,9 @@ export default function PitchPage() {
             </div>
 
             {/* Typed title */}
-            <h1 style={{
-              fontSize: 60, fontWeight: 900, margin: "0 0 4px", letterSpacing: -2,
+            <h1 className="pitch-title" style={{
+              fontWeight: 900, margin: "0 0 4px", letterSpacing: -2,
               fontFamily: "'Inter', sans-serif", lineHeight: 1.1,
-              minHeight: 72,
               animation: titleDone ? "text-glow 3s ease-in-out infinite" : "none",
             }}>
               <span style={{
@@ -447,7 +462,7 @@ export default function PitchPage() {
           </RevealOnScroll>
 
           {/* ─── STATS ─── */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+          <div className="pitch-stats-grid">
             {[
               { value: views.toLocaleString("sv-SE") + "+", label: "LinkedIn-visningar", icon: "👁" },
               { value: users + "+", label: "Aktiva användare", icon: "👥" },
@@ -458,8 +473,8 @@ export default function PitchPage() {
                 <TiltCard>
                   <GlassCard delay={1100 + i * 150} style={{ textAlign: "center", padding: "20px 12px" }}>
                     <div style={{ fontSize: 22, marginBottom: 6 }}>{s.icon}</div>
-                    <div style={{
-                      fontSize: 24, fontWeight: 800, fontFamily: "'JetBrains Mono', monospace",
+                    <div className="pitch-stat-value" style={{
+                      fontWeight: 800, fontFamily: "'JetBrains Mono', monospace",
                       background: "linear-gradient(135deg, #60a5fa, #06b6d4)",
                       WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                     }}>{s.value}</div>
