@@ -279,7 +279,7 @@ export default function PitchPage() {
     <>
       <style>{css}</style>
       <div style={{
-        minHeight: "100vh", position: "relative", overflow: "hidden",
+        minHeight: "100vh", position: "relative", overflowX: "hidden",
         background: "linear-gradient(160deg, #020617 0%, #0a1628 30%, #0f172a 60%, #0c1322 100%)",
         fontFamily: "'Inter', system-ui, sans-serif", color: "#e2e8f0",
       }}>
