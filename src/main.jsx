@@ -6,37 +6,16 @@ import PitchPage from './pages/PitchPage'
 import 'flag-icons/css/flag-icons.min.css';
 import './index.css'
 
-// Importera verktyg och toast-notiser
+// Importera verktyg
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import { registerSW } from 'virtual:pwa-register'
-import { toast } from 'sonner' // Se till att sonner är installerad
 
-// Registrera service worker med manuell prompt (fixar dubbel-refresh)
-const updateSW = registerSW({
-  onNeedRefresh() {
-    // Visa en snygg notis istället för att tvinga fram en omladdning direkt
-    toast('Ny version tillgänglig!', {
-      description: 'Uppdatera för att få de senaste prestandafixarna.',
-      duration: Infinity, // Stannar tills användaren agerar
-      action: {
-        label: 'Uppdatera',
-        onClick: () => updateSW(true) // Utför uppdateringen manuellt
-      },
-    });
-
-    if (import.meta.env.DEV) {
-      console.log('PWA: New content available, prompt shown to user');
-    }
-  },
+// Registrera service worker med autoUpdate (ny version aktiveras direkt utan prompt)
+registerSW({
   onOfflineReady() {
     if (import.meta.env.DEV) {
       console.log('PWA: App ready to work offline');
-    }
-  },
-  onRegistered(registration) {
-    if (import.meta.env.DEV) {
-      console.log('PWA: Service worker registered');
     }
   },
   onRegisterError(error) {

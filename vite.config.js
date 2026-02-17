@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'prompt', // ÄNDRAD: Hindrar automatisk "dubbel-refresh"
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'CV_Klas_Olsson.pdf', 'og-image.png'],
       manifest: {
         name: 'Klas Olsson - Portfolio',
