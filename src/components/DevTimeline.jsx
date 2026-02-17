@@ -148,6 +148,17 @@ const EVENT_TYPES = {
 // =====================================================
 const TIMELINE_EVENTS = [
   {
+    date: "2026-02-16",
+    type: "course_complete",
+    title: { sv: "Databaser – VG", en: "Databases – Distinction" },
+    description: {
+      sv: "Avklarade sex veckor intensiv databaskunskap med högsta betyg. Jobbade med SQL Server Express och SSMS för att designa, fråga och optimera relationsdatabaser. Kopplade ihop lokala databaser med .NET-konsolapplikationer via ADO.NET och Entity Framework Core. Vid sidan av kursen har jag även arbetat mycket med Supabase (PostgreSQL) i riktiga projekt som KalasKoll och Mini ATS – vilket gett mig en bred bild av både lokal och molnbaserad databashantering.",
+      en: "Completed six weeks of intensive database studies with highest grade. Worked with SQL Server Express and SSMS to design, query and optimize relational databases. Connected local databases to .NET console applications via ADO.NET and Entity Framework Core. Outside the course I've also worked extensively with Supabase (PostgreSQL) in real projects like KalasKoll and Mini ATS – giving me a broad understanding of both local and cloud-based database management."
+    },
+    tags: ["SQL", "SQL Server", "SSMS", "EF Core", ".NET", "Supabase"],
+    grade: "VG"
+  },
+  {
     date: "2026-02-03",
     type: "project",
     title: { sv: "KalasKoll — Barnkalas-app med AI & GDPR", en: "KalasKoll — Kids' Party App with AI & GDPR" },
